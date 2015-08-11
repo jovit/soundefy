@@ -17,7 +17,7 @@ public class Main extends Application{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabEditor.fxml"));
 		AnchorPane pane = (AnchorPane)loader.load();
-		this.primaryStage.setScene(new Scene(pane));
+		this.primaryStage.setScene(new Scene(pane,100,100));
 		this.primaryStage.show();
 	}
 	

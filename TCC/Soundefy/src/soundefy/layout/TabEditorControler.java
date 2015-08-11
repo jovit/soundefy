@@ -1,12 +1,11 @@
 package soundefy.layout;
 
-import model.Tab;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import model.Tab;
 
 public class TabEditorControler {
 	public static final int MARGIN = 20;
@@ -21,39 +20,30 @@ public class TabEditorControler {
 
 	@FXML
 	private void initialize() {
-		tab = new Tab();
+		/*tab = new Tab();
 		try {
 			tab.addBar(4, 4, 100);
 			Note chord[] = {new Note(), new Note()};
 			tab.getBar().addChord(new Chord(chord));
 		} catch (Exception ex) {
-		}
+		}*/
 		
 		context = canvas.getGraphicsContext2D();
-
+		
+		canvas.widthProperty().addListener(observable -> drawTab());
+		canvas.heightProperty().addListener(observable -> drawTab());
+		
 		canvas.widthProperty().bind(parent.widthProperty().subtract(MARGIN));
 		canvas.heightProperty().bind(parent.heightProperty());
-
-		canvas.widthProperty().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable,
-					Number oldValue, Number newValue) {
-				drawTab();
-
-			}
-		});
-
+		
 		drawTab();
-		parent.requestLayout();
+		
 	}
 
 	private void drawTab() {
-		context.beginPath();
-		context.moveTo(MARGIN, MARGIN);
-		context.lineTo(canvas.getWidth(), MARGIN);
-		System.out.println(canvas.getLayoutBounds().getWidth());
-		context.stroke();
+		
+		context.setFill(Color.BLACK);
+		context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 	}
 
