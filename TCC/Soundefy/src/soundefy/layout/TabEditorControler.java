@@ -1,16 +1,27 @@
 package soundefy.layout;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import model.Tab;
 
 public class TabEditorControler {
 	public static final int MARGIN = 20;
 	public static final int LINE_SPACING = 10;
 	public static final double LINE_WIDTH = 1;
+	public static final int TIME_SIGNIATURE_SIZE = 20;
+	
+	private int currentScroll = 0;
+	private int scrollStep = 1;
+	private int scrollPositionHeight = 30;
+	private int pageTotalHeight;
+	
+	private Tab tab;
 
 	@FXML
 	private Canvas canvas;
@@ -18,61 +29,119 @@ public class TabEditorControler {
 	private AnchorPane parent;
 
 	private GraphicsContext context;
-
+	
+	private boolean pressedOnScrollBar;
+	private int dragStart;
+	
 	@FXML
 	private void initialize() {
-		/*tab = new Tab();
-		try {
-			tab.addBar(4, 4, 100);
-			Note chord[] = {new Note(), new Note()};
-			tab.getBar().addChord(new Chord(chord));
-		} catch (Exception ex) {
-		}*/
-		
 		context = canvas.getGraphicsContext2D();
 		
 		canvas.widthProperty().addListener(observable -> drawTab());
 		canvas.heightProperty().addListener(observable -> drawTab());
 		
-		canvas.widthProperty().bind(parent.widthProperty().subtract(MARGIN));
-		canvas.heightProperty().bind(parent.heightProperty().subtract(MARGIN));
+		canvas.widthProperty().bind(parent.widthProperty());
+		canvas.heightProperty().bind(parent.heightProperty());
 		
+		canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if(event.getSceneX() >= (canvas.getWidth() - MARGIN + 2)){
+					if(event.getSceneY() >= currentScroll && event.getSceneY() <= (currentScroll + scrollPositionHeight)){
+						pressedOnScrollBar = true;
+						dragStart = (int) event.getSceneY();
+					}
+				}
+			}
+		});
 		
+		canvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				if(pressedOnScrollBar){
+					currentScroll += (event.getSceneY() - dragStart);
+					if(currentScroll < 0){
+						currentScroll = 0;
+					}
+					if((currentScroll*scrollStep) > pageTotalHeight- canvas.getHeight()){
+						currentScroll = (int) Math.round((pageTotalHeight - canvas.getHeight())/scrollStep);
+					}
+					dragStart = (int)event.getSceneY();
+					drawTab();
+				}
+			}
+		});
+		
+		canvas.setOnMouseReleased(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				pressedOnScrollBar = false;
+			}
+			
+		});
 	}
 	
-	private void drawTimeSigniature(int a, int b, int y){
+	private void drawTimeSigniature(int y, int a, int b){
 		context.setStroke(Color.BLACK);
 		context.setFill(Color.BLACK);
-		context.setFont(new Font("Arial", 20));
-		context.fillText(String.valueOf(a), MARGIN + 5, y+20);
-		context.fillText(String.valueOf(b), MARGIN + 5, y+40);
+		context.setFont(new Font("Times Roman", TIME_SIGNIATURE_SIZE));
+		context.fillText(String.valueOf(a), MARGIN + 5, y+2*LINE_SPACING);
+		context.fillText(String.valueOf(b), MARGIN + 5, y+4*LINE_SPACING);
 	}
 	
-	private int drawLines(int y){
+	private int drawLines(int y, int a, int b){
+		int whereDrawTimeSigniature = y;
 		context.setLineWidth(LINE_WIDTH);
 		context.setStroke(Color.gray(0.6));
 		context.strokeLine(MARGIN, y, MARGIN, y+ 5*LINE_SPACING);
-		context.strokeLine(canvas.getWidth() - 1, y, canvas.getWidth() - 1, y + 5*LINE_SPACING);
+		context.strokeLine(canvas.getWidth() - 1 - 2 * MARGIN, y, canvas.getWidth() - 1 - 2 * MARGIN, y + 5*LINE_SPACING);
 
 		for(int i=0; i<6; i++){
-			context.strokeLine(MARGIN, y, canvas.getWidth(), y);
+			context.strokeLine(MARGIN, y, canvas.getWidth() - 2 * MARGIN, y);
 			y += LINE_SPACING; 
 		}
 		
+		drawTimeSigniature(whereDrawTimeSigniature, a, b);
 		return y + MARGIN;
 	}
-
+	
+	private void drawScrollBar(int maxScroll){
+		if((currentScroll * scrollStep)  > maxScroll){
+			currentScroll = maxScroll;
+		}
+		context.setFill(Color.LIGHTGRAY);
+		context.fillRect(canvas.getWidth() - MARGIN, 0, MARGIN, canvas.getHeight());
+		
+		if(maxScroll != 0){
+			scrollPositionHeight = 30;
+			if(maxScroll > (canvas.getHeight() - scrollPositionHeight)){
+				scrollStep =  (int) Math.round(maxScroll / (canvas.getHeight() - scrollPositionHeight));
+			}else{
+				scrollStep = 1;
+				scrollPositionHeight = (int)canvas.getHeight() - maxScroll;
+			}
+			
+			
+			context.setFill(Color.GREY);
+			
+			context.fillRect(canvas.getWidth() - MARGIN + 2, currentScroll, MARGIN - 4, scrollPositionHeight);
+		}else{
+			currentScroll = 0;
+			scrollStep = 1;
+		}
+	}
+	
 	private void drawTab() {
-		int where = MARGIN;
+		int where = MARGIN  - (currentScroll * scrollStep);
 		context.setFill(Color.WHITE);
 		context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
-		where = drawLines(where);
-		drawTimeSigniature(4,4,MARGIN);
+		where = drawLines(where, 4,4);
+		where = drawLines(where,4,4);
 		
-		drawLines(where);
-		drawTimeSigniature(4,4,where);
-
+		pageTotalHeight = (where + currentScroll * scrollStep);
+		if((pageTotalHeight - canvas.getHeight()) > 0)
+			drawScrollBar((int)(pageTotalHeight - canvas.getHeight()));
 	}
 
 }
