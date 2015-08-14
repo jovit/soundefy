@@ -24,5 +24,4 @@ public class Note {
 	public void setFret(int fret) {
 		this.fret = fret;
 	}
-
 }
