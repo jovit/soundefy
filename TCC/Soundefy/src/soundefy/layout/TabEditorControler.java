@@ -8,6 +8,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import model.Bar;
+import model.Chord;
 import model.Note;
 import model.Tab;
 
@@ -16,6 +18,8 @@ public class TabEditorControler {
 	public static final int LINE_SPACING = 10;
 	public static final double LINE_WIDTH = 1;
 	public static final int TIME_SIGNIATURE_SIZE = 20;
+	public static final int NOTES_SPACING = 20;
+	public static final int LINE_X_START = 40;
 	
 	private int currentScroll = 0;
 	private int scrollStep = 1;
@@ -39,10 +43,10 @@ public class TabEditorControler {
 		try{
 			tab = new Tab();
 			tab.addBar(4,4,100);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/4.0);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -143,13 +147,33 @@ public class TabEditorControler {
 		}
 	}
 	
+	private int drawBar(Bar bar, int whereY, int whereX){
+		whereX += NOTES_SPACING;
+		for(Chord c: bar.getNotes()){
+			context.strokeLine(whereX, whereY, whereX , whereY+ 50);
+			whereX += NOTES_SPACING;
+		}
+		
+		return whereX;
+	}
+	
 	private void drawTab() {
 		int where = MARGIN  - (currentScroll * scrollStep);
 		context.setFill(Color.WHITE);
 		context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+				
+		int lineWidth = (int)Math.round(canvas.getWidth()) - 2 * MARGIN - LINE_X_START;
+		System.out.println(lineWidth);
+		int currentLinePosition = lineWidth;
+		for(Bar b : tab.getBars()){
+			int barWidth = b.getNotes().size() * NOTES_SPACING;
+			System.out.println("Bar width:" + (currentLinePosition + barWidth));
+			if((currentLinePosition + barWidth) > lineWidth){
+				where = drawLines(where, 4, 4);
+				currentLinePosition = 0;
+			}
+		}
 		
-		where = drawLines(where, 4,4);
-		where = drawLines(where,4,4);
 		
 		pageTotalHeight = (where + currentScroll * scrollStep);
 		if((pageTotalHeight - canvas.getHeight()) > 0)
