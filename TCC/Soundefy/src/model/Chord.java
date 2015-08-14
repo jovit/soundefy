@@ -2,9 +2,9 @@ package model;
 
 public class Chord {
 	private Note notes[];
-	private float duration;
+	private double duration;
 	
-	public Chord(Note notes[], float duration)throws Exception{
+	public Chord(Note notes[], double duration)throws Exception{
 		if(notes.length != 6){
 			throw new Exception("Invalid number of notes");
 		}
@@ -12,7 +12,7 @@ public class Chord {
 		this.duration = duration;
 	}
 
-	public float getDuration() {
+	public double getDuration() {
 		return duration;
 	}
 

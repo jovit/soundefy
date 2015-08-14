@@ -44,9 +44,13 @@ public class Bar {
 			throw new Exception("Wrong whole note duration");
 		}
 	}
+	
+	public boolean isFilled(){
+		return barCompletion == this.timeSignature.getNumberOfBeats();
+	}
 
 	public void addChord(Chord chord) throws Exception {
-		float completion = barCompletion + chord.getDuration()
+		double completion = barCompletion + chord.getDuration()
 				* this.timeSignature.getWholeNoteDuration();
 		if (completion > this.timeSignature.getNumberOfBeats()) {
 			throw new Exception("Bar duration exceeded");
@@ -58,9 +62,13 @@ public class Bar {
 	public boolean barCompleted() {
 		return barCompletion == this.timeSignature.getNumberOfBeats();
 	}
+	
+	public int numberOfNotes(){
+		return notes.size();
+	}
 
 	public void removeChord(){
-		float duration = notes.get(notes.size() - 1).getDuration() * this.timeSignature.getWholeNoteDuration();
+		double duration = notes.get(notes.size() - 1).getDuration() * this.timeSignature.getWholeNoteDuration();
 		barCompletion -= duration;
 		notes.remove(notes.size() - 1);
 	}

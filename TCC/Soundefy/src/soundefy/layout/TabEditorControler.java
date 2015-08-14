@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import model.Note;
 import model.Tab;
 
 public class TabEditorControler {
@@ -35,6 +36,17 @@ public class TabEditorControler {
 	
 	@FXML
 	private void initialize() {
+		try{
+			tab = new Tab();
+			tab.addBar(4,4,100);
+			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		context = canvas.getGraphicsContext2D();
 		
 		canvas.widthProperty().addListener(observable -> drawTab());
