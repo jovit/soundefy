@@ -1,5 +1,6 @@
 package soundefy.layout;
 
+import soundefy.util.TabRecognition;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -39,10 +40,12 @@ public class TabEditorControler {
 		try{
 			tab = new Tab();
 			tab.addBar(4,4,100);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
-			tab.addChord(new Note(1, 1, "F"), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/2.0);
+			tab.addChord(new Note(3, 12), null, null, null, null, null, 1.0/2.0);
+			//tab.addChord(new Note(3, 4), null, null, null, null, null, 1.0/4.0);
+			//tab.addChord(new Note(4, 5), null, null, null, null, null, 1.0/4.0);
+			TabRecognition tabRecognition = new TabRecognition(tab);
+			tabRecognition.play();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
