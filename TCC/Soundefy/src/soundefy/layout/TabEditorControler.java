@@ -1,6 +1,6 @@
 package soundefy.layout;
 
-import soundefy.util.TabRecognition;
+import soundefy.util.TabRecognitionPlayer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -13,6 +13,7 @@ import model.Bar;
 import model.Chord;
 import model.Note;
 import model.Tab;
+import reconhecimento_de_notas.TabRecognitionListener;
 
 public class TabEditorControler {
 	public static final int MARGIN = 20;
@@ -43,13 +44,15 @@ public class TabEditorControler {
 	private void initialize() {
 		try{
 			tab = new Tab();
-			tab.addBar(4,4,100);
-			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/2.0);
-			tab.addChord(new Note(3, 12), null, null, null, null, null, 1.0/2.0);
-			//tab.addChord(new Note(3, 4), null, null, null, null, null, 1.0/4.0);
-			//tab.addChord(new Note(4, 5), null, null, null, null, null, 1.0/4.0);
-			TabRecognition tabRecognition = new TabRecognition(tab);
-			tabRecognition.play();
+			tab.addBar(16,16,400);
+			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(3, 12), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(3, 4), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(4, 5), null, null, null, null, null, 1.0/4.0);
+			//TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
+			//tabRecognition.play();
+			TabRecognitionListener tabListener = new TabRecognitionListener(tab);
+			tabListener.play();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -177,7 +180,7 @@ public class TabEditorControler {
 			}
 		}
 		
-		
+		where = drawLines(where, 4, 4);
 		pageTotalHeight = (where + currentScroll * scrollStep);
 		if((pageTotalHeight - canvas.getHeight()) > 0)
 			drawScrollBar((int)(pageTotalHeight - canvas.getHeight()));

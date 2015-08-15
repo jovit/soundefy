@@ -34,7 +34,7 @@ public class Bar {
 
 	public Bar(int numberOfBeats, int wholeNoteDuration, int tempo)
 			throws Exception {
-		if (((wholeNoteDuration & (wholeNoteDuration - 1)) == 0)
+		if (((wholeNoteDuration & (wholeNoteDuration - 1)) == 0) // VERIFICA SE A MAIOR NOTA EH POTENCIA DE 2
 				&& (wholeNoteDuration < 32)) {
 			this.timeSignature = new TimeSignature(numberOfBeats,
 					wholeNoteDuration);
