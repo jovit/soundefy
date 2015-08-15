@@ -1,5 +1,10 @@
 package soundefy.layout;
 
+import soundefy.model.Bar;
+import soundefy.model.Chord;
+import soundefy.model.Note;
+import soundefy.model.Tab;
+import soundefy.reconhecimento_de_notas.TabRecognitionListener;
 import soundefy.util.TabRecognitionPlayer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,19 +14,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import model.Bar;
-import model.Chord;
-import model.Note;
-import model.Tab;
-import reconhecimento_de_notas.TabRecognitionListener;
 
 public class TabEditorControler {
 	public static final int MARGIN = 20;
 	public static final int LINE_SPACING = 10;
 	public static final double LINE_WIDTH = 1;
 	public static final int TIME_SIGNIATURE_SIZE = 20;
+	public static final int NOTES_SIZE = 12;
 	public static final int NOTES_SPACING = 20;
 	public static final int LINE_X_START = 40;
+	public static final int REST_WIDTH = 12;
 	
 	private int currentScroll = 0;
 	private int scrollStep = 1;
@@ -49,10 +51,15 @@ public class TabEditorControler {
 			tab.addChord(new Note(3, 12), null, null, null, null, null, 1.0/4.0);
 			tab.addChord(new Note(3, 4), null, null, null, null, null, 1.0/4.0);
 			tab.addChord(new Note(4, 5), null, null, null, null, null, 1.0/4.0);
-			//TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
-			//tabRecognition.play();
-			TabRecognitionListener tabListener = new TabRecognitionListener(tab);
-			tabListener.play();
+			tab.addBar(16,16,400);
+			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(3, 12), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(3, 4), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(new Note(4, 5), null, null, null, null, null, 1.0/4.0);
+			TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
+			tabRecognition.play();
+			//TabRecognitionListener tabListener = new TabRecognitionListener(tab);
+			//tabListener.play();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -154,33 +161,62 @@ public class TabEditorControler {
 	}
 	
 	private int drawBar(Bar bar, int whereY, int whereX){
+		context.setFill(Color.BLACK);
+		context.setFont(new Font("Arial", NOTES_SIZE));
+		
 		whereX += NOTES_SPACING;
 		for(Chord c: bar.getNotes()){
-			context.strokeLine(whereX, whereY, whereX , whereY+ 50);
+			Note[] notes = c.getNotes();
+			for(int i=0; i<6; i++){
+				boolean isRest = true;
+				if(notes[i] != null){
+					isRest = false;
+					int whereNote = whereY + (notes[i].getString() * LINE_SPACING) - (NOTES_SIZE/2)-1;
+					if(notes[i].getFret() < 10){
+						context.setFill(Color.WHITE);
+						context.fillRect(whereX-NOTES_SIZE/4, whereNote-NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
+						context.setFill(Color.BLACK);
+						context.fillText(String.valueOf(notes[i].getFret()), whereX, whereNote);
+					}else{
+						context.setFill(Color.WHITE);
+						context.fillRect(whereX-NOTES_SIZE/2, whereNote-NOTES_SIZE, NOTES_SIZE * 2, NOTES_SIZE);
+						context.setFill(Color.BLACK);
+						context.fillText(String.valueOf(notes[i].getFret()), whereX-(NOTES_SIZE/2), whereNote);
+					}
+				}
+				
+				if(isRest){
+					
+				}
+			}
 			whereX += NOTES_SPACING;
 		}
+		
+		context.strokeLine(whereX, whereY, whereX, whereY + 5*LINE_SPACING);
 		
 		return whereX;
 	}
 	
 	private void drawTab() {
 		int where = MARGIN  - (currentScroll * scrollStep);
+		int whereBar = where;
+		
 		context.setFill(Color.WHITE);
 		context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 				
 		int lineWidth = (int)Math.round(canvas.getWidth()) - 2 * MARGIN - LINE_X_START;
-		System.out.println(lineWidth);
 		int currentLinePosition = lineWidth;
 		for(Bar b : tab.getBars()){
 			int barWidth = b.getNotes().size() * NOTES_SPACING;
-			System.out.println("Bar width:" + (currentLinePosition + barWidth));
 			if((currentLinePosition + barWidth) > lineWidth){
+				whereBar = where;
 				where = drawLines(where, 4, 4);
-				currentLinePosition = 0;
+				currentLinePosition = LINE_X_START;
 			}
+			currentLinePosition = drawBar(b, whereBar, currentLinePosition);
+			
 		}
 		
-		where = drawLines(where, 4, 4);
 		pageTotalHeight = (where + currentScroll * scrollStep);
 		if((pageTotalHeight - canvas.getHeight()) > 0)
 			drawScrollBar((int)(pageTotalHeight - canvas.getHeight()));

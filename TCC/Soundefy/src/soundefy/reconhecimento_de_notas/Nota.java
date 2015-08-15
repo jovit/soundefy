@@ -1,4 +1,4 @@
-package reconhecimento_de_notas;
+package soundefy.reconhecimento_de_notas;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

@@ -1,14 +1,5 @@
-package reconhecimento_de_notas;
+package soundefy.reconhecimento_de_notas;
 
-/** Copyright (C) 2009 by Aleksey Surkov.
- **
- ** Permission to use, copy, modify, and distribute this software and its
- ** documentation for any purpose and without fee is hereby granted, provided
- ** that the above copyright notice appear in all copies and that both that
- ** copyright notice and this permission notice appear in supporting
- ** documentation.  This software is provided "as is" without express or
- ** implied warranty.
- */
 import java.util.HashMap;
 
 import javax.sound.sampled.AudioFormat;

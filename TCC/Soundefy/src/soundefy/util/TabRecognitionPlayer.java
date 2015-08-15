@@ -2,11 +2,11 @@ package soundefy.util;
 
 import javax.sound.sampled.LineUnavailableException;
 
-import reconhecimento_de_notas.PitchDetector;
-import model.Bar;
-import model.Chord;
-import model.Note;
-import model.Tab;
+import soundefy.model.Bar;
+import soundefy.model.Chord;
+import soundefy.model.Note;
+import soundefy.model.Tab;
+import soundefy.reconhecimento_de_notas.PitchDetector;
 
 public class TabRecognitionPlayer implements Runnable {
 
@@ -26,36 +26,37 @@ public class TabRecognitionPlayer implements Runnable {
 						int fret = n.getFret();
 						int pos = 0;
 						switch (string) {
-						case 6: {
-							pos = 28;
-							break;
+							case 6: {
+								pos = 28;
+								break;
+							}
+	
+							case 5: {
+								pos = 34;
+								break;
+							}
+	
+							case 4: {
+								pos = 39;
+								break;
+							}
+	
+							case 3: {
+								pos = 44;
+								break;
+							}
+	
+							case 2: {
+								pos = 48;
+								break;
+							}
+	
+							case 1: {
+								pos = 53;
+								break;
+							}
 						}
-
-						case 5: {
-							pos = 34;
-							break;
-						}
-
-						case 4: {
-							pos = 39;
-							break;
-						}
-
-						case 3: {
-							pos = 44;
-							break;
-						}
-
-						case 2: {
-							pos = 48;
-							break;
-						}
-
-						case 1: {
-							pos = 53;
-							break;
-						}
-						}
+						pos += fret;
 						String noteName = PitchDetector.notas[pos].getNome();
 						double noteFrequency = PitchDetector.notas[pos]
 								.getFreqOk();
@@ -76,7 +77,7 @@ public class TabRecognitionPlayer implements Runnable {
 	}
 
 	public void play() {
-		new Thread(this).run();
+		new Thread(this).start();
 	}
 
 }

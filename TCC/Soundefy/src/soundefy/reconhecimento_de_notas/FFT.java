@@ -1,4 +1,4 @@
-package reconhecimento_de_notas;
+package soundefy.reconhecimento_de_notas;
 
 //Fast Fourier Transform (FFT) Code
 //Java implementation by: Craig A. Lindley

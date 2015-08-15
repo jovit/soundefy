@@ -1,4 +1,4 @@
-package model;
+package soundefy.model;
 
 import java.util.ArrayList;
 

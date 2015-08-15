@@ -1,4 +1,4 @@
-package model;
+package soundefy.model;
 
 public class TimeSignature {
 	private int numberOfBeats;

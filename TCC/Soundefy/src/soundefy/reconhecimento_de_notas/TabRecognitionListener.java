@@ -1,12 +1,9 @@
-package reconhecimento_de_notas;
+package soundefy.reconhecimento_de_notas;
 
-import javax.sound.sampled.LineUnavailableException;
-
-import model.Bar;
-import model.Chord;
-import model.Note;
-import model.Tab;
-import soundefy.util.ToneMaker;
+import soundefy.model.Bar;
+import soundefy.model.Chord;
+import soundefy.model.Note;
+import soundefy.model.Tab;
 
 public class TabRecognitionListener implements Runnable {
 	private boolean listening ;
@@ -57,6 +54,7 @@ public class TabRecognitionListener implements Runnable {
 								break;
 							}
 						}
+						pos += fret;
 						Nota readNote = PitchDetector.notas[pos];
 						try {
 							Thread.sleep((long)(noteDuration));
@@ -73,7 +71,7 @@ public class TabRecognitionListener implements Runnable {
 							System.out.println("Nota esperada : " + readNote.getNome());
 							System.out.println("Nota tocada : " + maisTocada.getNome());
 						} else {
-							System.out.println("Faça um barulho");
+							System.out.println("Faï¿½a um barulho");
 						}
 						
 					}

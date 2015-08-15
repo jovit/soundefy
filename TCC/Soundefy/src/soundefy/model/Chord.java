@@ -1,4 +1,4 @@
-package model;
+package soundefy.model;
 
 public class Chord {
 	private Note notes[];
