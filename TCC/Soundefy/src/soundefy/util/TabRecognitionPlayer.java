@@ -18,57 +18,62 @@ public class TabRecognitionPlayer implements Runnable {
 			int tempo = b.getTempo();
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
 			for (Chord c : b.getNotes()) {
-				double noteDuration = tempo * wholeNoteDuration
+				double noteDuration = (60000 / tempo) * wholeNoteDuration
 						* c.getDuration();
 				for (Note n : c.getNotes()) {
 					if (n != null) {
 						int string = n.getString();
 						int fret = n.getFret();
 						int pos = 0;
-						switch (string) {
-							case 6: {
-								pos = 28;
-								break;
-							}
-	
-							case 5: {
-								pos = 34;
-								break;
-							}
-	
-							case 4: {
-								pos = 39;
-								break;
-							}
-	
-							case 3: {
-								pos = 44;
-								break;
-							}
-	
-							case 2: {
-								pos = 48;
-								break;
-							}
-	
-							case 1: {
-								pos = 53;
-								break;
-							}
+						if (string == 1) {
+							pos = 51;
 						}
-						pos += fret;
-						String noteName = PitchDetector.notas[pos].getNome();
-						double noteFrequency = PitchDetector.notas[pos]
-								.getFreqOk();
-						try {
-							ToneMaker.tone(noteFrequency,
-									(int) Math.round(noteDuration), 1.0);
-						} catch (LineUnavailableException e) {
-							e.printStackTrace();
+
+						if (string == 2) {
+							pos = 46;
 						}
+
+						if (string == 3) {
+							pos = 42;
+						}
+
+						if (string == 4) {
+							pos = 37;
+						}
+
+						if (string == 5) {
+							pos = 32;
+						}
+
+						if (string == 6) {
+							pos = 27;
+						}
+						final int notePos = pos + fret;
+						double noteFrequency = PitchDetector.notas[notePos].getFreqOk();
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								tocarNota(notePos, noteDuration);
+							}
+
+						}).start();
 					}
 				}
+				try {
+					Thread.sleep((int) Math.round(noteDuration));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+		}
+	}
+
+	public void tocarNota(int pos, double noteDuration) {
+		double noteFrequency = PitchDetector.notas[pos].getFreqOk();
+		try {
+			ToneMaker.tone(noteFrequency, (int) Math.round(noteDuration), 1.0);
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
 		}
 	}
 
