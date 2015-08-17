@@ -254,16 +254,17 @@ public class TabEditorControler {
 						context.fillText(String.valueOf(notes[i].getFret()), whereX, whereNote);
 					}else{
 						context.setFill(Color.WHITE);
-						context.fillRect(whereX-NOTES_SIZE/2, whereNote-NOTES_SIZE, NOTES_SIZE * 2, NOTES_SIZE);
+						context.fillRect(whereX-NOTES_SIZE/2, whereNote-NOTES_SIZE, NOTES_SIZE , NOTES_SIZE);
 						context.setFill(Color.BLACK);
 						context.fillText(String.valueOf(notes[i].getFret()), whereX-(NOTES_SIZE/2), whereNote);
 					}
 				}
 				
-				if(isRest){
-					System.out.println("is rest");
-					context.drawImage(restImages[1], whereX, whereY);
-				}
+				
+			}
+			if(isRest){
+				System.out.println("is rest");
+				context.drawImage(restImages[1], whereX, whereY);
 			}
 			whereX += NOTES_SPACING;
 		}
