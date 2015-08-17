@@ -1,19 +1,19 @@
 package soundefy.layout;
 
-import soundefy.model.Bar;
-import soundefy.model.Chord;
-import soundefy.model.Note;
-import soundefy.model.Tab;
-import soundefy.reconhecimento_de_notas.TabRecognitionListener;
-import soundefy.util.TabRecognitionPlayer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import soundefy.model.Bar;
+import soundefy.model.Chord;
+import soundefy.model.Note;
+import soundefy.model.Tab;
+import soundefy.util.TabRecognitionPlayer;
 
 public class TabEditorControler {
 	public static final int MARGIN = 20;
@@ -21,14 +21,16 @@ public class TabEditorControler {
 	public static final double LINE_WIDTH = 1;
 	public static final int TIME_SIGNIATURE_SIZE = 20;
 	public static final int NOTES_SIZE = 12;
-	public static final int NOTES_SPACING = 20;
+	public static final int NOTES_SPACING = 30;
 	public static final int LINE_X_START = 40;
-	public static final int REST_WIDTH = 12;
+	public static final double REST_SCALE = 0.5;
 	
 	private int currentScroll = 0;
 	private int scrollStep = 1;
 	private int scrollPositionHeight = 30;
 	private int pageTotalHeight;
+	
+	private Image[] restImages;
 	
 	private Tab tab;
 
@@ -45,9 +47,20 @@ public class TabEditorControler {
 	@FXML
 	private void initialize() {
 		try{
+			restImages = new Image[8];
+			restImages[0] = new Image("./resources/rests/wholerest.png");
+			restImages[1] = new Image("./resources/rests/halfrest.png");
+			restImages[2] = new Image("./resources/rests/quarterrest.png");
+			restImages[3] = new Image("./resources/rests/eighthrest.png");
+			restImages[4] = new Image("./resources/rests/sixteenthrest.png");
+			restImages[5] = new Image("./resources/rests/thirtysecondrest.png");
+			restImages[6] = new Image("./resources/rests/sixtyfourthrest.png");
+			restImages[7] = new Image("./resources/rests/hundredtwentyeighthrest.png");
+
+			
 			tab = new Tab();
 			tab.addBar(16,16,400);
-			tab.addChord(new Note(1, 1), null, null, null, null, null, 1.0/4.0);
+			tab.addChord(null, null, null, null, null, null, 1.0/4.0);
 			tab.addChord(new Note(3, 12), null, null, null, null, null, 1.0/4.0);
 			tab.addChord(new Note(3, 4), null, null, null, null, null, 1.0/4.0);
 			tab.addChord(new Note(4, 5), null, null, null, null, null, 1.0/4.0);
@@ -131,7 +144,7 @@ public class TabEditorControler {
 		}
 		
 		drawTimeSigniature(whereDrawTimeSigniature, a, b);
-		return y + MARGIN;
+		return y + MARGIN*2;
 	}
 	
 	private void drawScrollBar(int maxScroll){
@@ -167,8 +180,8 @@ public class TabEditorControler {
 		whereX += NOTES_SPACING;
 		for(Chord c: bar.getNotes()){
 			Note[] notes = c.getNotes();
+			boolean isRest = true;
 			for(int i=0; i<6; i++){
-				boolean isRest = true;
 				if(notes[i] != null){
 					isRest = false;
 					int whereNote = whereY + (notes[i].getString() * LINE_SPACING) - (NOTES_SIZE/2)-1;
@@ -186,7 +199,8 @@ public class TabEditorControler {
 				}
 				
 				if(isRest){
-					
+					System.out.println("is rest");
+					context.drawImage(restImages[1], whereX, whereY);
 				}
 			}
 			whereX += NOTES_SPACING;
