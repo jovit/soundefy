@@ -43,7 +43,7 @@ public class TabEditorControler implements NextNoteListener{
 	
 	private Tab tab;
 	
-	private int currentNote = 0;
+	private int currentNote = -1;
 
 	@FXML
 	private Canvas canvas;
@@ -272,7 +272,7 @@ public class TabEditorControler implements NextNoteListener{
 	@FXML
 	private void onCanvasClick(){
 		TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
-		//tabRecognition.setNextNoteListener(this);
+		tabRecognition.setNextNoteListener(this);
 		
 		Task<Void> task = new Task<Void>() {
 		    @Override public Void call() {
@@ -280,7 +280,9 @@ public class TabEditorControler implements NextNoteListener{
 				return null;
 		    }
 		};
-		new Thread(task).start();
+		Thread t = new Thread(task);
+		t.setDaemon(true);
+		t.start();
 	}
 
 	private void drawTimeSigniature(int y, int a, int b) {
@@ -444,7 +446,12 @@ public class TabEditorControler implements NextNoteListener{
 	@Override
 	public void nextNote() {
 		currentNote++;
-		drawTab();
+		Platform.runLater(new Runnable() {
+		      @Override public void run() {
+		        drawTab();  
+		      }
+		    });
+		
 	}
 
 }

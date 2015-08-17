@@ -35,6 +35,9 @@ public class TabRecognitionPlayer {
 			int tempo = b.getTempo();
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
 			for (Chord c : b.getNotes()) {
+				if (listener != null) {
+					listener.nextNote();
+				}
 				double noteDuration = (60000 / tempo) * wholeNoteDuration
 						* c.getDuration();
 				for (Note n : c.getNotes()) {
@@ -74,9 +77,7 @@ public class TabRecognitionPlayer {
 
 						}).start();
 						
-						if (listener != null) {
-							listener.nextNote();
-						}
+						
 					}
 				}
 				try {
