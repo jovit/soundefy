@@ -12,8 +12,8 @@ import soundefy.reconhecimento_de_notas.PitchDetector;
 public class TabRecognitionPlayer implements Runnable {
 	private NextNoteListener listener;
 	private Tab tab;
-	
-	public void setNextNoteListener(NextNoteListener listener){
+
+	public void setNextNoteListener(NextNoteListener listener) {
 		this.listener = listener;
 	}
 
@@ -61,8 +61,10 @@ public class TabRecognitionPlayer implements Runnable {
 							}
 
 						}).start();
-						if(listener != null)
+						
+						if (listener != null) {
 							listener.nextNote();
+						}
 					}
 				}
 				try {
