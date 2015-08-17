@@ -1,7 +1,9 @@
 package soundefy.layout;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -11,13 +13,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
 import soundefy.util.TabRecognitionPlayer;
 
-public class TabEditorControler {
+public class TabEditorControler implements NextNoteListener{
 	public static final int MARGIN = 20;
 	public static final int LINE_SPACING = 10;
 	public static final double LINE_WIDTH = 1;
@@ -35,7 +38,11 @@ public class TabEditorControler {
 	private Image[] restImages;
 	private Image[] noteImages;
 	
+	private int noteCount;
+	
 	private Tab tab;
+	
+	private int currentNote = 0;
 
 	@FXML
 	private Canvas canvas;
@@ -72,7 +79,6 @@ public class TabEditorControler {
 	@FXML
 	private void initialize() {
 		try{
-			
 			loadImages();
 			
 			tab = new Tab();
@@ -148,8 +154,7 @@ public class TabEditorControler {
 			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
 			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0/8.0);
 			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
-			tabRecognition.play();
+			
 			//TabRecognitionListener tabListener = new TabRecognitionListener(tab);
 			//tabListener.play();
 		}catch(Exception e){
@@ -213,6 +218,22 @@ public class TabEditorControler {
 			}
 			
 		});
+		
+		
+	}
+	
+	@FXML
+	private void onCanvasClick(){
+		TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
+		//tabRecognition.setNextNoteListener(this);
+		
+		Task<Void> task = new Task<Void>() {
+		    @Override public Void call() {
+		        tabRecognition.play();
+				return null;
+		    }
+		};
+		new Thread(task).start();
 	}
 	
 	private void drawTimeSigniature(int y, int a, int b){
@@ -270,7 +291,13 @@ public class TabEditorControler {
 		context.setFont(new Font("Arial", NOTES_SIZE));
 		
 		whereX += NOTES_SPACING;
+		
 		for(Chord c: bar.getNotes()){
+			if(noteCount == currentNote){
+				context.setStroke(Color.LIGHTGRAY);
+				context.strokeLine(whereX, whereY, whereX, whereY+5*LINE_SPACING);
+			}
+			noteCount ++ ;
 			Note[] notes = c.getNotes();
 			boolean isRest = true;
 			for(int i=0; i<6; i++){
@@ -321,7 +348,7 @@ public class TabEditorControler {
 			}
 			whereX += NOTES_SPACING;
 		}
-		
+		context.setStroke(Color.gray(0.6));
 		context.strokeLine(whereX, whereY, whereX, whereY + 5*LINE_SPACING);
 		
 		return whereX;
@@ -336,6 +363,8 @@ public class TabEditorControler {
 				
 		int lineWidth = (int)Math.round(canvas.getWidth()) - 2 * MARGIN - LINE_X_START;
 		int currentLinePosition = lineWidth;
+		
+		noteCount = 0;
 		for(Bar b : tab.getBars()){
 			int barWidth = b.getNotes().size() * NOTES_SPACING;
 			if((currentLinePosition + barWidth) > lineWidth){
@@ -350,6 +379,12 @@ public class TabEditorControler {
 		pageTotalHeight = (where + currentScroll * scrollStep);
 		if((pageTotalHeight - canvas.getHeight()) > 0)
 			drawScrollBar((int)(pageTotalHeight - canvas.getHeight()));
+	}
+
+	@Override
+	public void nextNote() {
+		currentNote++;
+		drawTab();
 	}
 
 }

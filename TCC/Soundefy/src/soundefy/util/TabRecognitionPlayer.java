@@ -9,7 +9,7 @@ import soundefy.model.Note;
 import soundefy.model.Tab;
 import soundefy.reconhecimento_de_notas.PitchDetector;
 
-public class TabRecognitionPlayer implements Runnable {
+public class TabRecognitionPlayer {
 	private NextNoteListener listener;
 	private Tab tab;
 	
@@ -17,8 +17,20 @@ public class TabRecognitionPlayer implements Runnable {
 		this.listener = listener;
 	}
 
-	@Override
-	public void run() {
+	public void tocarNota(int pos, double noteDuration) {
+		double noteFrequency = PitchDetector.notas[pos].getFreqOk();
+		try {
+			ToneMaker.tone(noteFrequency, (int) Math.round(noteDuration), 1.0);
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public TabRecognitionPlayer(Tab tab) {
+		this.tab = tab;
+	}
+
+	public void play() {
 		for (Bar b : tab.getBars()) {
 			int tempo = b.getTempo();
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
@@ -72,23 +84,6 @@ public class TabRecognitionPlayer implements Runnable {
 				}
 			}
 		}
-	}
-
-	public void tocarNota(int pos, double noteDuration) {
-		double noteFrequency = PitchDetector.notas[pos].getFreqOk();
-		try {
-			ToneMaker.tone(noteFrequency, (int) Math.round(noteDuration), 1.0);
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public TabRecognitionPlayer(Tab tab) {
-		this.tab = tab;
-	}
-
-	public void play() {
-		new Thread(this).start();
 	}
 
 }
