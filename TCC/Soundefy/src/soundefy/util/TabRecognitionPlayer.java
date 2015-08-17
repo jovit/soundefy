@@ -2,6 +2,7 @@ package soundefy.util;
 
 import javax.sound.sampled.LineUnavailableException;
 
+import listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
@@ -9,8 +10,12 @@ import soundefy.model.Tab;
 import soundefy.reconhecimento_de_notas.PitchDetector;
 
 public class TabRecognitionPlayer implements Runnable {
-
+	private NextNoteListener listener;
 	private Tab tab;
+	
+	public void setNextNoteListener(NextNoteListener listener){
+		this.listener = listener;
+	}
 
 	@Override
 	public void run() {
@@ -49,7 +54,6 @@ public class TabRecognitionPlayer implements Runnable {
 							pos = 27;
 						}
 						final int notePos = pos + fret;
-						double noteFrequency = PitchDetector.notas[notePos].getFreqOk();
 						new Thread(new Runnable() {
 							@Override
 							public void run() {
@@ -57,6 +61,8 @@ public class TabRecognitionPlayer implements Runnable {
 							}
 
 						}).start();
+						if(listener != null)
+							listener.nextNote();
 					}
 				}
 				try {
