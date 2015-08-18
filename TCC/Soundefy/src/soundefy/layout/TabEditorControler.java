@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -44,6 +46,8 @@ public class TabEditorControler implements NextNoteListener{
 	private Tab tab;
 	
 	private int currentNote = -1;
+	
+	private boolean playingTab = false;
 
 	@FXML
 	private Canvas canvas;
@@ -266,23 +270,30 @@ public class TabEditorControler implements NextNoteListener{
 
 		});
 		
+		canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if(event.getCode() == KeyCode.P){
+					if(!playingTab){
+						playingTab = true;
+						currentNote = -1;
+						TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
+						tabRecognition.setNextNoteListener(TabEditorControler.this);
+						Task<Void> task = new Task<Void>() {
+						    @Override public Void call() {
+						        tabRecognition.play();
+								return null;
+						    }
+						};
+						Thread t = new Thread(task);
+						t.setDaemon(true);
+						t.start();
+					}
+				}
+			}
+		});
+		canvas.setFocusTraversable(true);
 		
-	}
-	
-	@FXML
-	private void onCanvasClick(){
-		TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
-		tabRecognition.setNextNoteListener(this);
-		
-		Task<Void> task = new Task<Void>() {
-		    @Override public Void call() {
-		        tabRecognition.play();
-				return null;
-		    }
-		};
-		Thread t = new Thread(task);
-		t.setDaemon(true);
-		t.start();
 	}
 
 	private void drawTimeSigniature(int y, int a, int b) {
@@ -348,6 +359,7 @@ public class TabEditorControler implements NextNoteListener{
 		for(Chord c: bar.getNotes()){
 			if(noteCount == currentNote){
 				context.setStroke(Color.LIGHTGRAY);
+				context.setLineWidth(2);
 				context.strokeLine(whereX, whereY, whereX, whereY+5*LINE_SPACING);
 			}
 			noteCount ++ ;
@@ -409,6 +421,7 @@ public class TabEditorControler implements NextNoteListener{
 		}
 		context.setStroke(Color.gray(0.6));
 		context.strokeLine(whereX, whereY, whereX, whereY + 5*LINE_SPACING);
+		context.setLineWidth(LINE_WIDTH);
 		
 		return whereX;
 	}
@@ -452,6 +465,17 @@ public class TabEditorControler implements NextNoteListener{
 		      }
 		    });
 		
+	}
+
+	@Override
+	public void tabFinished() {
+		playingTab = false;
+		currentNote = -1;
+		Platform.runLater(new Runnable() {
+		      @Override public void run() {
+		        drawTab();  
+		      }
+		    });
 	}
 
 }

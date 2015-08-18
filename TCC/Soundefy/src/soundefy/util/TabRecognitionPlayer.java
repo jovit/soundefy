@@ -20,7 +20,7 @@ public class TabRecognitionPlayer {
 	public void tocarNota(int pos, double noteDuration) {
 		double noteFrequency = PitchDetector.notas[pos].getFreqOk();
 		try {
-			ToneMaker.tone(noteFrequency, (int) Math.round(noteDuration), 1.0);
+			ToneMaker.tone(noteFrequency, (int) Math.round(noteDuration*2.016), 1.0);
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		}
@@ -75,9 +75,7 @@ public class TabRecognitionPlayer {
 								tocarNota(notePos, noteDuration);
 							}
 
-						}).start();
-						
-						
+						}).start();						
 					}
 				}
 				try {
@@ -87,6 +85,7 @@ public class TabRecognitionPlayer {
 				}
 			}
 		}
+		listener.tabFinished();
 	}
 
 }
