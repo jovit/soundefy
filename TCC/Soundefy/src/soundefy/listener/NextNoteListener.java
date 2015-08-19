@@ -1,4 +1,4 @@
-package listener;
+package soundefy.listener;
 
 public interface NextNoteListener {
 	public void nextNote();

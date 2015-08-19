@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollToEvent;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import listener.NextNoteListener;
+import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
@@ -360,6 +361,15 @@ public class TabEditorControler implements NextNoteListener{
 			if(noteCount == currentNote){
 				context.setStroke(Color.LIGHTGRAY);
 				context.setLineWidth(2);
+				if(whereY > canvas.getHeight()){
+					currentScroll += (whereY/scrollStep) - MARGIN/scrollStep;
+					if ((currentScroll * scrollStep) > (pageTotalHeight
+							- canvas.getHeight())) {
+						currentScroll = (int) Math
+								.round((pageTotalHeight - canvas.getHeight())
+										/ scrollStep);
+					}
+				}
 				context.strokeLine(whereX, whereY, whereX, whereY+5*LINE_SPACING);
 			}
 			noteCount ++ ;

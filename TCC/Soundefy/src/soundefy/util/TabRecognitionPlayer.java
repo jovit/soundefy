@@ -2,7 +2,7 @@ package soundefy.util;
 
 import javax.sound.sampled.LineUnavailableException;
 
-import listener.NextNoteListener;
+import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
