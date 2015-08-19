@@ -33,8 +33,8 @@ public class TabEditorControler implements NextNoteListener{
 	public static final int LINE_X_START = 40;
 	public static final double REST_SCALE = 0.5;
 
-	private int currentScroll = 0;
-	private int scrollStep = 1;
+	private double currentScroll = 0;
+	private double scrollStep = 1;
 	private int scrollPositionHeight = 30;
 	private int pageTotalHeight;
 
@@ -251,11 +251,17 @@ public class TabEditorControler implements NextNoteListener{
 					if (currentScroll < 0) {
 						currentScroll = 0;
 					}
-					if ((currentScroll * scrollStep) > pageTotalHeight
+					System.out.println(Math.round(currentScroll * scrollStep));
+					System.out.println(pageTotalHeight- canvas.getHeight());
+					
+					if (Math.round(currentScroll * scrollStep) > pageTotalHeight
 							- canvas.getHeight()) {
 						currentScroll = (int) Math
 								.round((pageTotalHeight - canvas.getHeight())
 										/ scrollStep);
+						System.out.println(Math
+								.round((pageTotalHeight - canvas.getHeight())
+										/ scrollStep));
 					}
 					dragStart = (int) event.getSceneY();
 					drawTab();
@@ -363,8 +369,8 @@ public class TabEditorControler implements NextNoteListener{
 				context.setLineWidth(2);
 				if(whereY > canvas.getHeight()){
 					currentScroll += (whereY/scrollStep) - MARGIN/scrollStep;
-					if ((currentScroll * scrollStep) > (pageTotalHeight
-							- canvas.getHeight())) {
+					if ((currentScroll * scrollStep) > pageTotalHeight
+							- canvas.getHeight()) {
 						currentScroll = (int) Math
 								.round((pageTotalHeight - canvas.getHeight())
 										/ scrollStep);
@@ -437,7 +443,7 @@ public class TabEditorControler implements NextNoteListener{
 	}
 
 	private void drawTab() {
-		int where = MARGIN - (currentScroll * scrollStep);
+		int where = (int) (MARGIN - Math.round(currentScroll * scrollStep));
 		int whereBar = where;
 
 		context.setFill(Color.WHITE);
@@ -460,7 +466,7 @@ public class TabEditorControler implements NextNoteListener{
 
 		}
 
-		pageTotalHeight = (where + currentScroll * scrollStep);
+		pageTotalHeight = (int) (where + Math.round(currentScroll * scrollStep));
 		if ((pageTotalHeight - canvas.getHeight()) > 0)
 			drawScrollBar((int) (pageTotalHeight - canvas.getHeight()));
 	}
