@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ScrollToEvent;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -251,17 +250,14 @@ public class TabEditorControler implements NextNoteListener{
 					if (currentScroll < 0) {
 						currentScroll = 0;
 					}
-					System.out.println(Math.round(currentScroll * scrollStep));
-					System.out.println(pageTotalHeight- canvas.getHeight());
+					System.out.println("Scroll Step: " + scrollStep);
+					System.out.println("Current scroll *scrollStep " + currentScroll * scrollStep);
+					System.out.println("pageTotalHeight " + (pageTotalHeight- canvas.getHeight()));
 					
-					if (Math.round(currentScroll * scrollStep) > pageTotalHeight
+					if ((currentScroll * scrollStep) > pageTotalHeight
 							- canvas.getHeight()) {
-						currentScroll = (int) Math
-								.round((pageTotalHeight - canvas.getHeight())
-										/ scrollStep);
-						System.out.println(Math
-								.round((pageTotalHeight - canvas.getHeight())
-										/ scrollStep));
+						currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
+						System.out.println((pageTotalHeight - canvas.getHeight())/ scrollStep);
 					}
 					dragStart = (int) event.getSceneY();
 					drawTab();
@@ -330,7 +326,7 @@ public class TabEditorControler implements NextNoteListener{
 
 	private void drawScrollBar(int maxScroll) {
 		if ((currentScroll * scrollStep) > maxScroll) {
-			currentScroll = maxScroll;
+			currentScroll = maxScroll/scrollStep;
 		}
 		context.setFill(Color.LIGHTGRAY);
 		context.fillRect(canvas.getWidth() - MARGIN, 0, MARGIN,
@@ -339,8 +335,7 @@ public class TabEditorControler implements NextNoteListener{
 		if (maxScroll != 0) {
 			scrollPositionHeight = 30;
 			if (maxScroll > (canvas.getHeight() - scrollPositionHeight)) {
-				scrollStep = (int) Math.round(maxScroll
-						/ (canvas.getHeight() - scrollPositionHeight));
+				scrollStep =maxScroll/ (canvas.getHeight() - scrollPositionHeight);
 			} else {
 				scrollStep = 1;
 				scrollPositionHeight = (int) canvas.getHeight() - maxScroll;
@@ -361,20 +356,19 @@ public class TabEditorControler implements NextNoteListener{
 		context.setFont(new Font("Arial", NOTES_SIZE));
 
 		whereX += NOTES_SPACING;
-
+		currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
 		
 		for(Chord c: bar.getNotes()){
 			if(noteCount == currentNote){
-				context.setStroke(Color.LIGHTGRAY);
+				context.setStroke(Color.BLACK);
 				context.setLineWidth(2);
 				if(whereY > canvas.getHeight()){
-					currentScroll += (whereY/scrollStep) - MARGIN/scrollStep;
-					if ((currentScroll * scrollStep) > pageTotalHeight
-							- canvas.getHeight()) {
-						currentScroll = (int) Math
-								.round((pageTotalHeight - canvas.getHeight())
-										/ scrollStep);
-					}
+					//currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
+				//	if ((currentScroll * scrollStep) > pageTotalHeight
+				//			- canvas.getHeight()) {
+				//		currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
+				//		System.out.println("oi");
+			//		}
 				}
 				context.strokeLine(whereX, whereY, whereX, whereY+5*LINE_SPACING);
 			}
@@ -465,7 +459,7 @@ public class TabEditorControler implements NextNoteListener{
 			currentLinePosition = drawBar(b, whereBar, currentLinePosition);
 
 		}
-
+		
 		pageTotalHeight = (int) (where + Math.round(currentScroll * scrollStep));
 		if ((pageTotalHeight - canvas.getHeight()) > 0)
 			drawScrollBar((int) (pageTotalHeight - canvas.getHeight()));
