@@ -235,7 +235,7 @@ public class TabEditorControler implements NextNoteListener {
 			@Override
 			public void handle(KeyEvent event) {
 				if (event.getCode() == KeyCode.P) {
-					if (!playingTab) {
+					if (!playingTab && !addingNewNote) {
 						playingTab = true;
 						currentNote = -1;
 						TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
@@ -254,23 +254,27 @@ public class TabEditorControler implements NextNoteListener {
 				}else if(!playingTab){
 					if(!addingNewNote){
 						if(event.getCode() == KeyCode.DIGIT1){ // new wholenote
-							startAddingNewNote();
+							startAddingNewNote(1);
 						}else if(event.getCode() == KeyCode.DIGIT2){ // new halfnote
-							startAddingNewNote();
+							startAddingNewNote(1.0/2.0);
 						}else if(event.getCode() == KeyCode.DIGIT3){ // new quarternote
-							startAddingNewNote();
+							startAddingNewNote(1.0/4.0);
 						}else if(event.getCode() == KeyCode.DIGIT4){ // new eighthnote
-							startAddingNewNote();
+							startAddingNewNote(1.0/8.0);
 						}else if(event.getCode() == KeyCode.DIGIT5){ // new sixteenthnote
-							startAddingNewNote();
+							startAddingNewNote(1.0/16.0);
 						}else if(event.getCode() == KeyCode.DIGIT6){ // new thirtysecondnote
-							startAddingNewNote();
+							startAddingNewNote(1.0/32.0);
 						}else if(event.getCode() == KeyCode.DIGIT7){ // new sixtyfourthnote
-							startAddingNewNote();
+							startAddingNewNote(1.0/64.0);
 						}else if(event.getCode() == KeyCode.DIGIT8 ){ // new hundredtwentyeightnote
-							startAddingNewNote();
+							startAddingNewNote(1.0/128.0);
 						}else if(event.getCode() == KeyCode.BACK_SPACE){
 							removeLastNote();
+						}
+					}else{
+						if(event.getCode() == KeyCode.ENTER){
+							addingNewNote = false;
 						}
 					}
 				}
@@ -299,16 +303,19 @@ public class TabEditorControler implements NextNoteListener {
 		}
 	}
 	
-	private void startAddingNewNote(){
+	private void startAddingNewNote(double duration){
 		addingNewNote = true;
 		try {
 			if((tab.getBar() == null) || (tab.getBar().isFilled())){
 				tab.addBar(standardTimeSigniature.getNumberOfBeats(),
 						standardTimeSigniature.getWholeNoteDuration(), standardTempo);
-				tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+				tab.addChord(null, null, null, null, null, null, duration);
+			}else{
+				tab.addChord(null, null, null, null, null, null, duration);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			addingNewNote = false;
 		}
 		drawTab();
 	}

@@ -17,6 +17,13 @@ public class Tab {
 			throws Exception {
 		bars.add(new Bar(numberOfBeats, wholeNoteDuration, tempo));
 	}
+	
+	public void setChord(Note note1, Note note2, Note note3, Note note4,
+			Note note5, Note note6) throws Exception{
+		double duration = getBar().getNotes().get(getBar().getNotes().size()-1).getDuration();
+		getBar().removeChord();
+		addChord(note1, note2, note3, note4, note5, note6, duration);
+	}
 
 	public void addChord(Note note1, Note note2, Note note3, Note note4,
 			Note note5, Note note6, double duration) throws Exception {
