@@ -59,8 +59,8 @@ public class Bar {
 		notes.add(chord);
 	}
 
-	public boolean barCompleted() {
-		return barCompletion == this.timeSignature.getNumberOfBeats();
+	public boolean isEmpty(){
+		return notes.size() == 0;
 	}
 	
 	public int numberOfNotes(){
@@ -68,8 +68,10 @@ public class Bar {
 	}
 
 	public void removeChord(){
-		double duration = notes.get(notes.size() - 1).getDuration() * this.timeSignature.getWholeNoteDuration();
-		barCompletion -= duration;
-		notes.remove(notes.size() - 1);
+		if(notes.size() > 0){
+			double duration = notes.get(notes.size() - 1).getDuration() * this.timeSignature.getWholeNoteDuration();
+			barCompletion -= duration;
+			notes.remove(notes.size() - 1);
+		}
 	}
 }

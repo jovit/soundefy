@@ -20,6 +20,7 @@ import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
+import soundefy.model.TimeSignature;
 import soundefy.util.TabRecognitionPlayer;
 
 public class TabEditorControler implements NextNoteListener {
@@ -56,8 +57,13 @@ public class TabEditorControler implements NextNoteListener {
 
 	private GraphicsContext context;
 
-	private boolean pressedOnScrollBar;
+	private boolean pressedOnScrollBar = false;
 	private int dragStart;
+	
+	private boolean addingNewNote = false;
+	
+	private TimeSignature standardTimeSigniature;
+	private int standardTempo;
 
 	private void loadImages() {
 		restImages = new Image[8];
@@ -245,11 +251,66 @@ public class TabEditorControler implements NextNoteListener {
 						t.setDaemon(true);
 						t.start();
 					}
+				}else if(!playingTab){
+					if(!addingNewNote){
+						if(event.getCode() == KeyCode.DIGIT1){ // new wholenote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.DIGIT2){ // new halfnote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.DIGIT3){ // new quarternote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.DIGIT4){ // new eighthnote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.DIGIT5){ // new sixteenthnote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.DIGIT6){ // new thirtysecondnote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.DIGIT7){ // new sixtyfourthnote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.DIGIT8 ){ // new hundredtwentyeightnote
+							startAddingNewNote();
+						}else if(event.getCode() == KeyCode.BACK_SPACE){
+							removeLastNote();
+						}
+					}
 				}
+				
 			}
 		});
 		canvas.setFocusTraversable(true);
 
+	}
+	
+	public void setStandardTimeSigniature(TimeSignature timeSignature){
+		this.standardTimeSigniature = timeSignature;
+	}
+	
+	public void setStandardTempo(int tempo){
+		this.standardTempo = tempo;
+	}
+	
+	private void removeLastNote(){
+		if(tab.getBar() != null){
+			tab.getBar().removeChord();
+			if(tab.getBar().isEmpty()){
+				tab.removerBar();
+			}	
+			drawTab();
+		}
+	}
+	
+	private void startAddingNewNote(){
+		addingNewNote = true;
+		try {
+			if((tab.getBar() == null) || (tab.getBar().isFilled())){
+				tab.addBar(standardTimeSigniature.getNumberOfBeats(),
+						standardTimeSigniature.getWholeNoteDuration(), standardTempo);
+				tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		drawTab();
 	}
 
 	private void drawTimeSigniature(int y, int a, int b) {
@@ -388,12 +449,22 @@ public class TabEditorControler implements NextNoteListener {
 		int currentLinePosition = lineWidth;
 
 		noteCount = 0;
+		
+		int previousWholeNoteDuration = 0;
+		int previousNumberOfBeats = 0;
 		for (Bar b : tab.getBars()) {
 			int barWidth = b.getNotes().size() * NOTES_SPACING;
-			if ((currentLinePosition + barWidth) > lineWidth) {
+			if (((currentLinePosition + barWidth) > lineWidth) || 
+					((previousWholeNoteDuration != b.getTimeSignature().getWholeNoteDuration()) || 
+					(previousNumberOfBeats != b.getTimeSignature().getNumberOfBeats()))) {
 				whereBar = where;
-				where = drawLines(where, 4, 4);
+				where = drawLines(where, b.getTimeSignature().getNumberOfBeats(), b.getTimeSignature().getWholeNoteDuration());
 				currentLinePosition = LINE_X_START;
+				if((previousWholeNoteDuration != b.getTimeSignature().getWholeNoteDuration()) || 
+					(previousNumberOfBeats != b.getTimeSignature().getNumberOfBeats())){
+					previousWholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
+					previousNumberOfBeats = b.getTimeSignature().getNumberOfBeats();
+				}
 			}
 			currentLinePosition = drawBar(b, whereBar, currentLinePosition);
 

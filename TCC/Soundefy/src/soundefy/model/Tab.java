@@ -32,11 +32,16 @@ public class Tab {
 	}
 
 	public void removerBar() {
-		bars.remove(bars.size() - 1);
+		if(bars.size() > 0)
+			bars.remove(bars.size() - 1);
 	}
 
 	public Bar getBar() {
-		return bars.get(bars.size() - 1);
+		if(bars.size() > 0){
+			return bars.get(bars.size() - 1);
+		}else{
+			return null;
+		}
 	}
 
 	public ArrayList<Bar> getBars() {
