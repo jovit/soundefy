@@ -22,7 +22,7 @@ import soundefy.model.Note;
 import soundefy.model.Tab;
 import soundefy.util.TabRecognitionPlayer;
 
-public class TabEditorControler implements NextNoteListener{
+public class TabEditorControler implements NextNoteListener {
 	public static final int MARGIN = 20;
 	public static final int LINE_SPACING = 10;
 	public static final double LINE_WIDTH = 1;
@@ -40,13 +40,13 @@ public class TabEditorControler implements NextNoteListener{
 	private Image[] restImages;
 
 	private Image[] noteImages;
-	
+
 	private int noteCount;
-	
+
 	private Tab tab;
-	
+
 	private int currentNote = -1;
-	
+
 	private boolean playingTab = false;
 
 	@FXML
@@ -59,8 +59,7 @@ public class TabEditorControler implements NextNoteListener{
 	private boolean pressedOnScrollBar;
 	private int dragStart;
 
-	
-	private void loadImages(){
+	private void loadImages() {
 		restImages = new Image[8];
 		restImages[0] = new Image("./resources/rests/wholerest.png");
 		restImages[1] = new Image("./resources/rests/halfrest.png");
@@ -70,7 +69,7 @@ public class TabEditorControler implements NextNoteListener{
 		restImages[5] = new Image("./resources/rests/thirtysecondrest.png");
 		restImages[6] = new Image("./resources/rests/sixtyfourthrest.png");
 		restImages[7] = new Image("./resources/rests/hundredtwentyeighthrest.png");
-		
+
 		noteImages = new Image[8];
 		noteImages[0] = new Image("./resources/notes/wholenote.png");
 		noteImages[1] = new Image("./resources/notes/halfnote.png");
@@ -79,153 +78,111 @@ public class TabEditorControler implements NextNoteListener{
 		noteImages[4] = new Image("./resources/notes/sixteenthnote.png");
 		noteImages[5] = new Image("./resources/notes/thirtysecondnote.png");
 		noteImages[6] = new Image("./resources/notes/sixtyfourthnote.png");
-		noteImages[7] = new Image("./resources/notes/hundredtwentyeighthnote.png");		
+		noteImages[7] = new Image("./resources/notes/hundredtwentyeighthnote.png");
 	}
-	
+
 	@FXML
 	private void initialize() {
-		try{
+		try {
 			loadImages();
-			
+
 			tab = new Tab();
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0/8.0);
-			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0/8.0);
-			tab.addChord(null, null, null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
+			tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0 / 8.0);
+			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, null, new Note(4, 14), null, null,
-					1.0 / 8.0);
-			tab.addChord(null, new Note(2, 15), null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 12), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 15), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
+			tab.addChord(null, null, null, new Note(4, 14), null, null, 1.0 / 8.0);
+			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, null, new Note(4, 14), null, null,
-					1.0 / 8.0);
-			tab.addChord(null, new Note(2, 15), null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 12), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 15), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
+			tab.addChord(null, null, null, new Note(4, 14), null, null, 1.0 / 8.0);
+			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, new Note(3, 12), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, new Note(2, 15), null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 12), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 15), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, new Note(3, 12), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, new Note(2, 15), null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 12), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 15), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, null, new Note(4, 12), null, null,
-					1.0 / 8.0);
-			tab.addChord(null, new Note(2, 15), null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 12), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 15), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null,
-					1.0 / 8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null,
-					1.0 / 8.0);
+			tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0 / 8.0);
+			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 			tab.addBar(4, 4, 126);
-			tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0/8.0);
-			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0/8.0);
-			tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0/8.0);
-			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0/8.0);
-			
-			//TabRecognitionListener tabListener = new TabRecognitionListener(tab);
-			//tabListener.play();
-		}catch(Exception e){
+			tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0 / 8.0);
+			tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
+			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
+
+			// TabRecognitionListener tabListener = new
+			// TabRecognitionListener(tab);
+			// tabListener.play();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		context = canvas.getGraphicsContext2D();
 
-		
 		canvas.widthProperty().addListener(new ChangeListener<Number>() {
 			@Override
-			public void changed(ObservableValue<? extends Number> observable,
-					Number oldValue, Number newValue) {
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentScroll = 0;
 				drawTab();
 			}
 		});
 		canvas.heightProperty().addListener(new ChangeListener<Number>() {
 			@Override
-			public void changed(ObservableValue<? extends Number> observable,
-					Number oldValue, Number newValue) {
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentScroll = 0;
 				drawTab();
 			}
-		});		
+		});
 		canvas.widthProperty().bind(parent.widthProperty());
 		canvas.heightProperty().bind(parent.heightProperty());
 
@@ -250,14 +207,9 @@ public class TabEditorControler implements NextNoteListener{
 					if (currentScroll < 0) {
 						currentScroll = 0;
 					}
-					System.out.println("Scroll Step: " + scrollStep);
-					System.out.println("Current scroll *scrollStep " + currentScroll * scrollStep);
-					System.out.println("pageTotalHeight " + (pageTotalHeight- canvas.getHeight()));
-					
-					if ((currentScroll * scrollStep) > pageTotalHeight
-							- canvas.getHeight()) {
+
+					if ((currentScroll * scrollStep) > pageTotalHeight - canvas.getHeight()) {
 						currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
-						System.out.println((pageTotalHeight - canvas.getHeight())/ scrollStep);
 					}
 					dragStart = (int) event.getSceneY();
 					drawTab();
@@ -272,21 +224,22 @@ public class TabEditorControler implements NextNoteListener{
 			}
 
 		});
-		
+
 		canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				if(event.getCode() == KeyCode.P){
-					if(!playingTab){
+				if (event.getCode() == KeyCode.P) {
+					if (!playingTab) {
 						playingTab = true;
 						currentNote = -1;
 						TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
 						tabRecognition.setNextNoteListener(TabEditorControler.this);
 						Task<Void> task = new Task<Void>() {
-						    @Override public Void call() {
-						        tabRecognition.play();
+							@Override
+							public Void call() {
+								tabRecognition.play();
 								return null;
-						    }
+							}
 						};
 						Thread t = new Thread(task);
 						t.setDaemon(true);
@@ -296,7 +249,7 @@ public class TabEditorControler implements NextNoteListener{
 			}
 		});
 		canvas.setFocusTraversable(true);
-		
+
 	}
 
 	private void drawTimeSigniature(int y, int a, int b) {
@@ -312,8 +265,8 @@ public class TabEditorControler implements NextNoteListener{
 		context.setLineWidth(LINE_WIDTH);
 		context.setStroke(Color.gray(0.6));
 		context.strokeLine(MARGIN, y, MARGIN, y + 5 * LINE_SPACING);
-		context.strokeLine(canvas.getWidth() - 1 - 2 * MARGIN, y,
-				canvas.getWidth() - 1 - 2 * MARGIN, y + 5 * LINE_SPACING);
+		context.strokeLine(canvas.getWidth() - 1 - 2 * MARGIN, y, canvas.getWidth() - 1 - 2 * MARGIN,
+				y + 5 * LINE_SPACING);
 
 		for (int i = 0; i < 6; i++) {
 			context.strokeLine(MARGIN, y, canvas.getWidth() - 2 * MARGIN, y);
@@ -325,17 +278,13 @@ public class TabEditorControler implements NextNoteListener{
 	}
 
 	private void drawScrollBar(int maxScroll) {
-		if ((currentScroll * scrollStep) > maxScroll) {
-			currentScroll = maxScroll/scrollStep;
-		}
 		context.setFill(Color.LIGHTGRAY);
-		context.fillRect(canvas.getWidth() - MARGIN, 0, MARGIN,
-				canvas.getHeight());
+		context.fillRect(canvas.getWidth() - MARGIN, 0, MARGIN, canvas.getHeight());
 
 		if (maxScroll != 0) {
 			scrollPositionHeight = 30;
 			if (maxScroll > (canvas.getHeight() - scrollPositionHeight)) {
-				scrollStep =maxScroll/ (canvas.getHeight() - scrollPositionHeight);
+				scrollStep = maxScroll / (canvas.getHeight() - scrollPositionHeight);
 			} else {
 				scrollStep = 1;
 				scrollPositionHeight = (int) canvas.getHeight() - maxScroll;
@@ -343,8 +292,7 @@ public class TabEditorControler implements NextNoteListener{
 
 			context.setFill(Color.GREY);
 
-			context.fillRect(canvas.getWidth() - MARGIN + 2, currentScroll,
-					MARGIN - 4, scrollPositionHeight);
+			context.fillRect(canvas.getWidth() - MARGIN + 2, currentScroll, MARGIN - 4, scrollPositionHeight);
 		} else {
 			currentScroll = 0;
 			scrollStep = 1;
@@ -356,100 +304,91 @@ public class TabEditorControler implements NextNoteListener{
 		context.setFont(new Font("Arial", NOTES_SIZE));
 
 		whereX += NOTES_SPACING;
-		currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
-		
-		for(Chord c: bar.getNotes()){
-			if(noteCount == currentNote){
+
+		for (Chord c : bar.getNotes()) {
+			if (noteCount == currentNote) {
 				context.setStroke(Color.BLACK);
 				context.setLineWidth(2);
-				if(whereY > canvas.getHeight()){
-					//currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
-				//	if ((currentScroll * scrollStep) > pageTotalHeight
-				//			- canvas.getHeight()) {
-				//		currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
-				//		System.out.println("oi");
-			//		}
+				if (whereY > (canvas.getHeight() - (LINE_SPACING * 5))) {
+					currentScroll += (whereY - MARGIN) / scrollStep;
+					if ((currentScroll * scrollStep) > pageTotalHeight - canvas.getHeight()) {
+						currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
+					}
 				}
-				context.strokeLine(whereX, whereY, whereX, whereY+5*LINE_SPACING);
+				context.strokeLine(whereX, whereY, whereX, whereY + 5 * LINE_SPACING);
 			}
-			noteCount ++ ;
+			noteCount++;
 			Note[] notes = c.getNotes();
 			boolean isRest = true;
 			for (int i = 0; i < 6; i++) {
 				if (notes[i] != null) {
 					isRest = false;
-					int whereNote = whereY
-							+ (notes[i].getString() * LINE_SPACING)
-							- (NOTES_SIZE / 2) - 1;
+					int whereNote = whereY + (notes[i].getString() * LINE_SPACING) - (NOTES_SIZE / 2) - 1;
 					if (notes[i].getFret() < 10) {
 						context.setFill(Color.WHITE);
-						context.fillRect(whereX - NOTES_SIZE / 4, whereNote
-								- NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
+						context.fillRect(whereX - NOTES_SIZE / 4, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
 						context.setFill(Color.BLACK);
-						context.fillText(String.valueOf(notes[i].getFret()),
-								whereX, whereNote);
+						context.fillText(String.valueOf(notes[i].getFret()), whereX, whereNote);
 					} else {
 						context.setFill(Color.WHITE);
-						context.fillRect(whereX - NOTES_SIZE / 2, whereNote
-								- NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
+						context.fillRect(whereX - NOTES_SIZE / 2, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
 						context.setFill(Color.BLACK);
-						context.fillText(String.valueOf(notes[i].getFret()),
-								whereX - (NOTES_SIZE / 2), whereNote);
+						context.fillText(String.valueOf(notes[i].getFret()), whereX - (NOTES_SIZE / 2), whereNote);
 					}
 				}
 
 			}
 
-			if(isRest){
+			if (isRest) {
 				Image restImage = null;
-				if(c.getDuration() == 1.0){
+				if (c.getDuration() == 1.0) {
 					restImage = restImages[0];
-				}else if(c.getDuration() == 1.0/2.0){
+				} else if (c.getDuration() == 1.0 / 2.0) {
 					restImage = restImages[1];
-				}else if(c.getDuration() == 1.0/4.0){
+				} else if (c.getDuration() == 1.0 / 4.0) {
 					restImage = restImages[2];
-				}else if(c.getDuration() == 1.0/8.0){
+				} else if (c.getDuration() == 1.0 / 8.0) {
 					restImage = restImages[3];
-				}else if(c.getDuration() == 1.0/16.0){
+				} else if (c.getDuration() == 1.0 / 16.0) {
 					restImage = restImages[4];
-				}else if(c.getDuration() == 1.0/32.0){
+				} else if (c.getDuration() == 1.0 / 32.0) {
 					restImage = restImages[5];
-				}else if(c.getDuration() == 1.0/64.0){
+				} else if (c.getDuration() == 1.0 / 64.0) {
 					restImage = restImages[6];
-				}else if(c.getDuration() == 1.0/128.0){
+				} else if (c.getDuration() == 1.0 / 128.0) {
 					restImage = restImages[7];
 				}
-				
-				int rescaledHeight = (int)Math.round(restImage.getHeight() * REST_SCALE);
-				int rescaledWidth = (int)Math.round(restImage.getWidth() * REST_SCALE);
-				
-				int whereYRest = ((whereY + (int)Math.round(2.5*LINE_SPACING)) - ((rescaledHeight/2) + whereY)) + whereY ;
-				
-				context.drawImage(restImage, whereX -  rescaledWidth/2, whereYRest, rescaledWidth, rescaledHeight);
+
+				int rescaledHeight = (int) Math.round(restImage.getHeight() * REST_SCALE);
+				int rescaledWidth = (int) Math.round(restImage.getWidth() * REST_SCALE);
+
+				int whereYRest = ((whereY + (int) Math.round(2.5 * LINE_SPACING)) - ((rescaledHeight / 2) + whereY))
+						+ whereY;
+
+				context.drawImage(restImage, whereX - rescaledWidth / 2, whereYRest, rescaledWidth, rescaledHeight);
 			}
 			whereX += NOTES_SPACING;
 		}
 		context.setStroke(Color.gray(0.6));
-		context.strokeLine(whereX, whereY, whereX, whereY + 5*LINE_SPACING);
+		context.strokeLine(whereX, whereY, whereX, whereY + 5 * LINE_SPACING);
 		context.setLineWidth(LINE_WIDTH);
-		
+
 		return whereX;
 	}
 
 	private void drawTab() {
+
 		int where = (int) (MARGIN - Math.round(currentScroll * scrollStep));
 		int whereBar = where;
 
 		context.setFill(Color.WHITE);
 		context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-		int lineWidth = (int) Math.round(canvas.getWidth()) - 2 * MARGIN
-				- LINE_X_START;
+		int lineWidth = (int) Math.round(canvas.getWidth()) - 2 * MARGIN - LINE_X_START;
 		int currentLinePosition = lineWidth;
 
-		
 		noteCount = 0;
-		for(Bar b : tab.getBars()){
+		for (Bar b : tab.getBars()) {
 			int barWidth = b.getNotes().size() * NOTES_SPACING;
 			if ((currentLinePosition + barWidth) > lineWidth) {
 				whereBar = where;
@@ -459,22 +398,22 @@ public class TabEditorControler implements NextNoteListener{
 			currentLinePosition = drawBar(b, whereBar, currentLinePosition);
 
 		}
-		
+
 		pageTotalHeight = (int) (where + Math.round(currentScroll * scrollStep));
 		if ((pageTotalHeight - canvas.getHeight()) > 0)
 			drawScrollBar((int) (pageTotalHeight - canvas.getHeight()));
 	}
 
-
 	@Override
 	public void nextNote() {
 		currentNote++;
 		Platform.runLater(new Runnable() {
-		      @Override public void run() {
-		        drawTab();  
-		      }
-		    });
-		
+			@Override
+			public void run() {
+				drawTab();
+			}
+		});
+
 	}
 
 	@Override
@@ -482,10 +421,11 @@ public class TabEditorControler implements NextNoteListener{
 		playingTab = false;
 		currentNote = -1;
 		Platform.runLater(new Runnable() {
-		      @Override public void run() {
-		        drawTab();  
-		      }
-		    });
+			@Override
+			public void run() {
+				drawTab();
+			}
+		});
 	}
 
 }
