@@ -22,10 +22,11 @@ import soundefy.model.Note;
 import soundefy.model.Tab;
 import soundefy.model.TimeSignature;
 import soundefy.util.TabRecognitionPlayer;
+import sun.util.resources.cldr.rn.CurrencyNames_rn;
 
 public class TabEditorControler implements NextNoteListener {
 	public static final int MARGIN = 20;
-	public static final int LINE_SPACING = 10;
+	public static final int LINE_SPACING = 12;
 	public static final double LINE_WIDTH = 1;
 	public static final int TIME_SIGNIATURE_SIZE = 20;
 	public static final int NOTES_SIZE = 12;
@@ -64,27 +65,30 @@ public class TabEditorControler implements NextNoteListener {
 	
 	private TimeSignature standardTimeSigniature;
 	private int standardTempo;
+	
+	private int selectedString = 1;
+	private Note[] currentChord;
 
 	private void loadImages() {
 		restImages = new Image[8];
-		restImages[0] = new Image("./resources/rests/wholerest.png");
-		restImages[1] = new Image("./resources/rests/halfrest.png");
-		restImages[2] = new Image("./resources/rests/quarterrest.png");
-		restImages[3] = new Image("./resources/rests/eighthrest.png");
-		restImages[4] = new Image("./resources/rests/sixteenthrest.png");
-		restImages[5] = new Image("./resources/rests/thirtysecondrest.png");
-		restImages[6] = new Image("./resources/rests/sixtyfourthrest.png");
-		restImages[7] = new Image("./resources/rests/hundredtwentyeighthrest.png");
+		restImages[0] = new Image("/resources/rests/wholerest.png");
+		restImages[1] = new Image("/resources/rests/halfrest.png");
+		restImages[2] = new Image("/resources/rests/quarterrest.png");
+		restImages[3] = new Image("/resources/rests/eighthrest.png");
+		restImages[4] = new Image("/resources/rests/sixteenthrest.png");
+		restImages[5] = new Image("/resources/rests/thirtysecondrest.png");
+		restImages[6] = new Image("/resources/rests/sixtyfourthrest.png");
+		restImages[7] = new Image("/resources/rests/hundredtwentyeighthrest.png");
 
 		noteImages = new Image[8];
-		noteImages[0] = new Image("./resources/notes/wholenote.png");
-		noteImages[1] = new Image("./resources/notes/halfnote.png");
-		noteImages[2] = new Image("./resources/notes/quarternote.png");
-		noteImages[3] = new Image("./resources/notes/eighthnote.png");
-		noteImages[4] = new Image("./resources/notes/sixteenthnote.png");
-		noteImages[5] = new Image("./resources/notes/thirtysecondnote.png");
-		noteImages[6] = new Image("./resources/notes/sixtyfourthnote.png");
-		noteImages[7] = new Image("./resources/notes/hundredtwentyeighthnote.png");
+		noteImages[0] = new Image("/resources/notes/wholenote.png");
+		noteImages[1] = new Image("/resources/notes/halfnote.png");
+		noteImages[2] = new Image("/resources/notes/quarternote.png");
+		noteImages[3] = new Image("/resources/notes/eighthnote.png");
+		noteImages[4] = new Image("/resources/notes/sixteenthnote.png");
+		noteImages[5] = new Image("/resources/notes/thirtysecondnote.png");
+		noteImages[6] = new Image("/resources/notes/sixtyfourthnote.png");
+		noteImages[7] = new Image("/resources/notes/hundredtwentyeighthnote.png");
 	}
 
 	@FXML
@@ -275,6 +279,47 @@ public class TabEditorControler implements NextNoteListener {
 					}else{
 						if(event.getCode() == KeyCode.ENTER){
 							addingNewNote = false;
+							drawTab();
+						}else if(event.getCode() == KeyCode.DOWN){
+							selectedString++;
+							if(selectedString > 6){
+								selectedString = 6;
+							}
+							drawTab();
+						}else if(event.getCode() == KeyCode.UP){
+							selectedString--;
+							if(selectedString < 1){
+								selectedString = 1;
+							}
+							drawTab();
+						}else if(event.getCode() == KeyCode.DIGIT0){
+							addToNote(0);
+						}else if(event.getCode() == KeyCode.DIGIT1){
+							addToNote(1);
+						}else if(event.getCode() == KeyCode.DIGIT2){
+							addToNote(2);
+						}else if(event.getCode() == KeyCode.DIGIT3){
+							addToNote(3);
+						}else if(event.getCode() == KeyCode.DIGIT4){
+							addToNote(4);
+						}else if(event.getCode() == KeyCode.DIGIT5){
+							addToNote(5);
+						}else if(event.getCode() == KeyCode.DIGIT6){
+							addToNote(6);
+						}else if(event.getCode() == KeyCode.DIGIT7){
+							addToNote(7);
+						}else if(event.getCode() == KeyCode.DIGIT8){
+							addToNote(8);
+						}else if(event.getCode() == KeyCode.DIGIT9){
+							addToNote(9);
+						}else if(event.getCode() == KeyCode.DELETE){
+							currentChord[selectedString - 1] = null;
+							try{
+								tab.setChord(currentChord[0], currentChord[1], currentChord[2], currentChord[3], currentChord[4], currentChord[5]);
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+							drawTab();
 						}
 					}
 				}
@@ -283,6 +328,22 @@ public class TabEditorControler implements NextNoteListener {
 		});
 		canvas.setFocusTraversable(true);
 
+	}
+	
+	private void addToNote(int fret){
+		if(currentChord[selectedString-1] == null){
+			currentChord[selectedString-1] = new Note(selectedString, fret);
+		}else{
+			int newFret = ((currentChord[selectedString-1].getFret()*10) + fret) % 100;
+			
+			currentChord[selectedString-1].setFret(newFret);
+		}
+		try{
+			tab.setChord(currentChord[0], currentChord[1], currentChord[2], currentChord[3], currentChord[4], currentChord[5]);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		drawTab();
 	}
 	
 	public void setStandardTimeSigniature(TimeSignature timeSignature){
@@ -305,18 +366,22 @@ public class TabEditorControler implements NextNoteListener {
 	
 	private void startAddingNewNote(double duration){
 		addingNewNote = true;
+		selectedString = 1;
 		try {
 			if((tab.getBar() == null) || (tab.getBar().isFilled())){
 				tab.addBar(standardTimeSigniature.getNumberOfBeats(),
 						standardTimeSigniature.getWholeNoteDuration(), standardTempo);
-				tab.addChord(null, null, null, null, null, null, duration);
-			}else{
-				tab.addChord(null, null, null, null, null, null, duration);
 			}
+			tab.addChord(null, null, null, null, null, null, duration);
+			currentChord = new Note[6];
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			addingNewNote = false;
 		}
+		
+		drawTab();
+		currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
 		drawTab();
 	}
 
@@ -374,66 +439,100 @@ public class TabEditorControler implements NextNoteListener {
 		whereX += NOTES_SPACING;
 
 		for (Chord c : bar.getNotes()) {
-			if (noteCount == currentNote) {
-				context.setStroke(Color.BLACK);
-				context.setLineWidth(2);
-				if (whereY > (canvas.getHeight() - (LINE_SPACING * 5))) {
-					currentScroll += (whereY - MARGIN) / scrollStep;
-					if ((currentScroll * scrollStep) > pageTotalHeight - canvas.getHeight()) {
-						currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
-					}
-				}
-				context.strokeLine(whereX, whereY, whereX, whereY + 5 * LINE_SPACING);
-			}
-			noteCount++;
-			Note[] notes = c.getNotes();
-			boolean isRest = true;
-			for (int i = 0; i < 6; i++) {
-				if (notes[i] != null) {
-					isRest = false;
-					int whereNote = whereY + (notes[i].getString() * LINE_SPACING) - (NOTES_SIZE / 2) - 1;
-					if (notes[i].getFret() < 10) {
-						context.setFill(Color.WHITE);
+			if(c == (tab.getBar().getNotes().get(tab.getBar().getNotes().size()-1)) && addingNewNote){
+				/* When editing a new note */
+				Note[] notes = c.getNotes();
+				for (int i = 0; i < 6; i++) {
+					
+					if (notes[i] != null) {
+						int whereNote = whereY + (notes[i].getString() * LINE_SPACING) - (NOTES_SIZE / 2) - 1;
+						if (notes[i].getFret() < 10) {
+							context.setFill(Color.WHITE);
+							if(notes[i].getString() == selectedString){
+								context.setFill(Color.LIGHTGRAY);
+							}
+							context.fillRect(whereX - NOTES_SIZE / 4, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
+							context.setFill(Color.BLACK);
+							context.fillText(String.valueOf(notes[i].getFret()), whereX, whereNote);
+						} else {
+							context.setFill(Color.WHITE);
+							if(notes[i].getString() == selectedString){
+								context.setFill(Color.LIGHTGRAY);
+							}
+							context.fillRect(whereX - NOTES_SIZE / 2, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
+							context.setFill(Color.BLACK);
+							context.fillText(String.valueOf(notes[i].getFret()), whereX - (NOTES_SIZE / 2), whereNote);
+						}
+					}else if(notes[selectedString-1] == null){
+						int whereNote = whereY + (selectedString * LINE_SPACING) - (NOTES_SIZE / 2) - 1;
+						context.setFill(Color.LIGHTGRAY);
 						context.fillRect(whereX - NOTES_SIZE / 4, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
-						context.setFill(Color.BLACK);
-						context.fillText(String.valueOf(notes[i].getFret()), whereX, whereNote);
-					} else {
-						context.setFill(Color.WHITE);
-						context.fillRect(whereX - NOTES_SIZE / 2, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
-						context.setFill(Color.BLACK);
-						context.fillText(String.valueOf(notes[i].getFret()), whereX - (NOTES_SIZE / 2), whereNote);
 					}
 				}
-
-			}
-
-			if (isRest) {
-				Image restImage = null;
-				if (c.getDuration() == 1.0) {
-					restImage = restImages[0];
-				} else if (c.getDuration() == 1.0 / 2.0) {
-					restImage = restImages[1];
-				} else if (c.getDuration() == 1.0 / 4.0) {
-					restImage = restImages[2];
-				} else if (c.getDuration() == 1.0 / 8.0) {
-					restImage = restImages[3];
-				} else if (c.getDuration() == 1.0 / 16.0) {
-					restImage = restImages[4];
-				} else if (c.getDuration() == 1.0 / 32.0) {
-					restImage = restImages[5];
-				} else if (c.getDuration() == 1.0 / 64.0) {
-					restImage = restImages[6];
-				} else if (c.getDuration() == 1.0 / 128.0) {
-					restImage = restImages[7];
+				/* End of editing a new note */
+			}else{
+				if (noteCount == currentNote) {
+					context.setStroke(Color.BLACK);
+					context.setLineWidth(2);
+					if (whereY > (canvas.getHeight() - (LINE_SPACING * 5))) {
+						currentScroll += (whereY - MARGIN) / scrollStep;
+						if ((currentScroll * scrollStep) > pageTotalHeight - canvas.getHeight()) {
+							currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
+						}
+					}
+					context.strokeLine(whereX, whereY, whereX, whereY + 5 * LINE_SPACING);
 				}
-
-				int rescaledHeight = (int) Math.round(restImage.getHeight() * REST_SCALE);
-				int rescaledWidth = (int) Math.round(restImage.getWidth() * REST_SCALE);
-
-				int whereYRest = ((whereY + (int) Math.round(2.5 * LINE_SPACING)) - ((rescaledHeight / 2) + whereY))
-						+ whereY;
-
-				context.drawImage(restImage, whereX - rescaledWidth / 2, whereYRest, rescaledWidth, rescaledHeight);
+				noteCount++;
+				Note[] notes = c.getNotes();
+				boolean isRest = true;
+				for (int i = 0; i < 6; i++) {
+					if (notes[i] != null) {
+						isRest = false;
+						int whereNote = whereY + (notes[i].getString() * LINE_SPACING) - (NOTES_SIZE / 2) - 1;
+						if (notes[i].getFret() < 10) {
+							context.setFill(Color.WHITE);
+							context.fillRect(whereX - NOTES_SIZE / 4, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
+							context.setFill(Color.BLACK);
+							context.fillText(String.valueOf(notes[i].getFret()), whereX, whereNote);
+						} else {
+							context.setFill(Color.WHITE);
+							context.fillRect(whereX - NOTES_SIZE / 2, whereNote - NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
+							context.setFill(Color.BLACK);
+							context.fillText(String.valueOf(notes[i].getFret()), whereX - (NOTES_SIZE / 2), whereNote);
+						}
+					}
+	
+				}
+	
+				if (isRest) {
+					Image restImage = null;
+					if (c.getDuration() == 1.0) {
+						restImage = restImages[0];
+					} else if (c.getDuration() == 1.0 / 2.0) {
+						restImage = restImages[1];
+					} else if (c.getDuration() == 1.0 / 4.0) {
+						restImage = restImages[2];
+					} else if (c.getDuration() == 1.0 / 8.0) {
+						restImage = restImages[3];
+					} else if (c.getDuration() == 1.0 / 16.0) {
+						restImage = restImages[4];
+					} else if (c.getDuration() == 1.0 / 32.0) {
+						restImage = restImages[5];
+					} else if (c.getDuration() == 1.0 / 64.0) {
+						restImage = restImages[6];
+					} else if (c.getDuration() == 1.0 / 128.0) {
+						restImage = restImages[7];
+					}
+	
+					int rescaledHeight = (int) Math.round(restImage.getHeight() * REST_SCALE);
+					int rescaledWidth = (int) Math.round(restImage.getWidth() * REST_SCALE);
+	
+					int whereYRest = ((whereY + (int) Math.round(2.5 * LINE_SPACING)) - ((rescaledHeight / 2) + whereY))
+							+ whereY;
+	
+					context.drawImage(restImage, whereX - rescaledWidth / 2, whereYRest, rescaledWidth, rescaledHeight);
+				}
+				
 			}
 			whereX += NOTES_SPACING;
 		}
