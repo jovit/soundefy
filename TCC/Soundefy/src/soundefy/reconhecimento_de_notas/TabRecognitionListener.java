@@ -1,13 +1,10 @@
 package soundefy.reconhecimento_de_notas;
 
-import javax.sound.sampled.LineUnavailableException;
-
 import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
-import soundefy.reconhecimento_de_notas.PitchDetector;
 
 public class TabRecognitionListener {
 	private NextNoteListener listener;
@@ -23,6 +20,7 @@ public class TabRecognitionListener {
 
 	public void play() {
 		PitchDetector p = new PitchDetector();
+		new Thread(p).start();
 		for (Bar b : tab.getBars()) {
 			int tempo = b.getTempo();
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
