@@ -22,6 +22,7 @@ public class Main extends Application{
 		TabEditorControler controller = loader.getController();
 		controller.setStandardTempo(126);
 		controller.setStandardTimeSigniature(new TimeSignature(4, 4));
+		controller.setPrimaryStage(primaryStage);
 		this.primaryStage.setScene(new Scene(pane,500,500));
 		this.primaryStage.show();
 	}
