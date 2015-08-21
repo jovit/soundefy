@@ -25,6 +25,7 @@ import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
 import soundefy.model.TimeSignature;
+import soundefy.reconhecimento_de_notas.TabRecognitionListener;
 import soundefy.util.TabRecognitionPlayer;
 
 public class TabEditorControler implements NextNoteListener {
@@ -195,9 +196,9 @@ public class TabEditorControler implements NextNoteListener {
 				this.tab = Tab.readFile(selectedFile.getAbsolutePath());
 			}
 
-			// TabRecognitionListener tabListener = new
-			// TabRecognitionListener(tab);
-			// tabListener.play();
+			 //TabRecognitionListener tabListener = new TabRecognitionListener(tab);
+			 //tabListener.play();
+			 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -275,10 +276,14 @@ public class TabEditorControler implements NextNoteListener {
 								tab);
 						tabRecognition
 								.setNextNoteListener(TabEditorControler.this);
+
+						TabRecognitionListener tabRecognitionListener = new TabRecognitionListener(tab);
+						tabRecognitionListener.setNextNoteListener(TabEditorControler.this);
+						
 						Task<Void> task = new Task<Void>() {
 							@Override
 							public Void call() {
-								tabRecognition.play();
+								tabRecognitionListener.play();
 								return null;
 							}
 						};

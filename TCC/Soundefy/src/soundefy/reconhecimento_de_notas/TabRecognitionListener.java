@@ -1,58 +1,64 @@
 package soundefy.reconhecimento_de_notas;
 
+import javax.sound.sampled.LineUnavailableException;
+
+import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
+import soundefy.reconhecimento_de_notas.PitchDetector;
 
-public class TabRecognitionListener implements Runnable {
-	private boolean listening ;
-	private final Tab tab;
-	@Override
-	public void run(){
+public class TabRecognitionListener {
+	private NextNoteListener listener;
+	private Tab tab;
+
+	public void setNextNoteListener(NextNoteListener listener) {
+		this.listener = listener;
+	}
+
+	public TabRecognitionListener(Tab tab) {
+		this.tab = tab;
+	}
+
+	public void play() {
 		PitchDetector p = new PitchDetector();
-		new Thread(p).start();
 		for (Bar b : tab.getBars()) {
 			int tempo = b.getTempo();
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
 			for (Chord c : b.getNotes()) {
-				double noteDuration = tempo * wholeNoteDuration
+				if (listener != null) {
+					listener.nextNote();
+				}
+				double noteDuration = (60000 / tempo) * wholeNoteDuration
 						* c.getDuration();
 				for (Note n : c.getNotes()) {
 					if (n != null) {
 						int string = n.getString();
 						int fret = n.getFret();
 						int pos = 0;
-						switch (string) {
-							case 6: {
-								pos = 28;
-								break;
-							}
-	
-							case 5: {
-								pos = 34;
-								break;
-							}
-	
-							case 4: {
-								pos = 39;
-								break;
-							}
-	
-							case 3: {
-								pos = 44;
-								break;
-							}
-	
-							case 2: {
-								pos = 48;
-								break;
-							}
-	
-							case 1: {
-								pos = 53;
-								break;
-							}
+						if (string == 1) {
+							pos = 51;
+						}
+
+						if (string == 2) {
+							pos = 46;
+						}
+
+						if (string == 3) {
+							pos = 42;
+						}
+
+						if (string == 4) {
+							pos = 37;
+						}
+
+						if (string == 5) {
+							pos = 32;
+						}
+
+						if (string == 6) {
+							pos = 27;
 						}
 						pos += fret;
 						Nota readNote = PitchDetector.notas[pos];
@@ -72,21 +78,17 @@ public class TabRecognitionListener implements Runnable {
 							System.out.println("Nota tocada : " + maisTocada.getNome());
 						} else {
 							System.out.println("Fa�a um barulho");
-						}
-						
+						}				
 					}
+				}
+				try {
+					Thread.sleep((int) Math.round(noteDuration));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
+		listener.tabFinished();
 	}
-	
-	public TabRecognitionListener(Tab t){
-		this.tab = t;
-		listening = false;
-	}
-	
-	public void play() {
-		listening = true;
-		new Thread(this).start();
-	}
+
 }
