@@ -65,6 +65,7 @@ public class TabEditorControler implements NextNoteListener {
 	private GraphicsContext context;
 
 	private boolean pressedOnScrollBar = false;
+	private boolean editable;
 	private int dragStart;
 
 	private boolean addingNewNote = false;
@@ -75,11 +76,17 @@ public class TabEditorControler implements NextNoteListener {
 	private int selectedString = 1;
 	private Note[] currentChord;
 
+	
+	private void setEditable(boolean editable){
+		this.editable = editable;
+	}
+	
 	public void setPrimaryStage(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
 
 	private void loadImages() {
+		setEditable(true);
 		restImages = new Image[8];
 		restImages[0] = new Image("/resources/rests/wholerest.png");
 		restImages[1] = new Image("/resources/rests/halfrest.png");
@@ -105,7 +112,7 @@ public class TabEditorControler implements NextNoteListener {
 
 	@FXML
 	private void initialize() {
-		try {
+		try {			
 			loadImages();
 
 			/*
@@ -291,10 +298,10 @@ public class TabEditorControler implements NextNoteListener {
 						t.setDaemon(true);
 						t.start();
 					}
-				} else if (!playingTab) {
-					if (!addingNewNote) {
-						if (event.getCode() == KeyCode.DIGIT1) { // new
-																	// wholenote
+				}else if(!playingTab){
+					if(!addingNewNote && editable){
+						if(event.getCode() == KeyCode.DIGIT1){ // new wholenote
+
 							startAddingNewNote(1);
 						} else if (event.getCode() == KeyCode.DIGIT2) { // new
 																		// halfnote
@@ -320,8 +327,9 @@ public class TabEditorControler implements NextNoteListener {
 						} else if (event.getCode() == KeyCode.BACK_SPACE) {
 							removeLastNote();
 						}
-					} else {
-						if (event.getCode() == KeyCode.ENTER) {
+					}else if(addingNewNote){
+						if(event.getCode() == KeyCode.ENTER){
+
 							addingNewNote = false;
 							drawTab();
 						} else if (event.getCode() == KeyCode.DOWN) {
