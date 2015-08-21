@@ -17,10 +17,11 @@ public class Tab {
 			throws Exception {
 		bars.add(new Bar(numberOfBeats, wholeNoteDuration, tempo));
 	}
-	
+
 	public void setChord(Note note1, Note note2, Note note3, Note note4,
-			Note note5, Note note6) throws Exception{
-		double duration = getBar().getNotes().get(getBar().getNotes().size()-1).getDuration();
+			Note note5, Note note6) throws Exception {
+		double duration = getBar().getNotes()
+				.get(getBar().getNotes().size() - 1).getDuration();
 		getBar().removeChord();
 		addChord(note1, note2, note3, note4, note5, note6, duration);
 	}
@@ -39,14 +40,14 @@ public class Tab {
 	}
 
 	public void removerBar() {
-		if(bars.size() > 0)
+		if (bars.size() > 0)
 			bars.remove(bars.size() - 1);
 	}
 
 	public Bar getBar() {
-		if(bars.size() > 0){
+		if (bars.size() > 0) {
 			return bars.get(bars.size() - 1);
-		}else{
+		} else {
 			return null;
 		}
 	}
@@ -78,29 +79,30 @@ public class Tab {
 							out.writeInt(fret);
 						} else {
 							out.writeInt(-1);
+							out.writeInt(-1);
 						}
 					}
 				}
 			}
+			out.close();
 		} else {
 			throw new Exception("Invalid file name!");
 		}
 	}
 
-	public Tab readFile(String arqName) throws Exception {
+	public static Tab readFile(String arqName) throws Exception {
 		if (arqName != null && arqName != "") {
 			Tab tab = new Tab();
+			DataInputStream in = null;
 			try {
-				DataInputStream in = new DataInputStream(new FileInputStream(
-						arqName));
+				in = new DataInputStream(new FileInputStream(arqName));
 				try {
-					
 					for (;;) {
 						int tempo = in.readInt();
 						int numberOfBeats = in.readInt();
 						int wholeNoteDuration = in.readInt();
 						tab.addBar(numberOfBeats, wholeNoteDuration, tempo);
-						int barCompletion = 0;
+						double barCompletion = 0;
 						for (;;) {
 							if (barCompletion == numberOfBeats) {
 								break;
@@ -108,10 +110,14 @@ public class Tab {
 
 							double duration = in.readDouble();
 							Note notes[] = new Note[6];
-							for (int i = 0; i < 5; i++) {
+							for (int i = 0; i < 6; i++) {
 								int string = in.readInt();
 								int fret = in.readInt();
-								notes[i] = new Note(string, fret);
+								if (string > 0 && fret > -1) {
+									notes[i] = new Note(string, fret);
+								} else {
+									notes[i] = null;
+								}
 							}
 							tab.getBar().addChord(new Chord(notes, duration));
 							barCompletion += duration * wholeNoteDuration;
@@ -120,8 +126,11 @@ public class Tab {
 				} catch (Exception ex) {
 				}
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				e.printStackTrace();
+			} finally {
+				in.close();
 			}
+
 			return tab;
 		} else {
 			throw new Exception("Invalid file name!");
