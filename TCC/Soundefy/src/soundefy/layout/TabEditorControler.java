@@ -21,6 +21,7 @@ import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
 import soundefy.model.TimeSignature;
+import soundefy.reconhecimento_de_notas.TabRecognitionListener;
 import soundefy.util.TabRecognitionPlayer;
 import sun.util.resources.cldr.rn.CurrencyNames_rn;
 
@@ -170,9 +171,9 @@ public class TabEditorControler implements NextNoteListener {
 			tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
 			tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 / 8.0);
 
-			// TabRecognitionListener tabListener = new
-			// TabRecognitionListener(tab);
-			// tabListener.play();
+			 //TabRecognitionListener tabListener = new TabRecognitionListener(tab);
+			 //tabListener.play();
+			 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -242,7 +243,7 @@ public class TabEditorControler implements NextNoteListener {
 					if (!playingTab && !addingNewNote) {
 						playingTab = true;
 						currentNote = -1;
-						TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(tab);
+						TabRecognitionListener tabRecognition = new TabRecognitionListener(tab);
 						tabRecognition.setNextNoteListener(TabEditorControler.this);
 						Task<Void> task = new Task<Void>() {
 							@Override
