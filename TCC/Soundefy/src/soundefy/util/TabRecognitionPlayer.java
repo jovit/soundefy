@@ -20,7 +20,7 @@ public class TabRecognitionPlayer {
 	public void tocarNota(int pos, double noteDuration) {
 		double noteFrequency = PitchDetector.notas[pos].getFreqOk();
 		try {
-			ToneMaker.tone(noteFrequency, (int) Math.round(noteDuration)*2, 1.0);
+			ToneMaker.tone(noteFrequency, (int) Math.round(noteDuration), 1.0);
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		}
