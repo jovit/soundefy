@@ -115,97 +115,7 @@ public class TabEditorControler implements NextNoteListener {
 		try {			
 			loadImages();
 
-			/*
-			 * tab = new Tab(); tab.addBar(4, 4, 126); tab.addChord(null, null,
-			 * new Note(3, 14), null, null, null, 1.0 / 8.0); tab.addChord(null,
-			 * null, new Note(3, 14), null, null, null, 1.0 / 8.0);
-			 * tab.addChord(new Note(1, 14), null, null, null, null, null, 1.0 /
-			 * 8.0); tab.addChord(null, null, new Note(3, 14), null, null, null,
-			 * 1.0 / 8.0); tab.addChord(null, null, null, new Note(4, 12), null,
-			 * null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14), null,
-			 * null, null, 1.0 / 8.0); tab.addChord(new Note(1, 14), null, null,
-			 * null, null, null, 1.0 / 8.0); tab.addChord(null, null, new
-			 * Note(3, 14), null, null, null, 1.0 / 8.0); tab.addBar(4, 4, 126);
-			 * tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0 /
-			 * 8.0); tab.addChord(null, new Note(2, 15), null, null, null, null,
-			 * 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14), null, null,
-			 * null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 12), null,
-			 * null, null, 1.0 / 8.0); tab.addChord(null, null, null, null,
-			 * null, null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14),
-			 * null, null, null, 1.0 / 8.0); tab.addChord(new Note(1, 14), null,
-			 * null, null, null, null, 1.0 / 8.0); tab.addChord(null, null, new
-			 * Note(3, 14), null, null, null, 1.0 / 8.0); tab.addBar(4, 4, 126);
-			 * tab.addChord(null, null, null, new Note(4, 14), null, null, 1.0 /
-			 * 8.0); tab.addChord(null, new Note(2, 15), null, null, null, null,
-			 * 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14), null, null,
-			 * null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 12), null,
-			 * null, null, 1.0 / 8.0); tab.addChord(new Note(1, 15), null, null,
-			 * null, null, null, 1.0 / 8.0); tab.addChord(null, null, new
-			 * Note(3, 14), null, null, null, 1.0 / 8.0); tab.addChord(new
-			 * Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
-			 * tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 /
-			 * 8.0); tab.addBar(4, 4, 126); tab.addChord(null, null, null, new
-			 * Note(4, 14), null, null, 1.0 / 8.0); tab.addChord(null, new
-			 * Note(2, 15), null, null, null, null, 1.0 / 8.0);
-			 * tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 /
-			 * 8.0); tab.addChord(null, null, new Note(3, 12), null, null, null,
-			 * 1.0 / 8.0); tab.addChord(new Note(1, 15), null, null, null, null,
-			 * null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14), null,
-			 * null, null, 1.0 / 8.0); tab.addChord(new Note(1, 14), null, null,
-			 * null, null, null, 1.0 / 8.0); tab.addChord(null, null, new
-			 * Note(3, 14), null, null, null, 1.0 / 8.0); tab.addBar(4, 4, 126);
-			 * tab.addChord(null, null, new Note(3, 12), null, null, null, 1.0 /
-			 * 8.0); tab.addChord(null, new Note(2, 15), null, null, null, null,
-			 * 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14), null, null,
-			 * null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 12), null,
-			 * null, null, 1.0 / 8.0); tab.addChord(new Note(1, 15), null, null,
-			 * null, null, null, 1.0 / 8.0); tab.addChord(null, null, new
-			 * Note(3, 14), null, null, null, 1.0 / 8.0); tab.addChord(new
-			 * Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
-			 * tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 /
-			 * 8.0); tab.addBar(4, 4, 126); tab.addChord(null, null, new Note(3,
-			 * 12), null, null, null, 1.0 / 8.0); tab.addChord(null, new Note(2,
-			 * 15), null, null, null, null, 1.0 / 8.0); tab.addChord(null, null,
-			 * new Note(3, 14), null, null, null, 1.0 / 8.0); tab.addChord(null,
-			 * null, new Note(3, 12), null, null, null, 1.0 / 8.0);
-			 * tab.addChord(new Note(1, 15), null, null, null, null, null, 1.0 /
-			 * 8.0); tab.addChord(null, null, new Note(3, 14), null, null, null,
-			 * 1.0 / 8.0); tab.addChord(new Note(1, 14), null, null, null, null,
-			 * null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14), null,
-			 * null, null, 1.0 / 8.0); tab.addBar(4, 4, 126); tab.addChord(null,
-			 * null, null, new Note(4, 12), null, null, 1.0 / 8.0);
-			 * tab.addChord(null, new Note(2, 15), null, null, null, null, 1.0 /
-			 * 8.0); tab.addChord(null, null, new Note(3, 14), null, null, null,
-			 * 1.0 / 8.0); tab.addChord(null, null, new Note(3, 12), null, null,
-			 * null, 1.0 / 8.0); tab.addChord(new Note(1, 15), null, null, null,
-			 * null, null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14),
-			 * null, null, null, 1.0 / 8.0); tab.addChord(new Note(1, 14), null,
-			 * null, null, null, null, 1.0 / 8.0); tab.addChord(null, null, new
-			 * Note(3, 14), null, null, null, 1.0 / 8.0); tab.addBar(4, 4, 126);
-			 * tab.addChord(null, null, null, new Note(4, 12), null, null, 1.0 /
-			 * 8.0); tab.addChord(null, new Note(2, 15), null, null, null, null,
-			 * 1.0 / 8.0); tab.addChord(null, null, new Note(3, 14), null, null,
-			 * null, 1.0 / 8.0); tab.addChord(null, null, new Note(3, 12), null,
-			 * null, null, 1.0 / 8.0); tab.addChord(new Note(1, 15), null, null,
-			 * null, null, null, 1.0 / 8.0); tab.addChord(null, null, new
-			 * Note(3, 14), null, null, null, 1.0 / 8.0); tab.addChord(new
-			 * Note(1, 14), null, null, null, null, null, 1.0 / 8.0);
-			 * tab.addChord(null, null, new Note(3, 14), null, null, null, 1.0 /
-			 * 8.0);
-			 */
-
-			FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Open File");
-			fileChooser.getExtensionFilters().addAll(
-					new FileChooser.ExtensionFilter("Soundefy Files", "*.sdy"));
-			File selectedFile = fileChooser.showOpenDialog(primaryStage);
-			if (selectedFile != null) {
-				this.tab = Tab.readFile(selectedFile.getAbsolutePath());
-			}
-
-			 //TabRecognitionListener tabListener = new TabRecognitionListener(tab);
-			 //tabListener.play();
-			 
+			this.tab = new Tab();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -290,7 +200,7 @@ public class TabEditorControler implements NextNoteListener {
 						Task<Void> task = new Task<Void>() {
 							@Override
 							public Void call() {
-								tabRecognitionListener.play();
+								tabRecognition.play();
 								return null;
 							}
 						};
@@ -299,6 +209,23 @@ public class TabEditorControler implements NextNoteListener {
 						t.start();
 					}
 				}else if(!playingTab){
+					if(!addingNewNote){
+						if(event.isControlDown() && event.getCode() == KeyCode.O){
+							FileChooser fileChooser = new FileChooser();
+							fileChooser.setTitle("Open File");
+							fileChooser.getExtensionFilters().addAll(
+									new FileChooser.ExtensionFilter("Soundefy Files", "*.sdy"));
+							File selectedFile = fileChooser.showOpenDialog(primaryStage);
+							if (selectedFile != null) {
+								try {
+									TabEditorControler.this.tab = Tab.readFile(selectedFile.getAbsolutePath());
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+							drawTab();
+						}
+					}
 					if(!addingNewNote && editable){
 						if(event.getCode() == KeyCode.DIGIT1){ // new wholenote
 
@@ -437,7 +364,8 @@ public class TabEditorControler implements NextNoteListener {
 		}
 
 		drawTab();
-		currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
+		if ((pageTotalHeight - canvas.getHeight()) > 0)
+			currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
 		drawTab();
 	}
 
