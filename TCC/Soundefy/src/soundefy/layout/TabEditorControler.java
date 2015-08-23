@@ -10,6 +10,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -36,7 +38,8 @@ public class TabEditorControler implements NextNoteListener {
 	public static final int NOTES_SIZE = 12;
 	public static final int NOTES_SPACING = 30;
 	public static final int LINE_X_START = 40;
-	public static final double REST_SCALE = 0.5;
+	public static final double REST_SCALE = 0.5d;
+	public static final int NOTE_WIDTH = 15;
 
 	private double currentScroll = 0;
 	private double scrollStep = 1;
@@ -106,8 +109,7 @@ public class TabEditorControler implements NextNoteListener {
 		noteImages[4] = new Image("/resources/notes/sixteenthnote.png");
 		noteImages[5] = new Image("/resources/notes/thirtysecondnote.png");
 		noteImages[6] = new Image("/resources/notes/sixtyfourthnote.png");
-		noteImages[7] = new Image(
-				"/resources/notes/hundredtwentyeighthnote.png");
+		noteImages[7] = new Image("/resources/notes/hundredtwentyeighthnote.png");
 	}
 
 	@FXML
@@ -256,7 +258,6 @@ public class TabEditorControler implements NextNoteListener {
 						}
 					}else if(addingNewNote){
 						if(event.getCode() == KeyCode.ENTER){
-
 							addingNewNote = false;
 							drawTab();
 						} else if (event.getCode() == KeyCode.DOWN) {
@@ -301,6 +302,9 @@ public class TabEditorControler implements NextNoteListener {
 								e.printStackTrace();
 							}
 							drawTab();
+						} else if (event.getCode() == KeyCode.BACK_SPACE) {
+							addingNewNote = false;
+							removeLastNote();
 						}
 					}
 				}
@@ -359,8 +363,74 @@ public class TabEditorControler implements NextNoteListener {
 			currentChord = new Note[6];
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			addingNewNote = false;
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erro");
+			alert.setHeaderText("Limite de duração de compasso excedido");
+			String contentText = String.valueOf(tab.getBar().getBarCompletion()) + " preenchidos de " + tab.getBar().getTimeSignature().getNumberOfBeats();
+			contentText += "\nNotas Possiveis:";
+			float timeLeft = tab.getBar().getTimeSignature().getNumberOfBeats() - tab.getBar().getBarCompletion();
+			double wholeNoteDuration = tab.getBar().getTimeSignature().getWholeNoteDuration();
+			
+			if(timeLeft >= ((1.0/2.0)*wholeNoteDuration)){
+				if(timeLeft/((1.0/2.0)*wholeNoteDuration) > 1){
+					contentText += "\n	Mínima(2) * " + (long)timeLeft/((1.0/2.0)*wholeNoteDuration);
+				}else{
+					contentText += "\n	Mínima(2)";
+				}
+			}
+			if(timeLeft >= ((1.0/4.0)*wholeNoteDuration)){
+				if(timeLeft/((1.0/4.0)*wholeNoteDuration) > 1){
+					contentText += "\n	Semínima(3) * " + (long)(timeLeft/((1.0/4.0)*wholeNoteDuration));
+				}else{
+					contentText += "\n	Semínima(3)";
+				}
+			}
+			if(timeLeft >= ((1.0/8.0)*wholeNoteDuration)){
+				if(timeLeft/((1.0/8.0)*wholeNoteDuration) > 1){
+					contentText += "\n	Colcheia(4) * " + (long)(timeLeft/((1.0/8.0)*wholeNoteDuration));
+				}else{
+			
+					contentText += "\n	Colcheia(4)";
+				}
+			}
+			if(timeLeft >= ((1.0/16.0)*wholeNoteDuration)){
+				if(timeLeft/((1.0/16.0)*wholeNoteDuration) > 1){
+					contentText += "\n	Semicolcheia(5) * " + (long)(timeLeft/((1.0/16.0)*wholeNoteDuration));
+				}else{
+			
+					contentText += "\n	Semicolcheia(5)";
+				}
+			}
+			if(timeLeft >= ((1.0/32.0)*wholeNoteDuration)){
+				if(timeLeft/((1.0/32.0)*wholeNoteDuration) > 1){
+					contentText += "\n	Fusa(6) * " + (long)(timeLeft/((1.0/32.0)*wholeNoteDuration));
+				}else{
+			
+					contentText += "\n	Fusa(6)";
+				}
+			}
+			if(timeLeft >= ((1.0/64.0)*wholeNoteDuration)){
+				if(timeLeft/((1.0/64.0)*wholeNoteDuration) > 1){
+					contentText += "\n	Semifusa(7) * " + (long)(timeLeft/((1.0/64.0)*wholeNoteDuration));
+				}else{
+			
+					contentText += "\n	Semifusa(7)";
+				}
+			}
+			if(timeLeft >= ((1.0/128.0)*wholeNoteDuration)){
+				if(timeLeft/((1.0/128.0)*wholeNoteDuration) > 1){
+					contentText += "\n	Trifusa(8) * " + (long)(timeLeft/((1.0/128.0)*wholeNoteDuration));
+				}else{
+			
+					contentText += "\n	Trifusa(8)";
+				}
+			}
+					
+			alert.setContentText(contentText);
+			
+			
+			alert.showAndWait();
 		}
 
 		drawTab();
@@ -391,7 +461,7 @@ public class TabEditorControler implements NextNoteListener {
 		}
 
 		drawTimeSigniature(whereDrawTimeSigniature, a, b);
-		return y + MARGIN * 2;
+		return y + MARGIN * 3;
 	}
 
 	private void drawScrollBar(int maxScroll) {
@@ -545,6 +615,37 @@ public class TabEditorControler implements NextNoteListener {
 							+ whereY;
 
 					context.drawImage(restImage, whereX - rescaledWidth / 2,
+							whereYRest, rescaledWidth, rescaledHeight);
+				}else{
+					Image noteImage = null;
+					if (c.getDuration() == 1.0) {
+						noteImage = noteImages[0];
+					} else if (c.getDuration() == 1.0 / 2.0) {
+						noteImage = noteImages[1];
+					} else if (c.getDuration() == 1.0 / 4.0) {
+						noteImage = noteImages[2];
+					} else if (c.getDuration() == 1.0 / 8.0) {
+						noteImage = noteImages[3];
+					} else if (c.getDuration() == 1.0 / 16.0) {
+						noteImage = noteImages[4];
+					} else if (c.getDuration() == 1.0 / 32.0) {
+						noteImage = noteImages[5];
+					} else if (c.getDuration() == 1.0 / 64.0) {
+						noteImage = noteImages[6];
+					} else if (c.getDuration() == 1.0 / 128.0) {
+						noteImage = noteImages[7];
+					}
+					
+					double scaleProportion = NOTE_WIDTH / noteImage.getWidth();
+					
+					int rescaledHeight = (int) Math.round(noteImage.getHeight()
+							* scaleProportion);
+					int rescaledWidth = (int) Math.round(noteImage.getWidth()
+							* scaleProportion);
+
+					int whereYRest = (whereY + (LINE_SPACING * 5));
+
+					context.drawImage(noteImage, whereX - rescaledWidth / 2,
 							whereYRest, rescaledWidth, rescaledHeight);
 				}
 

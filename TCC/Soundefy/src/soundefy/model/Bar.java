@@ -48,6 +48,10 @@ public class Bar {
 	public boolean isFilled(){
 		return barCompletion == this.timeSignature.getNumberOfBeats();
 	}
+	
+	public float getBarCompletion(){
+		return barCompletion;
+	}
 
 	public void addChord(Chord chord) throws Exception {
 		double completion = barCompletion + chord.getDuration()
