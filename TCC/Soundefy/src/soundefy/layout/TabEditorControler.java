@@ -320,7 +320,9 @@ public class TabEditorControler implements NextNoteListener {
 			currentChord[selectedString - 1] = new Note(selectedString, fret);
 		} else {
 			int newFret = ((currentChord[selectedString - 1].getFret() * 10) + fret) % 100;
-
+			if(newFret > 22){
+				newFret = 0;
+			}
 			currentChord[selectedString - 1].setFret(newFret);
 		}
 		try {
