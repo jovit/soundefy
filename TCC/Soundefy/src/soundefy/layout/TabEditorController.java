@@ -12,8 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+//import javafx.scene.control.Alert;
+//import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -395,7 +395,7 @@ public class TabEditorController implements NextNoteListener {
 	}
 
 	private void showNoteAddingError(){
-		Alert alert = new Alert(AlertType.ERROR);
+		/*Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Erro");
 		alert.setHeaderText("Limite de duração de compasso excedido");
 		String contentText = String.valueOf(tab.getBar().getBarCompletion()) + " preenchidos de " + tab.getBar().getTimeSignature().getNumberOfBeats();
@@ -460,7 +460,7 @@ public class TabEditorController implements NextNoteListener {
 				
 		alert.setContentText(contentText);
 
-		alert.showAndWait();
+		alert.showAndWait();*/
 	}
 	
 	private void startAddingNewNote(double duration, boolean openBarSettings) {
