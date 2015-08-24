@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import soundefy.layout.TabEditorControler;
+import soundefy.layout.TabEditorController;
 import soundefy.model.TimeSignature;
 
 public class Main extends Application{
@@ -19,7 +19,7 @@ public class Main extends Application{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabEditor.fxml"));
 		AnchorPane pane = (AnchorPane)loader.load();
-		TabEditorControler controller = loader.getController();
+		TabEditorController controller = loader.getController();
 		controller.setStandardTempo(126);
 		controller.setStandardTimeSigniature(new TimeSignature(4, 4));
 		controller.setPrimaryStage(primaryStage);

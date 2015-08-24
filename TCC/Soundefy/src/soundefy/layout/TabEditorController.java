@@ -8,6 +8,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -20,7 +22,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import soundefy.Main;
 import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
@@ -30,7 +34,7 @@ import soundefy.model.TimeSignature;
 import soundefy.reconhecimento_de_notas.TabRecognitionListener;
 import soundefy.util.TabRecognitionPlayer;
 
-public class TabEditorControler implements NextNoteListener {
+public class TabEditorController implements NextNoteListener {
 	public static final int MARGIN = 20;
 	public static final int LINE_SPACING = 12;
 	public static final double LINE_WIDTH = 1;
@@ -194,15 +198,15 @@ public class TabEditorControler implements NextNoteListener {
 						TabRecognitionPlayer tabRecognition = new TabRecognitionPlayer(
 								tab);
 						tabRecognition
-								.setNextNoteListener(TabEditorControler.this);
+								.setNextNoteListener(TabEditorController.this);
 
 						TabRecognitionListener tabRecognitionListener = new TabRecognitionListener(tab);
-						tabRecognitionListener.setNextNoteListener(TabEditorControler.this);
+						tabRecognitionListener.setNextNoteListener(TabEditorController.this);
 						
 						Task<Void> task = new Task<Void>() {
 							@Override
 							public Void call() {
-								tabRecognition.play();
+								tabRecognitionListener.play();
 								return null;
 							}
 						};
@@ -220,7 +224,7 @@ public class TabEditorControler implements NextNoteListener {
 							File selectedFile = fileChooser.showOpenDialog(primaryStage);
 							if (selectedFile != null) {
 								try {
-									TabEditorControler.this.tab = Tab.readFile(selectedFile.getAbsolutePath());
+									TabEditorController.this.tab = Tab.readFile(selectedFile.getAbsolutePath());
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -230,32 +234,24 @@ public class TabEditorControler implements NextNoteListener {
 					}
 					if(!addingNewNote && editable){
 						if(event.getCode() == KeyCode.DIGIT1){ // new wholenote
-
-							startAddingNewNote(1);
+							startAddingNewNote(1, event.isControlDown());
 						} else if (event.getCode() == KeyCode.DIGIT2) { // new
-																		// halfnote
-							startAddingNewNote(1.0 / 2.0);
+							startAddingNewNote(1.0 / 2.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.DIGIT3) { // new
-																		// quarternote
-							startAddingNewNote(1.0 / 4.0);
+							startAddingNewNote(1.0 / 4.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.DIGIT4) { // new
-																		// eighthnote
-							startAddingNewNote(1.0 / 8.0);
+							startAddingNewNote(1.0 / 8.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.DIGIT5) { // new
-																		// sixteenthnote
-							startAddingNewNote(1.0 / 16.0);
+							startAddingNewNote(1.0 / 16.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.DIGIT6) { // new
-																		// thirtysecondnote
-							startAddingNewNote(1.0 / 32.0);
+							startAddingNewNote(1.0 / 32.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.DIGIT7) { // new
-																		// sixtyfourthnote
-							startAddingNewNote(1.0 / 64.0);
+							startAddingNewNote(1.0 / 64.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.DIGIT8) { // new
-																		// hundredtwentyeightnote
-							startAddingNewNote(1.0 / 128.0);
+							startAddingNewNote(1.0 / 128.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.BACK_SPACE) {
 							removeLastNote();
-						}
+						} 
 					}else if(addingNewNote){
 						if(event.getCode() == KeyCode.ENTER){
 							addingNewNote = false;
@@ -351,88 +347,122 @@ public class TabEditorControler implements NextNoteListener {
 			drawTab();
 		}
 	}
+	
+	private void showBarSettingsDialog() throws Exception{
+		FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("layout/BarSettings.fxml"));
+        AnchorPane page = (AnchorPane) loader.load();
 
-	private void startAddingNewNote(double duration) {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Opções de Compasso");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+        
+        BarSettingsController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+
+        dialogStage.showAndWait();
+        if(controller.isOkClicked()){
+        	tab.addBar(controller.getNumberOfBeats(),
+        			controller.getWholeNoteDuration(),
+        			controller.getTempo());
+        }else{
+        	tab.addBar(standardTimeSigniature.getNumberOfBeats(),
+					standardTimeSigniature.getWholeNoteDuration(),
+					standardTempo);
+        }
+	}
+
+	private void showNoteAddingError(){
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Erro");
+		alert.setHeaderText("Limite de duração de compasso excedido");
+		String contentText = String.valueOf(tab.getBar().getBarCompletion()) + " preenchidos de " + tab.getBar().getTimeSignature().getNumberOfBeats();
+		contentText += "\nNotas Possiveis:";
+		float timeLeft = tab.getBar().getTimeSignature().getNumberOfBeats() - tab.getBar().getBarCompletion();
+		double wholeNoteDuration = tab.getBar().getTimeSignature().getWholeNoteDuration();
+		
+		if(timeLeft >= ((1.0/2.0)*wholeNoteDuration)){
+			if(timeLeft/((1.0/2.0)*wholeNoteDuration) > 1){
+				contentText += "\n	Mínima(2) * " + (long)timeLeft/((1.0/2.0)*wholeNoteDuration);
+			}else{
+				contentText += "\n	Mínima(2)";
+			}
+		}
+		if(timeLeft >= ((1.0/4.0)*wholeNoteDuration)){
+			if(timeLeft/((1.0/4.0)*wholeNoteDuration) > 1){
+				contentText += "\n	Semínima(3) * " + (long)(timeLeft/((1.0/4.0)*wholeNoteDuration));
+			}else{
+				contentText += "\n	Semínima(3)";
+			}
+		}
+		if(timeLeft >= ((1.0/8.0)*wholeNoteDuration)){
+			if(timeLeft/((1.0/8.0)*wholeNoteDuration) > 1){
+				contentText += "\n	Colcheia(4) * " + (long)(timeLeft/((1.0/8.0)*wholeNoteDuration));
+			}else{
+		
+				contentText += "\n	Colcheia(4)";
+			}
+		}
+		if(timeLeft >= ((1.0/16.0)*wholeNoteDuration)){
+			if(timeLeft/((1.0/16.0)*wholeNoteDuration) > 1){
+				contentText += "\n	Semicolcheia(5) * " + (long)(timeLeft/((1.0/16.0)*wholeNoteDuration));
+			}else{
+		
+				contentText += "\n	Semicolcheia(5)";
+			}
+		}
+		if(timeLeft >= ((1.0/32.0)*wholeNoteDuration)){
+			if(timeLeft/((1.0/32.0)*wholeNoteDuration) > 1){
+				contentText += "\n	Fusa(6) * " + (long)(timeLeft/((1.0/32.0)*wholeNoteDuration));
+			}else{
+		
+				contentText += "\n	Fusa(6)";
+			}
+		}
+		if(timeLeft >= ((1.0/64.0)*wholeNoteDuration)){
+			if(timeLeft/((1.0/64.0)*wholeNoteDuration) > 1){
+				contentText += "\n	Semifusa(7) * " + (long)(timeLeft/((1.0/64.0)*wholeNoteDuration));
+			}else{
+		
+				contentText += "\n	Semifusa(7)";
+			}
+		}
+		if(timeLeft >= ((1.0/128.0)*wholeNoteDuration)){
+			if(timeLeft/((1.0/128.0)*wholeNoteDuration) > 1){
+				contentText += "\n	Trifusa(8) * " + (long)(timeLeft/((1.0/128.0)*wholeNoteDuration));
+			}else{
+		
+				contentText += "\n	Trifusa(8)";
+			}
+		}
+				
+		alert.setContentText(contentText);
+
+		alert.showAndWait();
+	}
+	
+	private void startAddingNewNote(double duration, boolean openBarSettings) {
 		addingNewNote = true;
 		selectedString = 1;
 		try {
 			if ((tab.getBar() == null) || (tab.getBar().isFilled())) {
-				tab.addBar(standardTimeSigniature.getNumberOfBeats(),
-						standardTimeSigniature.getWholeNoteDuration(),
-						standardTempo);
+				if(openBarSettings){
+					showBarSettingsDialog();  
+				}else{
+					tab.addBar(standardTimeSigniature.getNumberOfBeats(),
+							standardTimeSigniature.getWholeNoteDuration(),
+							standardTempo);
+				}
 			}
 			tab.addChord(null, null, null, null, null, null, duration);
 			currentChord = new Note[6];
 
 		} catch (Exception e) {
 			addingNewNote = false;
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Erro");
-			alert.setHeaderText("Limite de duração de compasso excedido");
-			String contentText = String.valueOf(tab.getBar().getBarCompletion()) + " preenchidos de " + tab.getBar().getTimeSignature().getNumberOfBeats();
-			contentText += "\nNotas Possiveis:";
-			float timeLeft = tab.getBar().getTimeSignature().getNumberOfBeats() - tab.getBar().getBarCompletion();
-			double wholeNoteDuration = tab.getBar().getTimeSignature().getWholeNoteDuration();
-			
-			if(timeLeft >= ((1.0/2.0)*wholeNoteDuration)){
-				if(timeLeft/((1.0/2.0)*wholeNoteDuration) > 1){
-					contentText += "\n	Mínima(2) * " + (long)timeLeft/((1.0/2.0)*wholeNoteDuration);
-				}else{
-					contentText += "\n	Mínima(2)";
-				}
-			}
-			if(timeLeft >= ((1.0/4.0)*wholeNoteDuration)){
-				if(timeLeft/((1.0/4.0)*wholeNoteDuration) > 1){
-					contentText += "\n	Semínima(3) * " + (long)(timeLeft/((1.0/4.0)*wholeNoteDuration));
-				}else{
-					contentText += "\n	Semínima(3)";
-				}
-			}
-			if(timeLeft >= ((1.0/8.0)*wholeNoteDuration)){
-				if(timeLeft/((1.0/8.0)*wholeNoteDuration) > 1){
-					contentText += "\n	Colcheia(4) * " + (long)(timeLeft/((1.0/8.0)*wholeNoteDuration));
-				}else{
-			
-					contentText += "\n	Colcheia(4)";
-				}
-			}
-			if(timeLeft >= ((1.0/16.0)*wholeNoteDuration)){
-				if(timeLeft/((1.0/16.0)*wholeNoteDuration) > 1){
-					contentText += "\n	Semicolcheia(5) * " + (long)(timeLeft/((1.0/16.0)*wholeNoteDuration));
-				}else{
-			
-					contentText += "\n	Semicolcheia(5)";
-				}
-			}
-			if(timeLeft >= ((1.0/32.0)*wholeNoteDuration)){
-				if(timeLeft/((1.0/32.0)*wholeNoteDuration) > 1){
-					contentText += "\n	Fusa(6) * " + (long)(timeLeft/((1.0/32.0)*wholeNoteDuration));
-				}else{
-			
-					contentText += "\n	Fusa(6)";
-				}
-			}
-			if(timeLeft >= ((1.0/64.0)*wholeNoteDuration)){
-				if(timeLeft/((1.0/64.0)*wholeNoteDuration) > 1){
-					contentText += "\n	Semifusa(7) * " + (long)(timeLeft/((1.0/64.0)*wholeNoteDuration));
-				}else{
-			
-					contentText += "\n	Semifusa(7)";
-				}
-			}
-			if(timeLeft >= ((1.0/128.0)*wholeNoteDuration)){
-				if(timeLeft/((1.0/128.0)*wholeNoteDuration) > 1){
-					contentText += "\n	Trifusa(8) * " + (long)(timeLeft/((1.0/128.0)*wholeNoteDuration));
-				}else{
-			
-					contentText += "\n	Trifusa(8)";
-				}
-			}
-					
-			alert.setContentText(contentText);
-			
-			
-			alert.showAndWait();
+			showNoteAddingError();
 		}
 
 		drawTab();
@@ -645,7 +675,7 @@ public class TabEditorControler implements NextNoteListener {
 					int rescaledWidth = (int) Math.round(noteImage.getWidth()
 							* scaleProportion);
 
-					int whereYRest = (whereY + (LINE_SPACING * 5));
+					int whereYRest = (whereY + (LINE_SPACING * 6));
 
 					context.drawImage(noteImage, whereX - rescaledWidth / 2,
 							whereYRest, rescaledWidth, rescaledHeight);

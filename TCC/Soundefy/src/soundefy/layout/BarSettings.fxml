@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="245.0" prefWidth="265.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="soundefy.layout.BarSettingsController">
+   <children>
+      <TextField fx:id="numberOfBeats" layoutX="179.0" layoutY="33.0" prefHeight="25.0" prefWidth="57.0" AnchorPane.rightAnchor="29.0" />
+      <Text layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duraçao Do Compasso:" />
+      <TextField fx:id="wholeNoteDuration" layoutX="178.0" layoutY="81.0" prefHeight="25.0" prefWidth="57.0" AnchorPane.rightAnchor="30.0" />
+      <Text layoutX="10.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duraçao da Semibreve:" />
+      <Text layoutX="109.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tempo:" />
+      <TextField fx:id="tempo" layoutX="177.0" layoutY="125.0" prefHeight="25.0" prefWidth="57.0" AnchorPane.rightAnchor="31.0" />
+      <Button layoutX="32.0" layoutY="191.0" mnemonicParsing="false" onAction="#confirmClick" text="Confirmar" AnchorPane.bottomAnchor="29.0" AnchorPane.leftAnchor="32.0" />
+      <Button layoutX="148.0" layoutY="191.0" mnemonicParsing="false" onAction="#cancelClick" text="Cancelar" AnchorPane.bottomAnchor="29.0" AnchorPane.rightAnchor="41.0" />
+   </children>
+</AnchorPane>

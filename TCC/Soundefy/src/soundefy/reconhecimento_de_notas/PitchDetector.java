@@ -11,7 +11,8 @@ public class PitchDetector implements Runnable {
 	// Currently, only this combination of rate, encoding and channel mode
 	// actually works.
 	private ListaDeNotas listaDeNotas;
-	public static final Nota[] notas = { new Nota("C1", 30.88, 34.65, 32.70),
+	public static final Nota[] notas = { 
+			new Nota("C1", 30.88, 34.65, 32.70),
 			new Nota("C#1", 32.70, 36.71, 34.65),
 			new Nota("D1", 34.65, 38.89, 36.71),
 			new Nota("D#1", 36.71, 41.20, 38.89),
