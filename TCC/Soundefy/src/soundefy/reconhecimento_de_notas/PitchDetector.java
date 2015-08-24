@@ -116,7 +116,13 @@ public class PitchDetector implements Runnable {
 													// should be enough
 	private final static int DRAW_FREQUENCY_STEP = 10;
 	private final static int MIN_AMPLITUDE = 100;
+	
+	private boolean listening = true;
 
+	public void stopListening(){
+		listening = false;
+	}
+	
 	public PitchDetector() {
 		listaDeNotas = new ListaDeNotas();
 	}
@@ -138,7 +144,7 @@ public class PitchDetector implements Runnable {
 					* CHUNK_SIZE_IN_SAMPLES / RATE);
 			final int max_frequency_fft = Math.round(MAX_FREQUENCY
 					* CHUNK_SIZE_IN_SAMPLES / RATE);
-			while (!Thread.interrupted()) {
+			while (listening) {
 				recorder_.start();
 
 				recorder_.read(audio_data, 0, CHUNK_SIZE_IN_BYTES / 2);
@@ -182,13 +188,15 @@ public class PitchDetector implements Runnable {
 					for (int i = 0; i < notas.length; i++) {
 						if (best_frequency <= notas[i].getFreqMax()
 								&& best_frequency >= notas[i].getFreqMin()) {
-							listaDeNotas.inserirNota(notas[i]);
+							listaDeNotas.inserirNota(notas[i+1]);
 							break;
 						}
 					}
 				}
+				
 				// System.out.println(retval);
 			}
+			recorder_.close();
 		} catch (Exception ex) {
 			System.out.println("Can't initialize recorder");
 		}

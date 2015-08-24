@@ -206,7 +206,7 @@ public class TabEditorController implements NextNoteListener {
 						Task<Void> task = new Task<Void>() {
 							@Override
 							public Void call() {
-								tabRecognition.play();
+								tabRecognitionListener.play();
 								return null;
 							}
 						};
