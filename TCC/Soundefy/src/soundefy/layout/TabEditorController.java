@@ -206,7 +206,7 @@ public class TabEditorController implements NextNoteListener {
 						Task<Void> task = new Task<Void>() {
 							@Override
 							public Void call() {
-								tabRecognitionListener.play();
+								tabRecognition.play();
 								return null;
 							}
 						};
@@ -251,7 +251,9 @@ public class TabEditorController implements NextNoteListener {
 							startAddingNewNote(1.0 / 128.0, event.isControlDown());
 						} else if (event.getCode() == KeyCode.BACK_SPACE) {
 							removeLastNote();
-						} 
+						} else if (event.isControlDown() && event.getCode() == KeyCode.S){
+							saveTab();
+						}
 					}else if(addingNewNote){
 						if(event.getCode() == KeyCode.ENTER){
 							addingNewNote = false;
@@ -309,6 +311,23 @@ public class TabEditorController implements NextNoteListener {
 		});
 		canvas.setFocusTraversable(true);
 
+	}
+	
+	private void saveTab(){
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save File");
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("Soundefy Files", "*.sdy"));
+		File selectedFile = fileChooser.showSaveDialog(primaryStage);
+		if (selectedFile != null) {
+			try {
+				System.out.println(selectedFile.getAbsolutePath());
+				TabEditorController.this.tab.saveFile(selectedFile.getAbsolutePath().replace(".sdy", "") + ".sdy");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		drawTab();
 	}
 
 	private void addToNote(int fret) {
