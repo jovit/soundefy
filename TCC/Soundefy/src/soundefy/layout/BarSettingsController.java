@@ -80,14 +80,43 @@ public class BarSettingsController {
 	}
 	
 	private boolean validateTempo(){
+		String strTempo = tempo.getText();
+		if (strTempo.equals("")){
+			return false;
+		} else {
+			int intTempo = this.getTempo();
+			if (intTempo > 10){
+				return true;
+			}
+		}
 		return false;
+		
 	}
 	
 	private boolean validateNumberOfBeats(){
+		String strNumberOfBeats = numberOfBeats.getText();
+		if (strNumberOfBeats.equals("")){
+			return false;
+		} else {
+			int intNumberOfBeats = this.getNumberOfBeats();
+			if (intNumberOfBeats > 0){
+				return true;
+			}
+		}
 		return false;
 	}
 	
-	private boolean validateWholeNumberDuration(){
+	private boolean validateWholeNoteDuration(){
+		String strNumberDuration = wholeNoteDuration.getText();
+		if (strNumberDuration.equals("")){
+			return false;
+		} else {
+			int intNumberDuration = this.getWholeNoteDuration();
+			if (((intNumberDuration & (intNumberDuration - 1)) == 0) && (intNumberDuration > 0)
+					&& (intNumberDuration <= 64)){
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -102,7 +131,7 @@ public class BarSettingsController {
 			valid = false;
 		}
 		
-		if(!validateWholeNumberDuration()){
+		if(!validateWholeNoteDuration()){
 			valid = false;
 		}
 		

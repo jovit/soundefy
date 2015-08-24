@@ -46,27 +46,27 @@ public class TabRecognitionPlayer {
 						int fret = n.getFret();
 						int pos = 0;
 						if (string == 1) {
-							pos = 42;
+							pos = 40;
 						}
 
 						if (string == 2) {
-							pos = 37;
+							pos = 35;
 						}
 
 						if (string == 3) {
-							pos = 33;
+							pos = 31;
 						}
 
 						if (string == 4) {
-							pos = 28;
+							pos = 26;
 						}
 
 						if (string == 5) {
-							pos = 23;
+							pos = 21;
 						}
 
 						if (string == 6) {
-							pos = 18;
+							pos = 16;
 						}
 						final int notePos = pos + fret;
 						new Thread(new Runnable() {

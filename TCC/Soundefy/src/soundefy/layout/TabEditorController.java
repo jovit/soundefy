@@ -206,6 +206,7 @@ public class TabEditorController implements NextNoteListener {
 						Task<Void> task = new Task<Void>() {
 							@Override
 							public Void call() {
+								//tabRecognition.play();
 								tabRecognitionListener.play();
 								return null;
 							}
@@ -373,7 +374,7 @@ public class TabEditorController implements NextNoteListener {
         AnchorPane page = (AnchorPane) loader.load();
 
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("OpÃ§Ãµes de Compasso");
+        dialogStage.setTitle("Opções de Compasso");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         Scene scene = new Scene(page);
@@ -384,6 +385,10 @@ public class TabEditorController implements NextNoteListener {
 
         dialogStage.showAndWait();
         if(controller.isOkClicked()){
+        	setStandardTempo(controller.getTempo());
+        	
+        	setStandardTimeSigniature(new TimeSignature(controller.getNumberOfBeats(), 
+        			controller.getWholeNoteDuration()));
         	tab.addBar(controller.getNumberOfBeats(),
         			controller.getWholeNoteDuration(),
         			controller.getTempo());
