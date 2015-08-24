@@ -36,27 +36,27 @@ public class TabRecognitionListener {
 						int fret = n.getFret();
 						int pos = 0;
 						if (string == 1) {
-							pos = 51;
+							pos = 52;
 						}
 
 						if (string == 2) {
-							pos = 46;
+							pos = 47;
 						}
 
 						if (string == 3) {
-							pos = 42;
+							pos = 43;
 						}
 
 						if (string == 4) {
-							pos = 37;
+							pos = 38;
 						}
 
 						if (string == 5) {
-							pos = 32;
+							pos = 33;
 						}
 
 						if (string == 6) {
-							pos = 27;
+							pos = 28;
 						}
 						pos += fret;
 						Nota readNote = PitchDetector.notas[pos];
