@@ -25,8 +25,16 @@ public class TabRecognitionListener {
 		Metronome m = new Metronome(tab.getBar().getTempo());
 		new Thread(p).start();
 		new Thread(m).start();
+		int previousTempo = 0;
 		for (Bar b : tab.getBars()) {
+			
 			int tempo = b.getTempo();
+			if(previousTempo != tempo){
+				previousTempo  =tempo;
+				m.stop();
+				m = new Metronome(tempo);
+				new Thread(m).start();
+			}
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
 			for (Chord c : b.getNotes()) {
 				if (listener != null) {

@@ -21,9 +21,9 @@ public class Metronome implements Runnable{
 		while (playing){
 			try {
 				ToneMaker.tone(440, 200);
-				Thread.sleep((sleepTime*2-270));
+				if((sleepTime*2-270) > 0)
+					Thread.sleep((sleepTime*2-270));
 			} catch (LineUnavailableException | InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

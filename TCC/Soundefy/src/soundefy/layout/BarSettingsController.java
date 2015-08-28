@@ -1,5 +1,6 @@
 package soundefy.layout;
 
+import soundefy.model.TimeSignature;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -20,6 +21,15 @@ public class BarSettingsController {
 	private boolean okClicked = false;
 	
 	private Stage dialogStage;
+	
+	public void setTimeSignature(TimeSignature timeSignature){
+		this.numberOfBeats.setText(String.valueOf(timeSignature.getNumberOfBeats()));
+		this.wholeNoteDuration.setText(String.valueOf(timeSignature.getWholeNoteDuration()));
+	}
+	
+	public void setTempo(int tempo){
+		this.tempo.setText(String.valueOf(tempo));
+	}
 	
 	public void setDialogStage(Stage dialogStage){
 		this.dialogStage = dialogStage;
