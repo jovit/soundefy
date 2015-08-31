@@ -2,6 +2,12 @@ package soundefy.util;
 
 import javax.sound.sampled.LineUnavailableException;
 
+import jm.music.data.CPhrase;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Rest;
+import jm.music.data.Score;
+import jm.util.Play;
 import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
@@ -31,6 +37,7 @@ public class TabRecognitionPlayer {
 	}
 
 	public void play() {
+		Score s = new Score();
 		for (Bar b : tab.getBars()) {
 			int tempo = b.getTempo();
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
@@ -38,8 +45,13 @@ public class TabRecognitionPlayer {
 				if (listener != null) {
 					listener.nextNote();
 				}
-				double noteDuration = (60000 / tempo) * wholeNoteDuration
-						* c.getDuration();
+				double noteDuration = c.getDuration();
+				jm.music.data.Note notes[] = new jm.music.data.Note[6];
+				for (int i = 0; i < 6; i++) {
+					notes[i] = new jm.music.data.Note();
+					notes[i].setPitch(jm.music.data.Note.REST);
+				}
+				int i = 0;
 				for (Note n : c.getNotes()) {
 					if (n != null) {
 						int string = n.getString();
@@ -69,23 +81,26 @@ public class TabRecognitionPlayer {
 							pos = 27;
 						}
 						final int notePos = pos + fret;
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								tocarNota(notePos, noteDuration);
-							}
-
-						}).start();						
+						notes[i] = new jm.music.data.Note(
+								jm.music.data.Note.freqToMidiPitch(PitchDetector.notas[notePos]
+										.getFreqOk()), noteDuration);
+						i++;
 					}
 				}
-				try {
-					Thread.sleep((int) Math.round(noteDuration));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+
+				Phrase p = new Phrase();
+				p.addNoteList(notes);
+				Part pa = new Part();
+				pa.addPhrase(p);
+				pa.setTempo(tempo);
+				pa.setNumerator(4);
+				pa.setDenominator(4);
+				pa.setInstrument(Part.DISTORTED_GUITAR);
+				s.addPart(pa);
 			}
 		}
 		listener.tabFinished();
+		Play.midi(s);
 	}
 
 }
