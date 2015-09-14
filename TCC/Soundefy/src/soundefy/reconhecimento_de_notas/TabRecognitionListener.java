@@ -27,7 +27,6 @@ public class TabRecognitionListener {
 		new Thread(m).start();
 		int previousTempo = 0;
 		for (Bar b : tab.getBars()) {
-			
 			int tempo = b.getTempo();
 			if(previousTempo != tempo){
 				previousTempo  =tempo;

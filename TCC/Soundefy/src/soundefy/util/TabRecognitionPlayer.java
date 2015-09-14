@@ -1,12 +1,21 @@
 package soundefy.util;
 
+import java.util.ArrayList;
+
 import javax.sound.sampled.LineUnavailableException;
 
+import jm.music.data.CPhrase;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Rest;
+import jm.music.data.Score;
+import jm.util.Play;
 import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
+import soundefy.reconhecimento_de_notas.Nota;
 import soundefy.reconhecimento_de_notas.PitchDetector;
 
 public class TabRecognitionPlayer {
@@ -31,61 +40,99 @@ public class TabRecognitionPlayer {
 	}
 
 	public void play() {
+		Score s = new Score();
+		Part p = new Part();
+		p.setInstrument(Part.DISTORTED_GUITAR);
+		Phrase ph = new Phrase();
 		for (Bar b : tab.getBars()) {
-			int tempo = b.getTempo();
-			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
+			p = new Part();
+			p.setTempo(b.getTempo());
 			for (Chord c : b.getNotes()) {
-				if (listener != null) {
-					listener.nextNote();
-				}
-				double noteDuration = (60000 / tempo) * wholeNoteDuration
-						* c.getDuration();
+				ph = new Phrase();
+				ArrayList<Note> notes = new ArrayList<Note>();
 				for (Note n : c.getNotes()) {
 					if (n != null) {
-						int string = n.getString();
-						int fret = n.getFret();
-						int pos = 0;
-						if (string == 1) {
-							pos = 40;
-						}
-
-						if (string == 2) {
-							pos = 35;
-						}
-
-						if (string == 3) {
-							pos = 31;
-						}
-
-						if (string == 4) {
-							pos = 26;
-						}
-
-						if (string == 5) {
-							pos = 21;
-						}
-
-						if (string == 6) {
-							pos = 16;
-						}
-						final int notePos = pos + fret;
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								tocarNota(notePos, noteDuration);
-							}
-
-						}).start();						
+						notes.add(n);
 					}
 				}
-				try {
-					Thread.sleep((int) Math.round(noteDuration));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+
+				if (notes.size() == 0) {
+					Rest rest = new Rest();
+					rest.setDuration(c.getDuration());
+					ph.addRest(rest);
+				} else {
+					int[] chord = new int[notes.size()];
+					for (int i = 0; i < notes.size(); i++) {
+						Note current = notes.get(i);
+						double freq = PitchDetector.notas[getNoteIndex(
+								current.getString(), current.getFret())]
+								.getFreqOk();
+						chord[i] = jm.music.data.Note.freqToMidiPitch(freq);
+					}
+					int wholeNoteDuration = b.getTimeSignature()
+							.getWholeNoteDuration();
+					double noteDuration = c.getDuration();
+					ph.addChord(chord, noteDuration);
 				}
+				p.addPhrase(ph);
 			}
+			s.addPart(p);
 		}
+		Play.midi(s);
+		/*
+		 * for (Bar b : tab.getBars()) { int tempo = b.getTempo(); int
+		 * wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration(); for
+		 * (Chord c : b.getNotes()) { if (listener != null) {
+		 * listener.nextNote(); } double noteDuration = (60000 / tempo) *
+		 * wholeNoteDuration c.getDuration(); for (Note n : c.getNotes()) { if
+		 * (n != null) { int string = n.getString(); int fret = n.getFret(); int
+		 * pos = 0; if (string == 1) { pos = 40; }
+		 * 
+		 * if (string == 2) { pos = 35; }
+		 * 
+		 * if (string == 3) { pos = 31; }
+		 * 
+		 * if (string == 4) { pos = 26; }
+		 * 
+		 * if (string == 5) { pos = 21; }
+		 * 
+		 * if (string == 6) { pos = 16; } final int notePos = pos + fret; new
+		 * Thread(new Runnable() {
+		 * 
+		 * @Override public void run() { tocarNota(notePos, noteDuration); }
+		 * 
+		 * }).start(); } } try { Thread.sleep((int) Math.round(noteDuration)); }
+		 * catch (InterruptedException e) { e.printStackTrace(); } } }
+		 */
 		listener.tabFinished();
+	}
+
+	private int getNoteIndex(int string, int fret) {
+		int pos = 0;
+		if (string == 1) {
+			pos = 40;
+		}
+
+		if (string == 2) {
+			pos = 35;
+		}
+
+		if (string == 3) {
+			pos = 31;
+		}
+
+		if (string == 4) {
+			pos = 26;
+		}
+
+		if (string == 5) {
+			pos = 21;
+		}
+
+		if (string == 6) {
+			pos = 16;
+		}
+		return pos + fret;
 	}
 
 }
