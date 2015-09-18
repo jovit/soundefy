@@ -41,73 +41,13 @@ public class TabRecognitionPlayer {
 
 	public void play() {
 		Score s = new Score();
-<<<<<<< HEAD
-=======
 		Part p = new Part();
 		p.setInstrument(Part.DISTORTED_GUITAR);
 		Phrase ph = new Phrase();
->>>>>>> 46846ed9602dae4297a0c945aad88224554b578f
 		for (Bar b : tab.getBars()) {
 			p = new Part();
 			p.setTempo(b.getTempo());
 			for (Chord c : b.getNotes()) {
-<<<<<<< HEAD
-				if (listener != null) {
-					listener.nextNote();
-				}
-				double noteDuration = c.getDuration();
-				jm.music.data.Note notes[] = new jm.music.data.Note[6];
-				for (int i = 0; i < 6; i++) {
-					notes[i] = new jm.music.data.Note();
-					notes[i].setPitch(jm.music.data.Note.REST);
-				}
-				int i = 0;
-				for (Note n : c.getNotes()) {
-					if (n != null) {
-						int string = n.getString();
-						int fret = n.getFret();
-						int pos = 0;
-						if (string == 1) {
-							pos = 51;
-						}
-
-						if (string == 2) {
-							pos = 46;
-						}
-
-						if (string == 3) {
-							pos = 42;
-						}
-
-						if (string == 4) {
-							pos = 37;
-						}
-
-						if (string == 5) {
-							pos = 32;
-						}
-
-						if (string == 6) {
-							pos = 27;
-						}
-						final int notePos = pos + fret;
-						notes[i] = new jm.music.data.Note(
-								jm.music.data.Note.freqToMidiPitch(PitchDetector.notas[notePos]
-										.getFreqOk()), noteDuration);
-						i++;
-					}
-				}
-
-				CPhrase p = new CPhrase();
-				p.addNoteList(notes);
-				Part pa = new Part();
-				pa.addPhrase(p);
-				pa.setTempo(tempo);
-				pa.setNumerator(4);
-				pa.setDenominator(4);
-				pa.setInstrument(Part.DISTORTED_GUITAR);
-				s.addPart(pa);
-=======
 				ph = new Phrase();
 				ArrayList<Note> notes = new ArrayList<Note>();
 				for (Note n : c.getNotes()) {
@@ -135,7 +75,6 @@ public class TabRecognitionPlayer {
 					ph.addChord(chord, noteDuration);
 				}
 				p.addPhrase(ph);
->>>>>>> 46846ed9602dae4297a0c945aad88224554b578f
 			}
 			s.addPart(p);
 		}
