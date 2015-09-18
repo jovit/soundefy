@@ -88,7 +88,7 @@ public class TabRecognitionPlayer {
 					}
 				}
 
-				Phrase p = new Phrase();
+				CPhrase p = new CPhrase();
 				p.addNoteList(notes);
 				Part pa = new Part();
 				pa.addPhrase(p);
