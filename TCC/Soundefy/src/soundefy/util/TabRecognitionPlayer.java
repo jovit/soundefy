@@ -40,46 +40,34 @@ public class TabRecognitionPlayer {
 	}
 
 	public void play() {
-		Score s = new Score();
-		Part p = new Part();
-		p.setInstrument(Part.DISTORTED_GUITAR);
-		Phrase ph = new Phrase();
-		for (Bar b : tab.getBars()) {
-			p = new Part();
-			p.setTempo(b.getTempo());
-			for (Chord c : b.getNotes()) {
-				ph = new Phrase();
-				ArrayList<Note> notes = new ArrayList<Note>();
-				for (Note n : c.getNotes()) {
-					if (n != null) {
-						notes.add(n);
-					}
-				}
-
-				if (notes.size() == 0) {
-					Rest rest = new Rest();
-					rest.setDuration(c.getDuration());
-					ph.addRest(rest);
-				} else {
-					int[] chord = new int[notes.size()];
-					for (int i = 0; i < notes.size(); i++) {
-						Note current = notes.get(i);
-						double freq = PitchDetector.notas[getNoteIndex(
-								current.getString(), current.getFret())]
-								.getFreqOk();
-						chord[i] = jm.music.data.Note.freqToMidiPitch(freq);
-					}
-					int wholeNoteDuration = b.getTimeSignature()
-							.getWholeNoteDuration();
-					double noteDuration = c.getDuration();
-					ph.addChord(chord, noteDuration);
-				}
-				p.addPhrase(ph);
-			}
-			s.addPart(p);
-		}
-		Play.midi(s);
+		
 		/*
+		 * Score s = new Score(); Part p = new Part();
+		 * p.setInstrument(Part.DISTORTED_GUITAR); Phrase ph = new Phrase(); for
+		 * (Bar b : tab.getBars()) { p = new Part();
+		 * p.setNumerator(b.getTimeSignature().getNumberOfBeats());
+		 * p.setDenominator(b.getTimeSignature().getNumberOfBeats());
+		 * p.setTempo(b.getTempo()); for (Chord c : b.getNotes()) { ph = new
+		 * Phrase(); ArrayList<Note> notes = new ArrayList<Note>(); for (Note n
+		 * : c.getNotes()) { if (n != null) { notes.add(n); } }
+		 * 
+		 * double noteDuration = c.getDuration(); if (notes.size() == 0) { Rest
+		 * rest = new Rest(); rest.setDuration(c.getDuration());
+		 * ph.addRest(rest); } else { int[] chord = new int[notes.size()]; for
+		 * (int i = 0; i < notes.size(); i++) { Note current = notes.get(i);
+		 * double freq = PitchDetector.notas[getNoteIndex( current.getString(),
+		 * current.getFret())] .getFreqOk(); chord[i] =
+		 * jm.music.data.Note.freqToMidiPitch(freq); } ph.addChord(chord,
+		 * noteDuration);
+		 * 
+		 * Note current = notes.get(0); jm.music.data.Note note = new
+		 * jm.music.data.Note(); double freq = PitchDetector.notas[getNoteIndex(
+		 * current.getString(), current.getFret())] .getFreqOk();
+		 * note.setPitch(jm.music.data.Note.freqToMidiPitch(freq));
+		 * note.setDuration(noteDuration);
+		 * ph.setInstrument(Phrase.DISTORTED_GUITAR); ph.add(note); }
+		 * p.addPhrase(ph); } s.addPart(p); } Play.midi(s);
+		 * 
 		 * for (Bar b : tab.getBars()) { int tempo = b.getTempo(); int
 		 * wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration(); for
 		 * (Chord c : b.getNotes()) { if (listener != null) {
@@ -105,7 +93,6 @@ public class TabRecognitionPlayer {
 		 * catch (InterruptedException e) { e.printStackTrace(); } } }
 		 */
 		listener.tabFinished();
-		Play.midi(s);
 	}
 
 	private int getNoteIndex(int string, int fret) {
