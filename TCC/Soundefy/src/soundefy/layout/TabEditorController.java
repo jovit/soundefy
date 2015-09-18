@@ -199,6 +199,22 @@ public class TabEditorController implements NextNoteListener {
 								tab);
 						tabRecognition
 								.setNextNoteListener(TabEditorController.this);
+						
+						Task<Void> task = new Task<Void>() {
+							@Override
+							public Void call() {
+								tabRecognition.play();
+								return null;
+							}
+						};
+						Thread t = new Thread(task);
+						t.setDaemon(true);
+						t.start();
+					}
+				}else if(event.getCode() == KeyCode.T){
+					if (!playingTab && !addingNewNote) {
+						playingTab = true;
+						currentNote = -1;
 
 						TabRecognitionListener tabRecognitionListener = new TabRecognitionListener(tab);
 						tabRecognitionListener.setNextNoteListener(TabEditorController.this);
@@ -206,7 +222,7 @@ public class TabEditorController implements NextNoteListener {
 						Task<Void> task = new Task<Void>() {
 							@Override
 							public Void call() {
-								tabRecognition.play();
+								tabRecognitionListener.play();
 								return null;
 							}
 						};
@@ -373,7 +389,7 @@ public class TabEditorController implements NextNoteListener {
         AnchorPane page = (AnchorPane) loader.load();
 
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("OpÃ§Ãµes de Compasso");
+        dialogStage.setTitle("Opções de Compasso");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         Scene scene = new Scene(page);
@@ -381,9 +397,15 @@ public class TabEditorController implements NextNoteListener {
         
         BarSettingsController controller = loader.getController();
         controller.setDialogStage(dialogStage);
+        controller.setTimeSignature(this.tab.getBar().getTimeSignature());
+        controller.setTempo(this.tab.getBar().getTempo());
 
         dialogStage.showAndWait();
         if(controller.isOkClicked()){
+        	setStandardTempo(controller.getTempo());
+        	
+        	setStandardTimeSigniature(new TimeSignature(controller.getNumberOfBeats(), 
+        			controller.getWholeNoteDuration()));
         	tab.addBar(controller.getNumberOfBeats(),
         			controller.getWholeNoteDuration(),
         			controller.getTempo());

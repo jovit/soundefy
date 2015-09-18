@@ -38,6 +38,11 @@ public class ToneMaker {
 			buf[0] = (byte) (Math.sin(angle) * 127.0 * (vol / (i / 80)));
 			sdl.write(buf, 0, 1);
 		}
+		/*for (int i = 1; i < msecs * 8 + 1; i++) {
+			double angle = i / (SAMPLE_RATE / hz) * 2.0 * Math.PI;
+			buf[0] = (byte) (Math.sin(angle) * 127.0 * (vol / (i / 80)));
+			sdl.write(buf, 0, 1);
+		}*/
 		sdl.drain();
 		sdl.stop();
 		sdl.close();

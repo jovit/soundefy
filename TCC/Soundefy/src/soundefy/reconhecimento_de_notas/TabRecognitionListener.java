@@ -5,8 +5,10 @@ import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
+import soundefy.util.Metronome;
 
 public class TabRecognitionListener {
+	
 	private NextNoteListener listener;
 	private Tab tab;
 
@@ -20,9 +22,18 @@ public class TabRecognitionListener {
 
 	public void play() {
 		PitchDetector p = new PitchDetector();
+		Metronome m = new Metronome(tab.getBar().getTempo());
 		new Thread(p).start();
+		new Thread(m).start();
+		int previousTempo = 0;
 		for (Bar b : tab.getBars()) {
 			int tempo = b.getTempo();
+			if(previousTempo != tempo){
+				previousTempo  =tempo;
+				m.stop();
+				m = new Metronome(tempo);
+				new Thread(m).start();
+			}
 			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
 			for (Chord c : b.getNotes()) {
 				if (listener != null) {
@@ -36,29 +47,30 @@ public class TabRecognitionListener {
 						int fret = n.getFret();
 						int pos = 0;
 						if (string == 1) {
-							pos = 52;
+							pos = 40;
 						}
 
 						if (string == 2) {
-							pos = 47;
+							pos = 35;
 						}
 
 						if (string == 3) {
-							pos = 43;
+							pos = 31;
 						}
 
 						if (string == 4) {
-							pos = 38;
+							pos = 26;
 						}
 
 						if (string == 5) {
-							pos = 33;
+							pos = 21;
 						}
 
 						if (string == 6) {
-							pos = 28;
+							pos = 16;
 						}
 						pos += fret;
+					
 						Nota readNote = PitchDetector.notas[pos];
 						try {
 							Thread.sleep((long)(noteDuration));
@@ -86,6 +98,8 @@ public class TabRecognitionListener {
 				}
 			}
 		}
+		m.stop();
+		p.stopListening();
 		listener.tabFinished();
 	}
 
