@@ -7,16 +7,34 @@ import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Instrument;
 
 public class MidiHelper {
-	public static void play(int midiFreq, int velocity) throws MidiUnavailableException{
-		Synthesizer synth = MidiSystem.getSynthesizer();
+	Synthesizer synth;
+	boolean playing = false;
+	MidiChannel[] midiChannel;
+
+	public MidiHelper() throws MidiUnavailableException {
+		synth = MidiSystem.getSynthesizer();
 		long startTime = System.nanoTime();
 		synth.open();
 		long estimatedTime = System.nanoTime() - startTime;
-		
-		MidiChannel[] midiChannel = synth.getChannels();
+		midiChannel = synth.getChannels();
 		Instrument[] instruments = synth.getDefaultSoundbank().getInstruments();
-		boolean successLoadingInstrument = synth.loadInstrument(instruments[1]);
-		
-		midiChannel[0].noteOn(midiFreq, velocity);
+		String inst = instruments[30].getName();
+		boolean successLoadingInstrument = synth
+				.loadInstrument(instruments[30]);
+	}
+
+	public void play(int midiFreq, int velocity, int noteDuration)
+			throws MidiUnavailableException, InterruptedException {
+		//for (int i = 0; i < 16; i++) {
+			midiChannel[7].noteOn(midiFreq, velocity);
+			//Thread.sleep(500);
+		//}
+		playing = true;
+	}
+
+	public void pause(int midiFreq, int velocity) {
+		if (playing) {
+			midiChannel[0].noteOff(midiFreq, velocity);
+		}
 	}
 }

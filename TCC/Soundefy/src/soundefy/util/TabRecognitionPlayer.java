@@ -2,6 +2,7 @@ package soundefy.util;
 
 import java.util.ArrayList;
 
+import javax.sound.midi.MidiUnavailableException;
 import javax.sound.sampled.LineUnavailableException;
 
 import jm.music.data.CPhrase;
@@ -40,7 +41,7 @@ public class TabRecognitionPlayer {
 	}
 
 	public void play() {
-		
+
 		/*
 		 * Score s = new Score(); Part p = new Part();
 		 * p.setInstrument(Part.DISTORTED_GUITAR); Phrase ph = new Phrase(); for
@@ -92,6 +93,42 @@ public class TabRecognitionPlayer {
 		 * }).start(); } } try { Thread.sleep((int) Math.round(noteDuration)); }
 		 * catch (InterruptedException e) { e.printStackTrace(); } } }
 		 */
+		MidiHelper midi = null;
+		try {
+			midi = new MidiHelper();
+		} catch (MidiUnavailableException e1) {
+			e1.printStackTrace();
+		}
+
+		for (Bar b : tab.getBars()) {
+			int tempo = b.getTempo();
+			int wholeNoteDuration = b.getTimeSignature().getWholeNoteDuration();
+			for (Chord c : b.getNotes()) {
+				int noteDuration = (int) ((60000 / tempo) * wholeNoteDuration * c
+						.getDuration());
+				int freq = 0;
+				for (Note n : c.getNotes()) {
+					if (n != null) {
+						freq = jm.music.data.Note
+								.freqToMidiPitch(PitchDetector.notas[getNoteIndex(
+										n.getString(), n.getFret())]
+										.getFreqOk());
+						try {
+							midi.play(freq, 100, 1000);
+						} catch (MidiUnavailableException
+								| InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				try {
+					Thread.sleep(noteDuration);
+					midi.pause(freq, 100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		listener.tabFinished();
 	}
 
