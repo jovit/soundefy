@@ -13,7 +13,6 @@ public enum ClientRequest {
 		switch (ind2){
 			case 0:
 				return ClientRequest.HI;
-			break;
 		}
 		return null;
 	}

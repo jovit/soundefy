@@ -72,22 +72,17 @@ public class TabRecognitionListener {
 						pos += fret;
 					
 						Nota readNote = PitchDetector.notas[pos];
-						try {
-							Thread.sleep((long)(noteDuration));
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-						}
 						Nota maisTocada = p.getNotaMaisTocada();
 						if(maisTocada != null){
 							if (readNote == maisTocada){
-								System.out.println("Acertou a nota leke");
+								listener.hitNote();
 							} else {
-								System.out.println("Errou a nota leke");
+								listener.missNote();
 							}
 							System.out.println("Nota esperada : " + readNote.getNome());
 							System.out.println("Nota tocada : " + maisTocada.getNome());
 						} else {
-							System.out.println("Fa�a um barulho");
+							listener.missNote();
 						}				
 					}
 				}

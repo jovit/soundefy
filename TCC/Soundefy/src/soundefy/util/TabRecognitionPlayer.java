@@ -1,27 +1,19 @@
 package soundefy.util;
 
-import java.util.ArrayList;
-
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.sampled.LineUnavailableException;
 
-import jm.music.data.CPhrase;
-import jm.music.data.Part;
-import jm.music.data.Phrase;
-import jm.music.data.Rest;
-import jm.music.data.Score;
-import jm.util.Play;
 import soundefy.listener.NextNoteListener;
 import soundefy.model.Bar;
 import soundefy.model.Chord;
 import soundefy.model.Note;
 import soundefy.model.Tab;
-import soundefy.reconhecimento_de_notas.Nota;
 import soundefy.reconhecimento_de_notas.PitchDetector;
 
 public class TabRecognitionPlayer {
 	private NextNoteListener listener;
 	private Tab tab;
+	
 
 	public void setNextNoteListener(NextNoteListener listener) {
 		this.listener = listener;

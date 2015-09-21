@@ -12,6 +12,17 @@ public class Tab {
 	public Tab() {
 		bars = new ArrayList<>();
 	}
+	
+	public int getNumberOfNotes(){
+		int numberOfNotes = 0;
+		if(bars != null){
+			for(Bar b:bars){
+				numberOfNotes += b.getNotes().size();
+			}	
+		}
+		
+		return numberOfNotes;
+	}
 
 	public void addBar(int numberOfBeats, int wholeNoteDuration, int tempo)
 			throws Exception {
