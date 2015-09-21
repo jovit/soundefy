@@ -53,6 +53,8 @@ public class TabEditorController implements NextNoteListener {
 	private Image[] restImages;
 
 	private Image[] noteImages;
+	
+	private int[] noteColors;
 
 	private int noteCount;
 
@@ -126,6 +128,8 @@ public class TabEditorController implements NextNoteListener {
 			e.printStackTrace();
 		}
 
+		noteColors = null;
+		
 		context = canvas.getGraphicsContext2D();
 
 		canvas.widthProperty().addListener(new ChangeListener<Number>() {
@@ -218,6 +222,11 @@ public class TabEditorController implements NextNoteListener {
 
 						TabRecognitionListener tabRecognitionListener = new TabRecognitionListener(tab);
 						tabRecognitionListener.setNextNoteListener(TabEditorController.this);
+						
+						noteColors = new int[tab.getNumberOfNotes()];
+						for(int i=0; i<noteColors.length; i++){
+							noteColors[i] = 0;
+						}
 						
 						Task<Void> task = new Task<Void>() {
 							@Override
@@ -641,7 +650,18 @@ public class TabEditorController implements NextNoteListener {
 							context.setFill(Color.WHITE);
 							context.fillRect(whereX - NOTES_SIZE / 4, whereNote
 									- NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
-							context.setFill(Color.BLACK);
+							if(noteColors != null){
+								if(noteColors[noteCount-1] == 0){
+									context.setFill(Color.BLACK);
+								}else if(noteColors[noteCount] == 1){
+									context.setFill(Color.RED);
+								}else{
+									context.setFill(Color.GREEN);
+								}
+							}else{
+								context.setFill(Color.BLACK);
+							}
+							
 							context.fillText(
 									String.valueOf(notes[i].getFret()), whereX,
 									whereNote);
@@ -649,7 +669,19 @@ public class TabEditorController implements NextNoteListener {
 							context.setFill(Color.WHITE);
 							context.fillRect(whereX - NOTES_SIZE / 2, whereNote
 									- NOTES_SIZE, NOTES_SIZE, NOTES_SIZE);
-							context.setFill(Color.BLACK);
+							
+							if(noteColors != null){
+								if(noteColors[noteCount-1] == 0){
+									context.setFill(Color.BLACK);
+								}else if(noteColors[noteCount-1] == 1){
+									context.setFill(Color.RED);
+								}else{
+									context.setFill(Color.GREEN);
+								}
+							}else{
+								context.setFill(Color.BLACK);
+							}
+							
 							context.fillText(
 									String.valueOf(notes[i].getFret()), whereX
 											- (NOTES_SIZE / 2), whereNote);
@@ -788,6 +820,16 @@ public class TabEditorController implements NextNoteListener {
 			}
 		});
 
+	}
+	
+	@Override
+	public void missNote() {
+		noteColors[currentNote] = 1;
+	}
+
+	@Override
+	public void hitNote() {
+		noteColors[currentNote] = 2;
 	}
 
 	@Override

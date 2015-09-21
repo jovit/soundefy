@@ -25,7 +25,13 @@ public class Server {
 		@Override
 		public void run() {
 			while(true){
-				int ind = reader.readInt();
+				int ind = 0;
+				try {
+					ind = reader.readInt();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				ClientRequest cr = ClientRequest.getRequest(ind);
 			}
 		}
