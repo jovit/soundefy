@@ -1,19 +1,19 @@
-package server_main;
+package soundefy.client;
 
-public enum ClientRequest {
+public enum ServerResponse {
 	HI(0);
 	
 	private int ind;
 	
-	ClientRequest(int ind){
+	ServerResponse(int ind){
 		this.setInd(ind);
 	}
 
-	public static ClientRequest getRequest(int ind2) {
+	public static ServerResponse getRequest(int ind2) {
 		switch (ind2){
-			case 0:
-				return ClientRequest.HI;
-
+			case 0:{
+				return ServerResponse.HI;
+			}
 		}
 		return null;
 	}

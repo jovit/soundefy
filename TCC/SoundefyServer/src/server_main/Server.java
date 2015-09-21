@@ -25,6 +25,7 @@ public class Server {
 		@Override
 		public void run() {
 			while(true){
+
 				int ind = 0;
 				try {
 					ind = reader.readInt();
@@ -32,6 +33,7 @@ public class Server {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
 				ClientRequest cr = ClientRequest.getRequest(ind);
 			}
 		}
