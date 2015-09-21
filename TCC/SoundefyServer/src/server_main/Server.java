@@ -25,19 +25,16 @@ public class Server {
 		@Override
 		public void run() {
 			while(true){
-				int ind;
+
+				int ind = 0;
 				try {
 					ind = reader.readInt();
-					ClientRequest cr = ClientRequest.getRequest(ind);
-					
-					if (cr == ClientRequest.HI){
-						System.out.println("Client says HI");
-					}
-					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				ClientRequest cr = ClientRequest.getRequest(ind);
 			}
 		}
 	}

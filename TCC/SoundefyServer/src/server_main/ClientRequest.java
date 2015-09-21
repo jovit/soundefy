@@ -11,9 +11,9 @@ public enum ClientRequest {
 
 	public static ClientRequest getRequest(int ind2) {
 		switch (ind2){
-			case 0:{
+			case 0:
 				return ClientRequest.HI;
-			}
+
 		}
 		return null;
 	}
