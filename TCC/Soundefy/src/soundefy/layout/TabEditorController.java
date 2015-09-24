@@ -398,7 +398,7 @@ public class TabEditorController implements NextNoteListener {
         AnchorPane page = (AnchorPane) loader.load();
 
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Opções de Compasso");
+        dialogStage.setTitle("Opï¿½ï¿½es de Compasso");
         dialogStage.initModality(Modality.WINDOW_MODAL);
         dialogStage.initOwner(primaryStage);
         Scene scene = new Scene(page);
@@ -514,7 +514,10 @@ public class TabEditorController implements NextNoteListener {
 			addingNewNote = false;
 			showNoteAddingError();
 		}
-
+		noteColors = new int[tab.getNumberOfNotes()];
+		for(int i=0; i<noteColors.length; i++){
+			noteColors[i] = 0;
+		}
 		drawTab();
 		if ((pageTotalHeight - canvas.getHeight()) > 0)
 			currentScroll = (pageTotalHeight - canvas.getHeight()) / scrollStep;
@@ -653,7 +656,7 @@ public class TabEditorController implements NextNoteListener {
 							if(noteColors != null){
 								if(noteColors[noteCount-1] == 0){
 									context.setFill(Color.BLACK);
-								}else if(noteColors[noteCount] == 1){
+								}else if(noteColors[noteCount-1] == 1){
 									context.setFill(Color.RED);
 								}else{
 									context.setFill(Color.GREEN);

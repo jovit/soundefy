@@ -18,18 +18,14 @@ public class MidiHelper {
 		long estimatedTime = System.nanoTime() - startTime;
 		midiChannel = synth.getChannels();
 		Instrument[] instruments = synth.getDefaultSoundbank().getInstruments();
-		String inst = instruments[30].getName();
 		boolean successLoadingInstrument = synth
 				.loadInstrument(instruments[30]);
+midiChannel[0].programChange(30);
 	}
 
 	public void play(int midiFreq, int velocity, int noteDuration)
 			throws MidiUnavailableException, InterruptedException {
-		//for (int i = 0; i < 16; i++) {
-			midiChannel[7].noteOn(midiFreq, velocity);
-			//Thread.sleep(500);
-		//}
-		playing = true;
+			midiChannel[0].noteOn(midiFreq, velocity);		playing = true;
 	}
 
 	public void pause(int midiFreq, int velocity) {
@@ -37,4 +33,5 @@ public class MidiHelper {
 			midiChannel[0].noteOff(midiFreq, velocity);
 		}
 	}
+
 }

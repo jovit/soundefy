@@ -41,6 +41,11 @@ public class TabRecognitionListener {
 				}
 				double noteDuration = (60000 / tempo) * wholeNoteDuration
 						* c.getDuration();
+				try {
+					Thread.sleep((int) Math.round(noteDuration));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				for (Note n : c.getNotes()) {
 					if (n != null) {
 						int string = n.getString();
@@ -83,14 +88,12 @@ public class TabRecognitionListener {
 							System.out.println("Nota tocada : " + maisTocada.getNome());
 						} else {
 							listener.missNote();
+							System.out.println("sem som" );
+							
 						}				
 					}
 				}
-				try {
-					Thread.sleep((int) Math.round(noteDuration));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				
 			}
 		}
 		m.stop();

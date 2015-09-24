@@ -106,6 +106,7 @@ public class TabRecognitionPlayer {
 										n.getString(), n.getFret())]
 										.getFreqOk());
 						try {
+							listener.nextNote();
 							midi.play(freq, 100, 1000);
 						} catch (MidiUnavailableException
 								| InterruptedException e) {
