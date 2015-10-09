@@ -28,14 +28,40 @@ public class Server {
 
 				int ind = 0;
 				try {
-					ind = reader.readInt();
+					System.out.println("trying to read");
+					byte [] pack = new byte[4];
+					reader.read(pack);
+					ind = PackManager.unpack(pack, 0); 
+					System.out.println("read");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
-				ClientRequest cr = ClientRequest.getRequest(ind);
+				try{
+					ClientRequest cr = this.getRequest(ind);
+					if (cr == ClientRequest.HI){
+						ServerResponse sr = ServerResponse.HI;
+						byte [] pack = new byte[4];
+						PackManager.pack(sr.getInd(),pack,0);
+						writer.write(pack);
+						writer.flush();
+						System.out.println("wrote to client");
+					}/*else if () {
+						
+					}*/
+				}catch (Exception e ){
+					e.printStackTrace();
+				}
 			}
+		}
+		
+		private ClientRequest getRequest(int cr) throws Exception{
+			switch (cr){
+				case 0:{
+					return ClientRequest.HI;
+				}
+			}
+			throw new Exception("Nao existe esse client request");
 		}
 	}
 	
@@ -53,8 +79,10 @@ public class Server {
 		while (true){
 			Socket client;
 			try {
+				System.out.println("Waiting for connection...");
 				client = serverSocket.accept();
 				new Thread(new ClientListener(client)).start();
+				System.out.println("Connection established");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

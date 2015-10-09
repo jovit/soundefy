@@ -7,6 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import soundefy.layout.TabEditorController;
 import soundefy.model.TimeSignature;
+import soundefy.net.SoundefyClient;
 
 public class Main extends Application{
 	private Stage primaryStage;
@@ -25,6 +26,8 @@ public class Main extends Application{
 		controller.setPrimaryStage(primaryStage);
 		this.primaryStage.setScene(new Scene(pane,500,500));
 		this.primaryStage.show();
+		
+		new SoundefyClient();
 	}
 	
 	

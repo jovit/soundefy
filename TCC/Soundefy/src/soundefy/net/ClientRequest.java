@@ -1,4 +1,4 @@
-package server_main;
+package soundefy.net;
 
 public enum ClientRequest {
 	HI(0);

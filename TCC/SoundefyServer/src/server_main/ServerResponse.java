@@ -9,15 +9,6 @@ public enum ServerResponse {
 		this.setInd(ind);
 	}
 
-	public static ServerResponse getRequest(int ind2) {
-		switch (ind2){
-			case 0:{
-				return ServerResponse.HI;
-			}
-		}
-		return null;
-	}
-
 	public int getInd() {
 		return ind;
 	}
