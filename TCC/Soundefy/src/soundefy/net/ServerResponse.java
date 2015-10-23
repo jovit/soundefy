@@ -1,11 +1,11 @@
-package server_main;
+package soundefy.net;
 
-public enum ClientRequest {
+public enum ServerResponse {
 	HI(0);
 	
 	private int ind;
 	
-	ClientRequest(int ind){
+	ServerResponse(int ind){
 		this.setInd(ind);
 	}
 

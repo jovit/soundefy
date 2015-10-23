@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import soundefy.layout.TabEditorController;
 import soundefy.model.TimeSignature;
+import soundefy.net.SoundefyClient;
 
 public class Main extends Application{
 	private Stage primaryStage;
@@ -32,6 +33,8 @@ public class Main extends Application{
 		controller.setPrimaryStage(this.primaryStage);
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();
+		
+		new SoundefyClient();
 	}
 	
 	public void openLogin() throws IOException{
