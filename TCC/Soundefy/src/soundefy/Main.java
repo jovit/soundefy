@@ -1,9 +1,12 @@
 package soundefy;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import soundefy.layout.TabEditorController;
 import soundefy.model.TimeSignature;
@@ -16,17 +19,29 @@ public class Main extends Application{
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Soundefy");
 		
+		openLogin();
+	}
+	
+	public void openTab() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabEditor.fxml"));
 		AnchorPane pane = (AnchorPane)loader.load();
 		TabEditorController controller = loader.getController();
 		controller.setStandardTempo(126);
-		controller.setStandardTimeSigniature(new TimeSignature(4, 4));
-		controller.setPrimaryStage(primaryStage);
-		this.primaryStage.setScene(new Scene(pane,500,500));
+		controller.setStandardTimeSignature(new TimeSignature(4, 4));
+		controller.setPrimaryStage(this.primaryStage);
+		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();
 	}
 	
+	public void openLogin() throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("layout/Login.fxml"));
+		GridPane pane = (GridPane) loader.load();
+		//controller.setPrimaryStage(this.primaryStage);
+		this.primaryStage.setScene(new Scene(pane));
+		this.primaryStage.show();
+	}
 	
 	public static void main(String args[]){
 		launch(args);
