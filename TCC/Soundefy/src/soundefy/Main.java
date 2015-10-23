@@ -40,7 +40,7 @@ public class Main extends Application{
 	public void openLogin() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/Login.fxml"));
-		GridPane pane = (GridPane) loader.load();
+		AnchorPane pane = (AnchorPane) loader.load();
 		//controller.setPrimaryStage(this.primaryStage);
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="500.0" styleClass="background" stylesheets="@style/LoginStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="soundefy.layout.LoginController">
    <children>
-      <Button layoutX="224.0" layoutY="393.0" mnemonicParsing="false" text="Button" />
-      <TextField layoutX="176.0" layoutY="148.0" />
-      <TextField layoutX="176.0" layoutY="238.0" />
+      <Button fx:id="btnLogin" layoutX="208.0" layoutY="236.0" mnemonicParsing="false" text="Login" />
+      <TextField layoutX="154.0" layoutY="94.0" />
+      <TextField layoutX="154.0" layoutY="145.0" prefHeight="37.0" prefWidth="206.0" />
+      <Label fx:id="lblInscrever" layoutX="210.0" layoutY="285.0" text="Inscrever-se" />
+      <Label fx:id="lblMudarSenha" layoutX="207.0" layoutY="314.0" text="Mudar senha" />
+      <Label layoutX="155.0" layoutY="198.0" text="Lembrar de mim" />
+      <ToggleButton layoutX="311.0" layoutY="196.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="49.0" text="ToggleButton" />
    </children>
 </AnchorPane>

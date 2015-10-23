@@ -3,16 +3,17 @@ package server_main;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-	private class ClientListener implements Runnable{
-		
+	private class ClientListener implements Runnable {
+
 		private DataInputStream reader;
 		private DataOutputStream writer;
-		
-		public ClientListener(Socket s){
+
+		public ClientListener(Socket s) {
 			try {
 				reader = new DataInputStream(s.getInputStream());
 				writer = new DataOutputStream(s.getOutputStream());
@@ -21,62 +22,64 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
-		
+
 		@Override
 		public void run() {
-			while(true){
+			while (true) {
 
 				int ind = 0;
 				try {
 					System.out.println("trying to read");
-					byte [] pack = new byte[4];
+					byte[] pack = new byte[4];
 					reader.read(pack);
-					ind = PackManager.unpack(pack, 0); 
+					ind = PackManager.unpack(pack, 0);
 					System.out.println("read");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				try{
+				try {
 					ClientRequest cr = this.getRequest(ind);
-					if (cr == ClientRequest.HI){
+					if (cr == ClientRequest.HI) {
 						ServerResponse sr = ServerResponse.HI;
-						byte [] pack = new byte[4];
-						PackManager.pack(sr.getInd(),pack,0);
+						byte[] pack = new byte[4];
+						PackManager.pack(sr.getInd(), pack, 0);
 						writer.write(pack);
 						writer.flush();
 						System.out.println("wrote to client");
-					}/*else if () {
-						
-					}*/
-				}catch (Exception e ){
+					}/*
+					 * else if () {
+					 * 
+					 * }
+					 */
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		
-		private ClientRequest getRequest(int cr) throws Exception{
-			switch (cr){
-				case 0:{
-					return ClientRequest.HI;
-				}
+
+		private ClientRequest getRequest(int cr) throws Exception {
+			switch (cr) {
+			case 0: {
+				return ClientRequest.HI;
+			}
 			}
 			throw new Exception("Nao existe esse client request");
 		}
 	}
-	
-	
+
 	private ServerSocket serverSocket;
 	public static final int PORT = 13174;
-	
-	public Server(){
+
+	public Server() {
 		serverSocket = null;
-		try{
-			serverSocket = new ServerSocket(13174);
-		}catch (IOException e){
-			System.err.println("Erro ao inicializar o server com a porta : " + PORT);
+		try {
+			serverSocket = new ServerSocket(PORT);
+		} catch (IOException e) {
+			System.err.println("Erro ao inicializar o server com a porta : "
+					+ PORT);
 		}
-		while (true){
+		while (true) {
 			Socket client;
 			try {
 				System.out.println("Waiting for connection...");
@@ -88,5 +91,12 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public int signUp(String name, String pwd) throws IOException {
+		int result = -1;
+		ServerSocket ss = new ServerSocket();
+		Socket socket = ss.accept();
+		return result;
 	}
 }
