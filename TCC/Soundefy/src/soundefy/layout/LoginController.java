@@ -1,6 +1,6 @@
 package soundefy.layout;
 
-import soundefy.util.Server;
+import soundefy.net.Server;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,10 +20,11 @@ public class LoginController {
 
 	@FXML
 	private void initialize() {
+		Server server = new Server();
 		btnLogin.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Server server = new Server();
+				
 			}
 		});
 		
