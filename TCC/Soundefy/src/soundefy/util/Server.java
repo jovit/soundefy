@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Server {
-	private server_main.Server server;
+	/*private server_main.Server server;
 
 	public Server() {
 		server = new server_main.Server();
@@ -15,5 +15,5 @@ public class Server {
 		int result = -1;
 		Socket socket = new Socket("localhost", server_main.Server.PORT);
 		return result;
-	}
+	}*/
 }
