@@ -2,6 +2,8 @@ package soundefy.layout;
 
 import java.io.File;
 
+import javax.swing.plaf.basic.BasicTreeUI.SelectionModelPropertyChangeHandler;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -118,20 +120,15 @@ public class TabEditorController implements NextNoteListener {
 				"/resources/notes/hundredtwentyeighthnote.png");
 	}
 
-	@FXML
-	private void initialize() {
+	private void initializeTab(){
 		try {
-			loadImages();
-
 			this.tab = new Tab();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		noteColors = null;
-
-		context = canvas.getGraphicsContext2D();
-
+	}
+	
+	private void setupCanvasForAutoResizingWithScreen(){
 		canvas.widthProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable,
@@ -150,7 +147,9 @@ public class TabEditorController implements NextNoteListener {
 		});
 		canvas.widthProperty().bind(parent.widthProperty());
 		canvas.heightProperty().bind(parent.heightProperty());
-
+	}
+	
+	private void setCanvasOnMousePressed(){
 		canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -163,7 +162,9 @@ public class TabEditorController implements NextNoteListener {
 				}
 			}
 		});
-
+	}
+	
+	private void setCanvasOnMouseDragged(){
 		canvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -183,14 +184,18 @@ public class TabEditorController implements NextNoteListener {
 				}
 			}
 		});
-
+	}
+	
+	private void setCanvasOnMouseReleased(){
 		canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				pressedOnScrollBar = false;
 			}
 		});
-
+	}
+	
+	private void setCanvasOnKeyPressed(){
 		canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -290,6 +295,7 @@ public class TabEditorController implements NextNoteListener {
 						} else if (event.isControlDown()
 								&& event.getCode() == KeyCode.S) {
 							saveTab();
+							drawTab();
 						}
 					} else if (addingNewNote) {
 						if (event.getCode() == KeyCode.ENTER) {
@@ -346,15 +352,40 @@ public class TabEditorController implements NextNoteListener {
 
 			}
 		});
+	}
+	
+	private void setupCanvas(){
+		
+		setupCanvasForAutoResizingWithScreen();
+		setCanvasOnMousePressed();
+		setCanvasOnMouseDragged();
+		setCanvasOnMouseReleased();
+		setCanvasOnKeyPressed();
 		canvas.setFocusTraversable(true);
 	}
-
-	private void saveTab() {
+	
+	@FXML
+	private void initialize() {
+		loadImages();
+		initializeTab();
+		
+		noteColors = null;
+		
+		context = canvas.getGraphicsContext2D();
+		
+		setupCanvas();
+	}
+	
+	private File openFileChooserForSaving(){
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save File");
 		fileChooser.getExtensionFilters().addAll(
 				new FileChooser.ExtensionFilter("Soundefy Files", "*.sdy"));
-		File selectedFile = fileChooser.showSaveDialog(primaryStage);
+		return fileChooser.showSaveDialog(primaryStage);
+	}
+
+	private void saveTab() {
+		File selectedFile = openFileChooserForSaving();
 		if (selectedFile != null) {
 			try {
 				System.out.println(selectedFile.getAbsolutePath());
@@ -364,7 +395,6 @@ public class TabEditorController implements NextNoteListener {
 				e.printStackTrace();
 			}
 		}
-		drawTab();
 	}
 
 	private void addToNote(int fret) {

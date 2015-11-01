@@ -18,10 +18,13 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		setupPrimaryStage(primaryStage);
+		openLogin();
+	}
+	
+	private void setupPrimaryStage(Stage primaryStage){
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Soundefy");
-
-		openLogin();
 	}
 
 	public void openTab() throws IOException{
