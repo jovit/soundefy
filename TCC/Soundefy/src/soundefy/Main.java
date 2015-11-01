@@ -44,6 +44,14 @@ public class Main extends Application{
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();
 	}
+	
+	public void openTabBrowser() throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("layout/TabBrowser.fxml"));
+		AnchorPane pane = (AnchorPane) loader.load();
+		this.primaryStage.setScene(new Scene(pane));
+		this.primaryStage.show();
+	}
 
 	public static void main(String args[]){
 		launch(args);
