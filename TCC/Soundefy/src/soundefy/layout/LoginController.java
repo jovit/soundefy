@@ -1,11 +1,11 @@
 package soundefy.layout;
 
-import soundefy.util.Server;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import soundefy.Main;
 
 public class LoginController {
 
@@ -17,24 +17,49 @@ public class LoginController {
 	
 	@FXML
 	private Label lblMudarSenha;
+	
+	private Main main;
 
+	public void setMain(Main main){
+		this.main = main;
+	}
+	
 	@FXML
 	private void initialize() {
-		btnLogin.setOnMouseReleased(new EventHandler<MouseEvent>() {
+		configureOnLoginClick();
+		configureOnSubscribeClick();
+		configureOnChangePasswordClick();
+	}
+	
+	private void configureOnLoginClick(){
+		btnLogin.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Server server = new Server();
+				//Server server = new Server();
+				openSoundefyMain();
 			}
 		});
-		
-		lblInscrever.setOnMouseReleased(new EventHandler<MouseEvent>() {
+	}
+	
+	private void openSoundefyMain(){
+		try{
+			main.openSoundefy();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void configureOnSubscribeClick(){
+		lblInscrever.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 
 			}
 		});
+	}
 	
-		lblMudarSenha.setOnMouseReleased(new EventHandler<MouseEvent>() {
+	private void configureOnChangePasswordClick(){
+		lblMudarSenha.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 			}
