@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import soundefy.layout.TabEditorController;
@@ -49,6 +50,14 @@ public class Main extends Application{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabBrowser.fxml"));
 		AnchorPane pane = (AnchorPane) loader.load();
+		this.primaryStage.setScene(new Scene(pane));
+		this.primaryStage.show();
+	}
+	
+	public void openSoundefy() throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("layout/Soundefy.fxml"));
+		SplitPane pane = (SplitPane) loader.load();
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();
 	}
