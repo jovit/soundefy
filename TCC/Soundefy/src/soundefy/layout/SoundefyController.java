@@ -1,17 +1,36 @@
 package soundefy.layout;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import soundefy.Main;
 
 public class SoundefyController {
 	@FXML
 	AnchorPane contentPane;
+	@FXML
+	Label browseTabsLabel;
+	@FXML
+	Label friendsLabel;
+	@FXML
+	Label uploadTabsLabel;
+	@FXML
+	Label playSongLabel;
+	@FXML
+	Label writeTabLabel;
 	
 	private Main main;
 	
 	public void setMain(Main main){
 		this.main = main;
+	}
+	
+	private void removeLabelStyles(){
+		browseTabsLabel.setStyle("");
+		friendsLabel.setStyle("");
+		uploadTabsLabel.setStyle("");
+		playSongLabel.setStyle("");
+		writeTabLabel.setStyle("");
 	}
 	
 	@FXML
@@ -24,9 +43,17 @@ public class SoundefyController {
 		try{
 			contentPane.getChildren().removeAll();
 			contentPane.getChildren().add(main.openTabBrowser());
+			removeLabelStyles();
+			browseTabsLabel.setStyle("-fx-font-weight: bold;");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	@FXML
+	private void onFriendsClick(){
+		removeLabelStyles();
+		friendsLabel.setStyle("-fx-font-weight: bold;");
 	}
 	
 }

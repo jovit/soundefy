@@ -9,11 +9,11 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" stylesheets="@style/LoginStyle.css">
          <children>
-            <Label layoutX="25.0" layoutY="49.0" onMouseClicked="#onBrowseTabsClick" text="Browse Tabs" />
-            <Label layoutX="25.0" layoutY="94.0" text="Friends" />
-            <Label layoutX="25.0" layoutY="147.0" text="Upload Tabs" />
-            <Label layoutX="25.0" layoutY="210.0" text="Play a Song" />
-            <Label layoutX="25.0" layoutY="269.0" text="Write a Tab" />
+            <Label fx:id="browseTabsLabel" layoutX="25.0" layoutY="49.0" onMouseClicked="#onBrowseTabsClick" text="Browse Tabs" />
+            <Label fx:id="friendsLabel" layoutX="25.0" layoutY="94.0" onMouseClicked="#onFriendsClick" text="Friends" />
+            <Label fx:id="uploadTabsLabel" layoutX="25.0" layoutY="147.0" text="Upload Tabs" />
+            <Label fx:id="playSongLabel" layoutX="25.0" layoutY="210.0" text="Play a Song" />
+            <Label fx:id="writeTabLabel" layoutX="25.0" layoutY="269.0" text="Write a Tab" />
          </children></AnchorPane>
     <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@style/LoginStyle.css" />
   </items>
