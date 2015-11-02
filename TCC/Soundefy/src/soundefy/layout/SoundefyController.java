@@ -56,4 +56,20 @@ public class SoundefyController {
 		friendsLabel.setStyle("-fx-font-weight: bold;");
 	}
 	
+	@FXML
+	private void onUploadTabsClick(){
+		removeLabelStyles();
+		uploadTabsLabel.setStyle("-fx-font-weight: bold;");
+	}
+	@FXML
+	private void onPlaySongsClick(){
+		removeLabelStyles();
+		playSongLabel.setStyle("-fx-font-weight: bold;");
+	}
+	@FXML
+	private void onWriteTabClick(){
+		removeLabelStyles();
+		writeTabLabel.setStyle("-fx-font-weight: bold;");
+	}
+	
 }
