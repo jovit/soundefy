@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="442.0" prefWidth="438.0" styleClass="background" stylesheets="@style/LoginStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="soundefy.layout.TabBrowserController">
+<AnchorPane prefHeight="450.0" prefWidth="450.0" styleClass="background" stylesheets="@style/LoginStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="soundefy.layout.TabBrowserController">
    <children>
-      <ListView fx:id="tabList" layoutX="15.0" layoutY="72.0" prefHeight="303.0" prefWidth="407.0" />
+      <ListView fx:id="tabList" layoutX="15.0" layoutY="72.0" prefHeight="303.0" prefWidth="421.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="72.0" />
       <TextField fx:id="searchText" layoutX="13.0" layoutY="19.0" prefHeight="32.0" prefWidth="221.0" promptText="Type the song name" />
-      <Button layoutX="326.0" layoutY="19.0" mnemonicParsing="false" onAction="#onSearchClick" text="Search" />
-      <Button disable="true" layoutX="288.0" layoutY="394.0" mnemonicParsing="false" onAction="#onDownloadClick" text="Download" />
+      <Button layoutX="337.0" layoutY="19.0" mnemonicParsing="false" onAction="#onSearchClick" text="Search" AnchorPane.rightAnchor="14.0" />
+      <Button disable="true" layoutX="315.0" layoutY="397.0" mnemonicParsing="false" onAction="#onDownloadClick" text="Download" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" />
    </children>
 </AnchorPane>

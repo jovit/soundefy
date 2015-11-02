@@ -9,6 +9,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import soundefy.layout.LoginController;
+import soundefy.layout.SoundefyController;
 import soundefy.layout.TabEditorController;
 import soundefy.model.TimeSignature;
 import soundefy.net.SoundefyClient;
@@ -52,18 +53,19 @@ public class Main extends Application{
 		this.primaryStage.show();
 	}
 	
-	public void openTabBrowser() throws IOException{
+	public AnchorPane openTabBrowser() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabBrowser.fxml"));
 		AnchorPane pane = (AnchorPane) loader.load();
-		this.primaryStage.setScene(new Scene(pane));
-		this.primaryStage.show();
+		return pane;
 	}
 	
 	public void openSoundefy() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/Soundefy.fxml"));
 		SplitPane pane = (SplitPane) loader.load();
+		SoundefyController controller = loader.getController();
+		controller.setMain(this);
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();
 	}
