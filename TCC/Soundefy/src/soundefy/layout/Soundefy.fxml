@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<SplitPane dividerPositions="0.3010033444816054" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" stylesheets="@style/LoginStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="soundefy.layout.SoundefyController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background" stylesheets="@style/LoginStyle.css">
+         <children>
+            <Label fx:id="browseTabsLabel" layoutX="25.0" layoutY="49.0" onMouseClicked="#onBrowseTabsClick" text="Browse Tabs" />
+            <Label fx:id="friendsLabel" layoutX="25.0" layoutY="94.0" onMouseClicked="#onFriendsClick" text="Friends" />
+            <Label fx:id="uploadTabsLabel" layoutX="25.0" layoutY="147.0" onMouseClicked="#onUploadTabsClick" text="Upload Tabs" />
+            <Label fx:id="playSongLabel" layoutX="25.0" layoutY="210.0" onMouseClicked="#onPlaySongsClick" text="Play a Song" />
+            <Label fx:id="writeTabLabel" layoutX="25.0" layoutY="269.0" onMouseClicked="#onWriteTabClick" text="Write a Tab" />
+         </children></AnchorPane>
+    <AnchorPane fx:id="contentPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@style/LoginStyle.css" />
+  </items>
+</SplitPane>

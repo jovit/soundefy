@@ -5,9 +5,11 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import soundefy.layout.LoginController;
+import soundefy.layout.SoundefyController;
 import soundefy.layout.TabEditorController;
 import soundefy.model.TimeSignature;
 import soundefy.net.SoundefyClient;
@@ -17,12 +19,15 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Soundefy");
-		
+		setupPrimaryStage(primaryStage);
 		openLogin();
 	}
 	
+	private void setupPrimaryStage(Stage primaryStage){
+		this.primaryStage = primaryStage;
+		this.primaryStage.setTitle("Soundefy");
+	}
+
 	public void openTab() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabEditor.fxml"));
@@ -33,19 +38,38 @@ public class Main extends Application{
 		controller.setPrimaryStage(this.primaryStage);
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();
-		
+
 		new SoundefyClient();
 	}
-	
+
 	public void openLogin() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/Login.fxml"));
 		AnchorPane pane = (AnchorPane) loader.load();
-		//controller.setPrimaryStage(this.primaryStage);
+		LoginController controller = loader.getController();
+		controller.setMain(this);
+		
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();
 	}
 	
+	public AnchorPane openTabBrowser() throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("layout/TabBrowser.fxml"));
+		AnchorPane pane = (AnchorPane) loader.load();
+		return pane;
+	}
+	
+	public void openSoundefy() throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("layout/Soundefy.fxml"));
+		SplitPane pane = (SplitPane) loader.load();
+		SoundefyController controller = loader.getController();
+		controller.setMain(this);
+		this.primaryStage.setScene(new Scene(pane));
+		this.primaryStage.show();
+	}
+
 	public static void main(String args[]){
 		launch(args);
 	}
