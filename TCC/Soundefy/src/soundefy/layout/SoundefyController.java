@@ -3,6 +3,7 @@ package soundefy.layout;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import soundefy.Main;
 
 public class SoundefyController {
@@ -38,11 +39,15 @@ public class SoundefyController {
 		
 	}
 	
+	private void setContentPane(Pane pane){
+		contentPane.getChildren().removeAll();
+		contentPane.getChildren().add(pane);
+	}
+	
 	@FXML
 	private void onBrowseTabsClick(){
 		try{
-			contentPane.getChildren().removeAll();
-			contentPane.getChildren().add(main.openTabBrowser());
+			setContentPane(main.openTabBrowser());
 			removeLabelStyles();
 			browseTabsLabel.setStyle("-fx-font-weight: bold;");
 		}catch(Exception e){
@@ -52,6 +57,8 @@ public class SoundefyController {
 	
 	@FXML
 	private void onFriendsClick(){
+		setContentPane(null);
+		System.out.println("oi");
 		removeLabelStyles();
 		friendsLabel.setStyle("-fx-font-weight: bold;");
 	}
