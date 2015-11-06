@@ -9,12 +9,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="500.0" styleClass="background" stylesheets="@style/LoginStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="soundefy.layout.LoginController">
    <children>
-      <Button fx:id="btnLogin" layoutX="208.0" layoutY="236.0" mnemonicParsing="false" text="Login" />
-      <TextField layoutX="154.0" layoutY="98.0" />
-      <TextField layoutX="154.0" layoutY="149.0" prefHeight="18.0" prefWidth="210.0" />
-      <Label fx:id="lblInscrever" layoutX="210.0" layoutY="285.0" text="Inscrever-se" />
-      <Label fx:id="lblMudarSenha" layoutX="207.0" layoutY="314.0" text="Mudar senha" />
-      <Label layoutX="155.0" layoutY="198.0" text="Lembrar de mim" />
-      <CheckBox layoutX="337.0" layoutY="200.0" mnemonicParsing="false" />
+      <Button fx:id="btnLogin" layoutX="198.0" layoutY="228.0" mnemonicParsing="false" text="Login" />
+      <TextField fx:id="txtUsuario" layoutX="145.0" layoutY="90.0" />
+      <TextField fx:id="txtSenha" layoutX="145.0" layoutY="141.0" prefHeight="37.0" prefWidth="206.0" />
+      <Label fx:id="lblInscrever" layoutX="200.0" layoutY="277.0" text="Inscrever-se" />
+      <Label fx:id="lblMudarSenha" layoutX="197.0" layoutY="306.0" text="Mudar senha" />
+      <Label layoutX="145.0" layoutY="190.0" text="Lembrar de mim" />
+      <CheckBox layoutX="334.0" layoutY="192.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="6.0" />
    </children>
 </AnchorPane>

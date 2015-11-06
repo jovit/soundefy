@@ -42,8 +42,17 @@ public class Server {
 					if (code == Operations.SIGNUP.getCode()) {
 						String name = tokenizer.nextToken();
 						String pwd = tokenizer.nextToken();
-						int success = signUp(name, pwd);
-						writer.write(success);
+						String email = tokenizer.nextToken();
+						String birthDate = tokenizer.nextToken();
+						int success = signUp(name, pwd, email, birthDate);
+						PackManager.pack(success, pack, 0);
+						writer.write(pack);
+					} else if (code == Operations.SIGNIN.getCode()) {
+						String name = tokenizer.nextToken();
+						String pwd = tokenizer.nextToken();
+						int success = signIn(name, pwd);
+						PackManager.pack(success, pack, 0);
+						writer.write(pack);
 					}
 					/*
 					 * int ind = 0; try { System.out.println("trying to read");
@@ -76,7 +85,7 @@ public class Server {
 			throw new Exception("Nao existe esse client request");
 		}
 
-		public int signUp(String name, String pwd) throws Exception {
+		public int signUp(String name, String pwd, String email, String birthDate) throws Exception {
 			if (name == ""){
 				return Operations.NAMEINVALID.getCode();
 			}
@@ -85,9 +94,31 @@ public class Server {
 				return Operations.PWDINVALID.getCode();
 			}
 			
+			if (email == ""){
+				return Operations.EMAILINVALID.getCode();
+			}
+			
+			if (birthDate == ""){
+				return Operations.BIRTHDATEINVALID.getCode();
+			}
+			
 			DataBase db = new DataBase();
-			db.signUp(name, pwd);
-			return 0;
+			int success = db.signUp(name, pwd, email, birthDate);
+			return success;
+		}
+		
+		public int signIn(String email, String pwd) throws Exception {
+			if (email == ""){
+				return Operations.EMAILINVALID.getCode();
+			}
+			
+			if (pwd == ""){
+				return Operations.PWDINVALID.getCode();
+			}
+			
+			DataBase db = new DataBase();
+			int success = db.signIn(email, pwd);
+			return success;
 		}
 	}
 

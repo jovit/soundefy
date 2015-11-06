@@ -8,31 +8,41 @@ public class DataBase {
 
 	public DataBase() throws Exception {
 		bd = new BD("com.microsoft.sqlserver.jdbc.SQLServerDriver",
-				"jdbc:sqlserver://SERVIDOR:1433;databasename=BD", "USUARIO",
-				"SENHA");
+				"jdbc:sqlserver://regulus:1433;databasename=BD13181",
+				"BD13181", "BD13181");
 	}
 
-	public int signUp(String name, String pwd) throws Exception {
+	public int signUp(String name, String pwd, String email, String birthDate)
+			throws Exception {
 		try {
-			if (userExists(name, pwd)) {
+			if (userExists(email, pwd)) {
 				return Operations.USEREXISTS.getCode();
 			} else {
-				bd.execComando("insert into user values('" + name + "'," + pwd
-						+ "'");
+				bd.execComando("insert into SDYUser values('" + name + "','"
+						+ pwd + "','" + email + "','" + birthDate + "')");
 				return Operations.SIGNUPSUCCESS.getCode();
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			return Operations.SIGNUPFAIL.getCode();
 		}
-		return Operations.SIGNUPSUCCESS.getCode();
 	}
 
-	public boolean userExists(String name, String pwd) {
+	public int signIn(String email, String pwd) throws Exception {
+		if (userExists(email, pwd)) {
+			return Operations.USEREXISTS.getCode();
+		} else {
+			return Operations.USERDOESNOTEXISTS.getCode();
+		}
+	}
+
+	public boolean userExists(String email, String pwd) {
 		try {
 			ResultSet result = bd
-					.execConsulta("select * from user where name='" + name
-							+ "' and pwd='" + pwd + "'"); // change to stored
-															// procedure
+					.execConsulta("select * from SDYUser where sdyuser_password='"
+							+ pwd + "' and sdyuser_email='" + email + "'"); // change
+																			// to
+																			// stored
+			// procedure
 			if (result.first()) {
 				return true;
 			} else {

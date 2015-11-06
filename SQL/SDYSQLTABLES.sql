@@ -1,6 +1,7 @@
 create table SDYUser(
 	sdyuser_ID int identity primary key,
 	sdyuser_name varchar(100), 
+	sdyuser_password varchar(100),
 	sdyuser_email varchar(100),
 	sdyuser_birthdate date
 )
