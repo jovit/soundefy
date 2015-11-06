@@ -1,5 +1,7 @@
 package soundefy.layout;
 
+import java.io.IOException;
+
 import soundefy.net.Server;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,70 +15,78 @@ public class LoginController {
 
 	@FXML
 	private Button btnLogin;
-	
+
 	@FXML
-	private Label lblInscrever;
-	
+	private Label lblSignIn;
+
 	@FXML
-	private Label lblMudarSenha;
-	
+	private Label lblChangePassword;
+
 	@FXML
-	private TextField txtUsuario;
-	
+	private TextField txtUser;
+
 	@FXML
-	private TextField txtSenha;
-	
+	private TextField txtPassword;
+
 	@FXML
 	private TextField txtEmail;
-	
+
 	@FXML
-	private TextField txtDataNascimento;
-	
+	private TextField txtBirthDate;
+
 	private Main main;
 
-	public void setMain(Main main){
+	public void setMain(Main main) {
 		this.main = main;
 	}
-	
+
 	@FXML
 	private void initialize() {
 		configureOnLoginClick();
 		configureOnSubscribeClick();
 		configureOnChangePasswordClick();
 	}
-	
-	private void configureOnLoginClick(){
+
+	private void configureOnLoginClick() {
 		btnLogin.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				Server server = new Server();
-				openSoundefyMain();
+				String email = txtEmail.getText();
+				String pwd = txtPassword.getText();
+				try {
+					if (server.signIn(email, pwd)) {
+						openSoundefyMain();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
-	
-	private void openSoundefyMain(){
-		try{
+
+	private void openSoundefyMain() {
+		try {
 			main.openSoundefy();
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private void configureOnSubscribeClick(){
-		lblInscrever.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+	private void configureOnSubscribeClick() {
+		lblSignIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 
 			}
 		});
 	}
-	
-	private void configureOnChangePasswordClick(){
-		lblMudarSenha.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+	private void configureOnChangePasswordClick() {
+		lblChangePassword.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				
+
 			}
 		});
 	}
