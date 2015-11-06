@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Server {
-	private server_main.Server server;
 	private Socket socket;
 	private DataInputStream reader;
 	private DataOutputStream writer;
