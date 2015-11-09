@@ -85,23 +85,7 @@ public class Server {
 			throw new Exception("Nao existe esse client request");
 		}
 
-		public int signUp(String name, String pwd, String email, String birthDate) throws Exception {
-			if (name == ""){
-				return Operations.NAMEINVALID.getCode();
-			}
-			
-			if (pwd == ""){
-				return Operations.PWDINVALID.getCode();
-			}
-			
-			if (email == ""){
-				return Operations.EMAILINVALID.getCode();
-			}
-			
-			if (birthDate == ""){
-				return Operations.BIRTHDATEINVALID.getCode();
-			}
-			
+		public int signUp(String name, String pwd, String email, String birthDate) throws Exception {		
 			DataBase db = new DataBase();
 			int success = db.signUp(name, pwd, email, birthDate);
 			return success;
