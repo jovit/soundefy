@@ -47,11 +47,16 @@ public class LoginController {
 			public void handle(MouseEvent event) {
 				Server server = new Server();
 				String email = txtEmail.getText();
-				String pwd = txtPassword.getText();
+				String password = txtPassword.getText();
 				try {
-					if (server.signIn(email, pwd)) {
+					if (server.signIn(email, password)) {
 						openSoundefyMain();
 					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				try {
+					server.closeConnection();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -49,4 +49,8 @@ public class Server {
 			return false;
 		}
 	}
+	
+	public void closeConnection() throws IOException{
+		socket.close();
+	}
 }

@@ -59,7 +59,7 @@ public class SignUpController {
 				String pwd = txtPassword.getText();
 				LocalDate localDate = dpBirthDate.getValue();
 				String birthDate = localDate.toString().replace('-', '/');
-				
+
 				if (name == "") {
 					JOptionPane.showConfirmDialog(null, "Cadastro",
 							"Nome Inválido!", JOptionPane.ERROR_MESSAGE);
@@ -74,7 +74,7 @@ public class SignUpController {
 							"Data de nascimento inválida!",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 				try {
 					if (server.signUp(name, pwd, email, birthDate)) {
 						JOptionPane.showConfirmDialog(null, "Cadastro",
@@ -86,6 +86,12 @@ public class SignUpController {
 								"Usuário já existente!",
 								JOptionPane.ERROR_MESSAGE);
 					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				try {
+					server.closeConnection();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
