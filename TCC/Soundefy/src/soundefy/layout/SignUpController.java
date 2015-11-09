@@ -60,18 +60,13 @@ public class SignUpController {
 				String birthDate = localDate.toString().replace('-', '/');
 				
 				if (name == "") {
-					JOptionPane.showConfirmDialog(null, "Cadastro",
-							"Nome Inválido!", JOptionPane.ERROR_MESSAGE);
+					showErrorDialog("Nome Inválido!");
 				} else if (password == "" || password.length() < 6) {
-					JOptionPane.showConfirmDialog(null, "Cadastro",
-							"Senha inválida!", JOptionPane.ERROR_MESSAGE);
+					showErrorDialog("Senha inválida!");
 				} else if (email == "") {
-					JOptionPane.showConfirmDialog(null, "Cadastro",
-							"E-Mail inválido!", JOptionPane.ERROR_MESSAGE);
+					showErrorDialog("E-Mail inválido!");
 				} else if (birthDate == "") {
-					JOptionPane.showConfirmDialog(null, "Cadastro",
-							"Data de nascimento inválida!",
-							JOptionPane.ERROR_MESSAGE);
+					showErrorDialog("Data de nascimento inválida!");
 				}
 				
 				signUpAndShowMessage(name, password, email, birthDate);
@@ -79,6 +74,10 @@ public class SignUpController {
 		});
 	}
 	
+	private void showErrorDialog(String message){
+		JOptionPane.showConfirmDialog(null, "Cadastro",
+				message, JOptionPane.ERROR_MESSAGE);
+	}
 	
 	private void signUpAndShowMessage(String name, String password, String email, String birthDate){
 		try {
