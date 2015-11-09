@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane prefHeight="462.0" prefWidth="500.0" styleClass="background" stylesheets="@style/LoginStyle.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="soundefy.layout.SignUpController">
+   <children>
+      <TextField fx:id="txtName" layoutX="224.0" layoutY="104.0" />
+      <TextField fx:id="txtEmail" layoutX="224.0" layoutY="155.0" />
+      <TextField fx:id="txtPassword" layoutX="224.0" layoutY="206.0" />
+      <TextField fx:id="txtConfirmPassword" layoutX="224.0" layoutY="257.0" />
+      <Label layoutX="71.0" layoutY="112.0" text="Nome: " />
+      <Label layoutX="71.0" layoutY="163.0" text="E-Mail: " />
+      <Label layoutX="71.0" layoutY="214.0" text="Senha: " />
+      <Label layoutX="71.0" layoutY="265.0" text="Confirme sua Senha: " />
+      <Label layoutX="220.0" layoutY="40.0" text="Cadastro">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dpBirthDate" layoutX="224.0" layoutY="309.0" />
+      <Label layoutX="70.0" layoutY="317.0" text="Data de Nascimento: " />
+      <Button fx:id="btnSignUp" layoutX="193.0" layoutY="381.0" mnemonicParsing="false" text="Cadastrar!" />
+   </children>
 </AnchorPane>
-

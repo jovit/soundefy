@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import soundefy.layout.LoginController;
 import soundefy.layout.SoundefyController;
 import soundefy.layout.TabEditorController;
+import soundefy.layout.SignUpController;
 import soundefy.model.TimeSignature;
 import soundefy.net.SoundefyClient;
 
@@ -65,6 +66,16 @@ public class Main extends Application{
 		loader.setLocation(Main.class.getResource("layout/Soundefy.fxml"));
 		SplitPane pane = (SplitPane) loader.load();
 		SoundefyController controller = loader.getController();
+		controller.setMain(this);
+		this.primaryStage.setScene(new Scene(pane));
+		this.primaryStage.show();
+	}
+	
+	public void openSignUp() throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("layout/SignUp.fxml"));
+		AnchorPane pane = (AnchorPane) loader.load();
+		SignUpController controller = loader.getController();
 		controller.setMain(this);
 		this.primaryStage.setScene(new Scene(pane));
 		this.primaryStage.show();

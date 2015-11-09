@@ -17,22 +17,16 @@ public class LoginController {
 	private Button btnLogin;
 
 	@FXML
-	private Label lblSignIn;
+	private Label lblSignUp;
 
 	@FXML
 	private Label lblChangePassword;
-
-	@FXML
-	private TextField txtUser;
 
 	@FXML
 	private TextField txtPassword;
 
 	@FXML
 	private TextField txtEmail;
-
-	@FXML
-	private TextField txtBirthDate;
 
 	private Main main;
 
@@ -74,10 +68,14 @@ public class LoginController {
 	}
 
 	private void configureOnSubscribeClick() {
-		lblSignIn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		lblSignUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
+				try {
+					main.openSignUp();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
