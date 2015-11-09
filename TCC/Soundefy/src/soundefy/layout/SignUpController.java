@@ -67,15 +67,15 @@ public class SignUpController {
 					showErrorDialog("E-Mail inválido!");
 				} else if (birthDate == "") {
 					showErrorDialog("Data de nascimento inválida!");
+				} else {
+					signUpAndShowMessage(name, password, email, birthDate);
 				}
-
-				signUpAndShowMessage(name, password, email, birthDate);
 			}
 		});
 	}
 
 	private void showErrorDialog(String message) {
-		JOptionPane.showConfirmDialog(null, message, "Cadastro",
+		JOptionPane.showMessageDialog(null, message, "Cadastro",
 				JOptionPane.ERROR_MESSAGE);
 	}
 
@@ -85,13 +85,13 @@ public class SignUpController {
 		try {
 			server = new Server();
 			if (server.signUp(name, password, email, birthDate)) {
-				JOptionPane.showConfirmDialog(null, "Cadastro",
-						"Usuário cadastrado com sucesso!",
-						JOptionPane.OK_OPTION);
+				JOptionPane.showMessageDialog(null,
+						"Usuário cadastrado com sucesso!", "Cadastro",
+						JOptionPane.PLAIN_MESSAGE);
 				openLoginMain();
 			} else {
-				JOptionPane.showConfirmDialog(null, "Cadastro",
-						"Usuário já existente!", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Usuário já existente!",
+						"Cadastro", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

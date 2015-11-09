@@ -16,7 +16,7 @@ public class BD
         }
         catch (ClassNotFoundException e)
         {
-            throw new Exception ("driver");
+            throw new Exception (e.getMessage());
         }
 
         try
@@ -25,7 +25,7 @@ public class BD
         }
         catch (SQLException e)
         {
-            throw new Exception ("conexao");
+            throw new Exception (e.getMessage());
         }
 
         try
@@ -36,7 +36,7 @@ public class BD
         }
         catch (SQLException e)
         {
-            throw new Exception ("comando");
+            throw new Exception (e.getMessage());
         }
     }
 
@@ -48,7 +48,7 @@ public class BD
         }
         catch (SQLException e)
         {
-            throw new Exception ("execucao comando");
+            throw new Exception (e.getMessage());
         }
     }
 
@@ -62,7 +62,7 @@ public class BD
         }
         catch (SQLException e)
         {
-            throw new Exception ("execucao consulta");
+            throw new Exception (e.getMessage());
         }
 
         return resultado;
@@ -80,7 +80,7 @@ public class BD
         }
         catch (SQLException e)
         {
-            throw new Exception ("fechamento");
+            throw new Exception (e.getMessage());
         }
     }
 }

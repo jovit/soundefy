@@ -2,6 +2,9 @@ package soundefy.layout;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
+import server_main.Operations;
 import soundefy.net.Server;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -45,20 +48,34 @@ public class LoginController {
 		btnLogin.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Server server = new Server();
+				Server server = null;
 				String email = txtEmail.getText();
 				String password = txtPassword.getText();
-				try {
-					if (server.signIn(email, password)) {
-						openSoundefyMain();
+
+				if (email.equals("")) {
+					JOptionPane.showMessageDialog(null, "E-Mail inválido!",
+							"Login", JOptionPane.ERROR_MESSAGE);
+				} else if (password.equals("")) {
+					JOptionPane.showMessageDialog(null, "Senha inválida!",
+							"Login", JOptionPane.ERROR_MESSAGE);
+				} else {
+					try {
+						server = new Server();
+						if (server.signIn(email, password)) {
+							openSoundefyMain();
+						} else {
+							JOptionPane.showMessageDialog(null,
+									"Usuário inexistente!", "Login",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				try {
-					server.closeConnection();
-				} catch (IOException e) {
-					e.printStackTrace();
+					try {
+						server.closeConnection();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});

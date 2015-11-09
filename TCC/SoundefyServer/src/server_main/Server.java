@@ -28,35 +28,32 @@ public class Server {
 
 		@Override
 		public void run() {
-			while (true) {
-				int code = -1;
-				try {
-					byte[] pack = new byte[10000];
-					reader.read(pack);
-					String operation = new String(pack);
-					StringTokenizer tokenizer = new StringTokenizer(operation,
-							"/");
-					code = Integer.parseInt(tokenizer.nextToken());
+			int code = -1;
+			try {
+				byte[] pack = new byte[1024];
+				reader.read(pack);
+				String operation = new String(pack);
+				StringTokenizer tokenizer = new StringTokenizer(
+						operation.trim(), "/");
+				code = Integer.parseInt(tokenizer.nextToken());
 
-					if (code == Operations.SIGNUP.getCode()) {
-						String name = tokenizer.nextToken();
-						String pwd = tokenizer.nextToken();
-						String email = tokenizer.nextToken();
-						String birthDate = tokenizer.nextToken();
-						int success = signUp(name, pwd, email, birthDate);
-						PackManager.pack(success, pack, 0);
-						writer.write(pack);
-					} else if (code == Operations.SIGNIN.getCode()) {
-						String name = tokenizer.nextToken();
-						String pwd = tokenizer.nextToken();
-						int success = signIn(name, pwd);
-						PackManager.pack(success, pack, 0);
-						writer.write(pack);
-					}
-					 
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (code == Operations.SIGNUP.getCode()) {
+					String name = tokenizer.nextToken();
+					String pwd = tokenizer.nextToken();
+					String email = tokenizer.nextToken();
+					String birthDate = tokenizer.nextToken();
+					int success = signUp(name, pwd, email, birthDate);
+					PackManager.pack(success, pack, 0);
+					writer.write(pack);
+				} else if (code == Operations.SIGNIN.getCode()) {
+					String name = tokenizer.nextToken();
+					String pwd = tokenizer.nextToken();
+					int success = signIn(name, pwd);
+					PackManager.pack(success, pack, 0);
+					writer.write(pack);
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -69,21 +66,14 @@ public class Server {
 			throw new Exception("Nao existe esse client request");
 		}
 
-		public int signUp(String name, String pwd, String email, String birthDate) throws Exception {		
+		public int signUp(String name, String pwd, String email,
+				String birthDate) throws Exception {
 			DataBase db = new DataBase();
 			int success = db.signUp(name, pwd, email, birthDate);
 			return success;
 		}
-		
+
 		public int signIn(String email, String pwd) throws Exception {
-			if (email == ""){
-				return Operations.EMAILINVALID.getCode();
-			}
-			
-			if (pwd == ""){
-				return Operations.PWDINVALID.getCode();
-			}
-			
 			DataBase db = new DataBase();
 			int success = db.signIn(email, pwd);
 			return success;

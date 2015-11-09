@@ -23,9 +23,9 @@ public class Server {
 
 	public boolean signUp(String name, String pwd, String email,
 			String birthDate) throws UnknownHostException, IOException {
-		writer.writeBytes(Operations.SIGNUP.getCode() + "/" + name.getBytes()
-				+ "/" + pwd.getBytes() + "/" + email.getBytes() + "/"
-				+ birthDate.getBytes());
+		String operation = Operations.SIGNUP.getCode() + "/" + name + "/" + pwd
+				+ "/" + email + "/" + birthDate;
+		writer.write(operation.getBytes());
 		byte[] pack = new byte[4];
 		reader.read(pack);
 		int result = PackManager.unpack(pack, 0);
@@ -36,10 +36,11 @@ public class Server {
 		}
 	}
 
-	public boolean signIn(String email, String pwd) throws UnknownHostException,
-			IOException {
-		writer.writeBytes(Operations.SIGNIN.getCode() + "/" + email.getBytes()
-				+ "/" + pwd.getBytes());
+	public boolean signIn(String email, String pwd)
+			throws UnknownHostException, IOException {
+		String operation = Operations.SIGNIN.getCode() + "/" + email + "/"
+				+ pwd;
+		writer.write(operation.getBytes());
 		byte[] pack = new byte[4];
 		reader.read(pack);
 		int result = PackManager.unpack(pack, 0);
@@ -49,8 +50,8 @@ public class Server {
 			return false;
 		}
 	}
-	
-	public void closeConnection() throws IOException{
+
+	public void closeConnection() throws IOException {
 		socket.close();
 	}
 }
