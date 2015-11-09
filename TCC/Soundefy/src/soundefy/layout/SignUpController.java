@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
-import server_main.Operations;
 import soundefy.Main;
 import soundefy.net.Server;
 import javafx.event.EventHandler;
@@ -49,6 +48,7 @@ public class SignUpController {
 		}
 	}
 
+	@FXML
 	private void configureOnSignUpClick() {
 		btnSignUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
