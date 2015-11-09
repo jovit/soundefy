@@ -22,7 +22,6 @@ public class Server {
 				this.reader = new DataInputStream(s.getInputStream());
 				this.writer = new DataOutputStream(s.getOutputStream());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -54,22 +53,7 @@ public class Server {
 						PackManager.pack(success, pack, 0);
 						writer.write(pack);
 					}
-					/*
-					 * int ind = 0; try { System.out.println("trying to read");
-					 * byte[] pack = new byte[4]; reader.read(pack); ind =
-					 * PackManager.unpack(pack, 0); System.out.println("read");
-					 * } catch (IOException e) { // TODO Auto-generated catch
-					 * block e.printStackTrace(); } try { ClientRequest cr =
-					 * this.getRequest(ind); if (cr == ClientRequest.HI) {
-					 * ServerResponse sr = ServerResponse.HI; byte[] pack = new
-					 * byte[4]; PackManager.pack(sr.getInd(), pack, 0);
-					 * writer.write(pack); writer.flush();
-					 * System.out.println("wrote to client"); }/* else if () {
-					 * 
-					 * }
-					 * 
-					 * } catch (Exception e) { e.printStackTrace(); }
-					 */
+					 
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
