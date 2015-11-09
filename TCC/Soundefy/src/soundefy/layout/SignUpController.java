@@ -75,8 +75,8 @@ public class SignUpController {
 	}
 	
 	private void showErrorDialog(String message){
-		JOptionPane.showConfirmDialog(null, "Cadastro",
-				message, JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showConfirmDialog(null, message,
+				"Cadastro", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private void signUpAndShowMessage(String name, String password, String email, String birthDate){
