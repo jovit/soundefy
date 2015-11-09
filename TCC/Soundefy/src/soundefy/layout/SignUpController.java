@@ -53,17 +53,16 @@ public class SignUpController {
 		btnSignUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Server server = new Server();
 				String name = txtName.getText();
 				String email = txtEmail.getText();
-				String pwd = txtPassword.getText();
+				String password = txtPassword.getText();
 				LocalDate localDate = dpBirthDate.getValue();
 				String birthDate = localDate.toString().replace('-', '/');
 				
 				if (name == "") {
 					JOptionPane.showConfirmDialog(null, "Cadastro",
 							"Nome Inválido!", JOptionPane.ERROR_MESSAGE);
-				} else if (pwd == "" || pwd.length() < 6) {
+				} else if (password == "" || password.length() < 6) {
 					JOptionPane.showConfirmDialog(null, "Cadastro",
 							"Senha inválida!", JOptionPane.ERROR_MESSAGE);
 				} else if (email == "") {
@@ -75,22 +74,28 @@ public class SignUpController {
 							JOptionPane.ERROR_MESSAGE);
 				}
 				
-				try {
-					if (server.signUp(name, pwd, email, birthDate)) {
-						JOptionPane.showConfirmDialog(null, "Cadastro",
-								"Usuário cadastrado com sucesso!",
-								JOptionPane.OK_OPTION);
-						openLoginMain();
-					} else {
-						JOptionPane.showConfirmDialog(null, "Cadastro",
-								"Usuário já existente!",
-								JOptionPane.ERROR_MESSAGE);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				signUpAndShowMessage(name, password, email, birthDate);
 			}
 		});
+	}
+	
+	
+	private void signUpAndShowMessage(String name, String password, String email, String birthDate){
+		try {
+			Server server = new Server();
+			if (server.signUp(name, password, email, birthDate)) {
+				JOptionPane.showConfirmDialog(null, "Cadastro",
+						"Usuário cadastrado com sucesso!",
+						JOptionPane.OK_OPTION);
+				openLoginMain();
+			} else {
+				JOptionPane.showConfirmDialog(null, "Cadastro",
+						"Usuário já existente!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
