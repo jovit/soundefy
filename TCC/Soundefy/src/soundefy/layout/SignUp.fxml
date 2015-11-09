@@ -21,8 +21,8 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <DatePicker fx:id="dpBirthDate" layoutX="224.0" layoutY="309.0" />
+      <DatePicker fx:id="dpBirthDate" layoutX="224.0" layoutY="309.0" prefHeight="37.0" prefWidth="206.0" />
       <Label layoutX="70.0" layoutY="317.0" text="Data de Nascimento: " />
-      <Button fx:id="btnSignUp" layoutX="193.0" layoutY="381.0" mnemonicParsing="false" text="Cadastrar!" />
+      <Button fx:id="btnSignUp" layoutX="193.0" layoutY="381.0" mnemonicParsing="false" onMouseClicked="#configureOnSignUpClick" text="Cadastrar!" />
    </children>
 </AnchorPane>

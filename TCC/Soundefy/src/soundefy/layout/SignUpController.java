@@ -48,6 +48,7 @@ public class SignUpController {
 		}
 	}
 
+	@FXML
 	private void configureOnSignUpClick() {
 		btnSignUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
