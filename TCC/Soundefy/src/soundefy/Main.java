@@ -29,7 +29,7 @@ public class Main extends Application{
 		this.primaryStage.setTitle("Soundefy");
 	}
 
-	public void openTab() throws IOException{
+	public AnchorPane openTab() throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabEditor.fxml"));
 		AnchorPane pane = (AnchorPane)loader.load();
@@ -37,10 +37,7 @@ public class Main extends Application{
 		controller.setStandardTempo(126);
 		controller.setStandardTimeSignature(new TimeSignature(4, 4));
 		controller.setPrimaryStage(this.primaryStage);
-		this.primaryStage.setScene(new Scene(pane));
-		this.primaryStage.show();
-
-		new SoundefyClient();
+		return pane;
 	}
 
 	public void openLogin() throws IOException{
