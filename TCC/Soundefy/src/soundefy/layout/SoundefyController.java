@@ -74,7 +74,6 @@ public class SoundefyController {
 	@FXML
 	private void onWriteTabClick(){
 		try{
-			System.out.println("oi");
 			setContentPane(main.openTab());
 			removeLabelStyles();
 			writeTabLabel.setStyle("-fx-font-weight: bold;");
