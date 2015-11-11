@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import soundefy.net.ClientRequest;
-
 public class SoundefyClient {
 	private static final int PORT = 13174;
 	private static final String HOSTNAME = "LAPA17";
