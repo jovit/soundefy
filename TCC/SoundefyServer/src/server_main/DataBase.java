@@ -16,22 +16,22 @@ public class DataBase {
 			throws Exception {
 		try {
 			if (userExists(email, pwd)) {
-				return Operations.USEREXISTS.getCode();
+				return Operations.USER_EXISTS.getCode();
 			} else {
 				bd.execComando("insert into SDYUser values('" + name + "','"
 						+ pwd + "','" + email + "','" + birthDate + "')");
-				return Operations.SIGNUPSUCCESS.getCode();
+				return Operations.SIGN_UP_SUCCESS.getCode();
 			}
 		} catch (SQLException e) {
-			return Operations.SIGNUPFAIL.getCode();
+			return Operations.SIGN_UP_FAIL.getCode();
 		}
 	}
 
 	public int signIn(String email, String pwd) throws Exception {
 		if (userExists(email, pwd)) {
-			return Operations.USEREXISTS.getCode();
+			return Operations.USER_EXISTS.getCode();
 		} else {
-			return Operations.USERDOESNOTEXISTS.getCode();
+			return Operations.USER_DOES_NOT_EXISTS.getCode();
 		}
 	}
 

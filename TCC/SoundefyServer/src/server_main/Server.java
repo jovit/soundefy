@@ -37,7 +37,7 @@ public class Server {
 						operation.trim(), "/");
 				code = Integer.parseInt(tokenizer.nextToken());
 
-				if (code == Operations.SIGNUP.getCode()) {
+				if (code == Operations.SIGN_UP.getCode()) {
 					String name = tokenizer.nextToken();
 					String pwd = tokenizer.nextToken();
 					String email = tokenizer.nextToken();
@@ -45,7 +45,7 @@ public class Server {
 					int success = signUp(name, pwd, email, birthDate);
 					PackManager.pack(success, pack, 0);
 					writer.write(pack);
-				} else if (code == Operations.SIGNIN.getCode()) {
+				} else if (code == Operations.SIGN_IN.getCode()) {
 					String name = tokenizer.nextToken();
 					String pwd = tokenizer.nextToken();
 					int success = signIn(name, pwd);

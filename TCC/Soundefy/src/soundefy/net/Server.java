@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import server_main.Operations;
+
 public class Server {
 	private Socket socket;
 	private DataInputStream reader;
@@ -23,13 +25,13 @@ public class Server {
 
 	public boolean signUp(String name, String pwd, String email,
 			String birthDate) throws UnknownHostException, IOException {
-		String operation = Operations.SIGNUP.getCode() + "/" + name + "/" + pwd
+		String operation = Operations.SIGN_UP.getCode() + "/" + name + "/" + pwd
 				+ "/" + email + "/" + birthDate;
 		writer.write(operation.getBytes());
 		byte[] pack = new byte[4];
 		reader.read(pack);
 		int result = PackManager.unpack(pack, 0);
-		if (result == Operations.SIGNUPSUCCESS.getCode()) {
+		if (result == Operations.SIGN_UP_SUCCESS.getCode()) {
 			return true;
 		} else {
 			return false;
@@ -38,13 +40,13 @@ public class Server {
 
 	public boolean signIn(String email, String pwd)
 			throws UnknownHostException, IOException {
-		String operation = Operations.SIGNIN.getCode() + "/" + email + "/"
+		String operation = Operations.SIGN_IN.getCode() + "/" + email + "/"
 				+ pwd;
 		writer.write(operation.getBytes());
 		byte[] pack = new byte[4];
 		reader.read(pack);
 		int result = PackManager.unpack(pack, 0);
-		if (result == Operations.USEREXISTS.getCode()) {
+		if (result == Operations.USER_EXISTS.getCode()) {
 			return true;
 		} else {
 			return false;

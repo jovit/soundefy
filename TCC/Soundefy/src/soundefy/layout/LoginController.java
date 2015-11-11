@@ -3,8 +3,6 @@ package soundefy.layout;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
-
-import server_main.Operations;
 import soundefy.net.Server;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
