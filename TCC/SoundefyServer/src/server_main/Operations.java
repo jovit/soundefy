@@ -12,7 +12,10 @@ public enum Operations {
 	SIGN_UP_FAIL(8),
 	SIGN_IN(9),
 	UPLOAD(10),
-	UPLOAD_FAILED(11);
+	UPLOAD_FAILED(11),
+	DOWNLOAD(12),
+	DOWNLOAD_FAILED(13),
+	TAB_NOT_FOUND(14);
 
 	private int code;
 

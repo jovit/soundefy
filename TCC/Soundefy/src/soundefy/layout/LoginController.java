@@ -1,7 +1,6 @@
 package soundefy.layout;
 
 import java.io.IOException;
-
 import javax.swing.JOptionPane;
 import soundefy.net.Server;
 import javafx.event.EventHandler;
