@@ -50,28 +50,24 @@ public class SignUpController {
 
 	@FXML
 	private void configureOnSignUpClick() {
-		btnSignUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				String name = txtName.getText();
-				String email = txtEmail.getText();
-				String password = txtPassword.getText();
-				LocalDate localDate = dpBirthDate.getValue();
-				String birthDate = localDate.toString().replace('-', '/');
+		String name = txtName.getText();
+		String email = txtEmail.getText();
+		String password = txtPassword.getText();
+		LocalDate localDate = dpBirthDate.getValue();
+		String birthDate = localDate.toString().replace('-', '/');
 
-				if (name == "") {
-					showErrorDialog("Nome Inválido!");
-				} else if (password == "" || password.length() < 6) {
-					showErrorDialog("Senha inválida!");
-				} else if (email == "") {
-					showErrorDialog("E-Mail inválido!");
-				} else if (birthDate == "") {
-					showErrorDialog("Data de nascimento inválida!");
-				} else {
-					signUpAndShowMessage(name, password, email, birthDate);
-				}
-			}
-		});
+		if (name == "") {
+			showErrorDialog("Nome Inválido!");
+		} else if (password == "" || password.length() < 6) {
+			showErrorDialog("Senha inválida!");
+		} else if (email == "") {
+			showErrorDialog("E-Mail inválido!");
+		} else if (birthDate == "") {
+			showErrorDialog("Data de nascimento inválida!");
+		} else {
+			signUpAndShowMessage(name, password, email, birthDate);
+		}
+
 	}
 
 	private void showErrorDialog(String message) {
