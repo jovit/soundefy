@@ -58,7 +58,6 @@ public class SoundefyController {
 	@FXML
 	private void onFriendsClick(){
 		setContentPane(null);
-		System.out.println("oi");
 		removeLabelStyles();
 		friendsLabel.setStyle("-fx-font-weight: bold;");
 	}
