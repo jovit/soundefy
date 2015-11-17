@@ -372,6 +372,7 @@ public class TabEditorController implements NextNoteListener {
 		context = canvas.getGraphicsContext2D();
 		
 		setupCanvas();
+		drawTab();
 	}
 	
 	private File openFileChooserForSaving(){

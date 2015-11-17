@@ -9,11 +9,10 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import soundefy.layout.LoginController;
+import soundefy.layout.SignUpController;
 import soundefy.layout.SoundefyController;
 import soundefy.layout.TabEditorController;
-import soundefy.layout.SignUpController;
 import soundefy.model.TimeSignature;
-import soundefy.net.SoundefyClient;
 
 public class Main extends Application{
 	private Stage primaryStage;

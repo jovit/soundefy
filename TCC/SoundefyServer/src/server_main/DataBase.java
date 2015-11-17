@@ -6,10 +6,14 @@ import java.sql.SQLException;
 public class DataBase {
 	protected BD bd;
 
-	public DataBase() throws Exception {
+	public DataBase(){
+		try{
 		bd = new BD("com.microsoft.sqlserver.jdbc.SQLServerDriver",
 				"jdbc:sqlserver://regulus:1433;databasename=BD13181",
 				"BD13181", "BD13181");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	public int signUp(String name, String pwd, String email, String birthDate)
