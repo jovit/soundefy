@@ -20,8 +20,9 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		setupPrimaryStage(primaryStage);
-		this.primaryStage.setScene(new Scene(openTab()));
+		
 		this.primaryStage.show();
+		openSoundefy();
 		//openLogin();
 	}
 	

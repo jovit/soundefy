@@ -151,6 +151,7 @@ public class TabEditorController implements NextNoteListener {
 		canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				System.out.println(parent.widthProperty().toString());
 				if (event.getSceneX() >= (canvas.getWidth() - MARGIN + 2)) {
 					if (event.getSceneY() >= currentScroll
 							&& event.getSceneY() <= (currentScroll + scrollPositionHeight)) {
