@@ -78,7 +78,6 @@ public class SoundefyController {
 	private void onFriendsClick(){
 		removeLabelStyles();
 		friendsLabel.setStyle("-fx-font-weight: bold;");
-		removeAllScreens();
 	}
 	
 	@FXML
