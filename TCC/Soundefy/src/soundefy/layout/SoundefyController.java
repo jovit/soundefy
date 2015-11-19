@@ -1,5 +1,7 @@
 package soundefy.layout;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -20,10 +22,13 @@ public class SoundefyController {
 	@FXML
 	Label writeTabLabel;
 	
+	private AnchorPane tabEditor, tabBrowser;
+	
 	private Main main;
 	
 	public void setMain(Main main){
 		this.main = main;
+		loadScreens();
 	}
 	
 	private void removeLabelStyles(){
@@ -34,20 +39,34 @@ public class SoundefyController {
 		writeTabLabel.setStyle("");
 	}
 	
+	private void removeAllScreens(){
+		for(int i=0; i<contentPane.getChildren().size(); i++)
+			contentPane.getChildren().remove(i);
+	}
+	
+	private void loadScreens(){
+		try {
+			tabEditor = main.openTab();
+			tabBrowser = main.openTabBrowser();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@FXML
 	private void initialize(){
 		
 	}
 	
 	private void setContentPane(Pane pane){
-		contentPane.getChildren().removeAll();
+		removeAllScreens();
 		contentPane.getChildren().add(pane);
 	}
 	
 	@FXML
 	private void onBrowseTabsClick(){
 		try{
-			setContentPane(main.openTabBrowser());
+			setContentPane(tabBrowser);
 			removeLabelStyles();
 			browseTabsLabel.setStyle("-fx-font-weight: bold;");
 		}catch(Exception e){
@@ -59,6 +78,7 @@ public class SoundefyController {
 	private void onFriendsClick(){
 		removeLabelStyles();
 		friendsLabel.setStyle("-fx-font-weight: bold;");
+		removeAllScreens();
 	}
 	
 	@FXML
@@ -71,11 +91,11 @@ public class SoundefyController {
 		removeLabelStyles();
 		playSongLabel.setStyle("-fx-font-weight: bold;");
 	}
+	
 	@FXML
 	private void onWriteTabClick(){
 		try{
-			System.out.println("teste");
-			setContentPane(main.openTab());
+			setContentPane(tabEditor);
 			removeLabelStyles();
 			writeTabLabel.setStyle("-fx-font-weight: bold;");
 		}catch(Exception e){
