@@ -1,15 +1,18 @@
 package soundefy.layout;
 
 import java.io.IOException;
+
 import javax.swing.JOptionPane;
-import soundefy.net.Server;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import soundefy.Main;
+import soundefy.net.Server;
 
 public class LoginController {
 
