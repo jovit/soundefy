@@ -6,12 +6,14 @@ import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import javax.swing.JOptionPane;
 
 import soundefy.Main;
 import soundefy.net.Server;
+import soundefy.util.EmailValidator;
 
 public class SignUpController {
 
@@ -22,10 +24,10 @@ public class SignUpController {
 	private TextField txtEmail;
 
 	@FXML
-	private TextField txtPassword;
+	private PasswordField txtPassword;
 
 	@FXML
-	private TextField txtConfirmPassword;
+	private PasswordField txtConfirmPassword;
 
 	@FXML
 	private DatePicker dpBirthDate;
@@ -49,24 +51,47 @@ public class SignUpController {
 
 	@FXML
 	private void configureOnSignUpClick() {
-		String name = txtName.getText();
-		String email = txtEmail.getText();
-		String password = txtPassword.getText();
-		LocalDate localDate = dpBirthDate.getValue();
-		String birthDate = localDate.toString().replace('-', '/');
-
-		if (name == "") {
-			showErrorDialog("Nome Inválido!");
-		} else if (password == "" || password.length() < 6) {
-			showErrorDialog("Senha inválida!");
-		} else if (email == "") {
-			showErrorDialog("E-Mail inválido!");
-		} else if (birthDate == "") {
-			showErrorDialog("Data de nascimento inválida!");
-		} else {
+		if (validateFields()) {
+			String name = txtName.getText();
+			String email = txtEmail.getText();
+			String password = txtPassword.getText();
+			LocalDate localDate = dpBirthDate.getValue();
+			String birthDate = localDate.toString().replace('-', '/');
+			
 			signUpAndShowMessage(name, password, email, birthDate);
 		}
 
+	}
+	
+	private boolean validateFields(){
+		String name = txtName.getText();
+		String email = txtEmail.getText();
+		String password = txtPassword.getText();
+		String passwordConfirm = txtConfirmPassword.getText();
+		LocalDate localDate = dpBirthDate.getValue();
+		String birthDate = localDate.toString().replace('-', '/');
+		boolean valid = true;
+		if (name.equals("")) {
+			showErrorDialog("Nome Invalido!");
+			valid = false;
+		} 
+		if (password.equals("") || password.length() < 6) {
+			showErrorDialog("Senha Invalida!");
+			valid = false;
+		}else if(!password.equals(passwordConfirm)){
+			showErrorDialog("As senhas nao batem!");
+			valid = false;
+		}
+		
+		if (!(new EmailValidator().validate(email))) {
+			showErrorDialog("E-Mail Invalido!");
+			valid = false;
+		} 
+		if (birthDate.equals("")) {
+			showErrorDialog("Data de nascimento invalida!");
+			valid = false;
+		}
+		return valid;
 	}
 
 	private void showErrorDialog(String message) {
@@ -81,11 +106,11 @@ public class SignUpController {
 			server = new Server();
 			if (server.signUp(name, password, email, birthDate)) {
 				JOptionPane.showMessageDialog(null,
-						"Usuário cadastrado com sucesso!", "Cadastro",
+						"Usuï¿½rio cadastrado com sucesso!", "Cadastro",
 						JOptionPane.PLAIN_MESSAGE);
 				openLoginMain();
 			} else {
-				JOptionPane.showMessageDialog(null, "Usuário já existente!",
+				JOptionPane.showMessageDialog(null, "Usuï¿½rio jï¿½ existente!",
 						"Cadastro", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (IOException e) {

@@ -23,7 +23,7 @@ public class LoginController {
 	private Label lblChangePassword;
 
 	@FXML
-	private TextField txtPassword;
+	private PasswordField txtPassword;
 
 	@FXML
 	private TextField txtEmail;
@@ -50,10 +50,10 @@ public class LoginController {
 				String password = txtPassword.getText();
 
 				if (email.equals("")) {
-					JOptionPane.showMessageDialog(null, "E-Mail inválido!",
+					JOptionPane.showMessageDialog(null, "E-Mail invï¿½lido!",
 							"Login", JOptionPane.ERROR_MESSAGE);
 				} else if (password.equals("")) {
-					JOptionPane.showMessageDialog(null, "Senha inválida!",
+					JOptionPane.showMessageDialog(null, "Senha invï¿½lida!",
 							"Login", JOptionPane.ERROR_MESSAGE);
 				} else {
 					try {
@@ -62,7 +62,7 @@ public class LoginController {
 							openSoundefyMain();
 						} else {
 							JOptionPane.showMessageDialog(null,
-									"Usuário inexistente!", "Login",
+									"Usuï¿½rio inexistente!", "Login",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} catch (IOException e) {
