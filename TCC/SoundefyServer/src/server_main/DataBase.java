@@ -120,4 +120,30 @@ public class DataBase {
 		}
 		return false;
 	}
+	
+	public String getTabs(){
+		String tabs = "";
+		try {
+			ResultSet resultTab = bd
+					.execConsulta("select SDYMusicTab.sdymusictab_ID, SDYSong.sdysong_name from SDYMusicTab, SDYSong where "
+							+ "SDYMusicTab.sdymusictab_songID = SDYSong.sdysong_ID");
+			while (resultTab.next()){
+				int idMusicTab = resultTab.getInt(0);
+				String songName = resultTab.getString(1);
+				tabs += "/" + idMusicTab + "/" + songName;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return tabs;
+	}
+	
+	public void close(){
+		try {
+			bd.fecharConexao();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

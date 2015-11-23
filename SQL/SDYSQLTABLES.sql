@@ -32,3 +32,6 @@ create table SDYMusicTab(
 	sdymusictab_songID int,
 	constraint fk_sdymusictab_songID foreign key (sdymusictab_songID) references SDYSong(sdysong_ID) 
 )
+
+select SDYMusicTab.sdymusictab_ID, SDYSong.sdysong_name from SDYMusicTab, SDYSong where 
+SDYMusicTab.sdymusictab_songID = SDYSong.sdysong_ID

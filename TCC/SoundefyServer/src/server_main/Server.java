@@ -12,11 +12,13 @@ public class Server {
 
 		private DataInputStream reader;
 		private DataOutputStream writer;
-
+		private DataBase db;
+		
 		public ClientListener(Socket s) {
 			try {
 				this.reader = new DataInputStream(s.getInputStream());
 				this.writer = new DataOutputStream(s.getOutputStream());
+				this.db = new DataBase();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -59,6 +61,10 @@ public class Server {
 					writer.write(pack);
 				} else if (code == Operations.DOWNLOAD.getCode()) {
 
+				} else if (code == Operations.LIST_TABS.getCode()){
+					String tabs = db.getTabs();
+					pack = tabs.getBytes();
+					writer.write(pack);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -67,13 +73,11 @@ public class Server {
 
 		public int signUp(String name, String pwd, String email,
 				String birthDate) throws Exception {
-			DataBase db = new DataBase();
 			int success = db.signUp(name, pwd, email, birthDate);
 			return success;
 		}
 
 		public int signIn(String email, String pwd) throws Exception {
-			DataBase db = new DataBase();
 			int success = db.signIn(email, pwd);
 			return success;
 		}
