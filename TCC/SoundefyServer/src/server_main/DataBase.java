@@ -6,12 +6,12 @@ import java.sql.SQLException;
 public class DataBase {
 	protected BD bd;
 
-	public DataBase(){
-		try{
-		bd = new BD("com.microsoft.sqlserver.jdbc.SQLServerDriver",
-				"jdbc:sqlserver://regulus:1433;databasename=BD13181",
-				"BD13181", "BD13181");
-		}catch(Exception e){
+	public DataBase() {
+		try {
+			bd = new BD("com.microsoft.sqlserver.jdbc.SQLServerDriver",
+					"jdbc:sqlserver://regulus:1433;databasename=BD13181",
+					"BD13181", "BD13181");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -39,6 +39,67 @@ public class DataBase {
 		}
 	}
 
+	private int getGenreID(String genre) {
+		try {
+			ResultSet result = bd
+					.execConsulta("select * from SDYMusicGenre where sdymusicgenre_name='"
+							+ genre + "'"); // change
+											// to
+											// stored
+			// procedure
+			if (result.first()) {
+				int id = result.getInt(0);
+				result.close();
+				return id;
+			} else {
+				result.close();
+				return -1;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return -1;
+	}
+	
+	private int getArtistID(String artistName) {
+		try {
+			ResultSet result = bd
+					.execConsulta("select * from SDYMusicArtist where sdymusicartist_name='"
+							+ artistName + "'"); // change
+											// to
+											// stored
+			// procedure
+			if (result.first()) {
+				int id = result.getInt(0);
+				result.close();
+				return id;
+			} else {
+				result.close();
+				return -1;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return -1;
+	}
+
+	public int upload(String artistName, String songYear, String songName,
+			String songGenre, String file) throws Exception {
+		try {
+			bd.execComando("insert into SDYMusicGenre values('" + songGenre
+					+ "')");
+			bd.execComando("insert into SDYMusicArtist values('" + artistName
+					+ "')");
+			int artistID = getArtistID(artistName);
+			int genreID = getGenreID(songGenre);
+			bd.execComando("insert into SDYSong values(''" + songName + "',"
+					+ songYear + "," + artistID + "," + genreID + ")");
+			return Operations.UPLOAD_SUCCESS.getCode();
+		} catch (SQLException e) {
+			return Operations.UPLOAD_FAILED.getCode();
+		}
+	}
+
 	public boolean userExists(String email, String pwd) {
 		try {
 			ResultSet result = bd
@@ -48,8 +109,10 @@ public class DataBase {
 																			// stored
 			// procedure
 			if (result.first()) {
+				result.close();
 				return true;
 			} else {
+				result.close();
 				return false;
 			}
 		} catch (Exception e) {

@@ -12,12 +12,9 @@ public class Server {
 
 		private DataInputStream reader;
 		private DataOutputStream writer;
-		private Socket socket;
-		private BD bd;
 
 		public ClientListener(Socket s) {
 			try {
-				this.socket = s;
 				this.reader = new DataInputStream(s.getInputStream());
 				this.writer = new DataOutputStream(s.getOutputStream());
 			} catch (IOException e) {
@@ -29,7 +26,7 @@ public class Server {
 		public void run() {
 			int code = -1;
 			try {
-				byte[] pack = new byte[1024];
+				byte[] pack = new byte[10000];
 				reader.read(pack);
 				String operation = new String(pack);
 				StringTokenizer tokenizer = new StringTokenizer(
@@ -50,19 +47,22 @@ public class Server {
 					int success = signIn(name, pwd);
 					PackManager.pack(success, pack, 0);
 					writer.write(pack);
+				} else if (code == Operations.UPLOAD.getCode()) {
+					String artistName = tokenizer.nextToken();
+					String songYear = tokenizer.nextToken();
+					String songName = tokenizer.nextToken();
+					String songGenre = tokenizer.nextToken();
+					String file = tokenizer.nextToken();
+					int success = upload(artistName, songYear, songName,
+							songGenre, file);
+					PackManager.pack(success, pack, 0);
+					writer.write(pack);
+				} else if (code == Operations.DOWNLOAD.getCode()) {
+
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-
-		private ClientRequest getRequest(int cr) throws Exception {
-			switch (cr) {
-			case 0: {
-				return ClientRequest.HI;
-			}
-			}
-			throw new Exception("Nao existe esse client request");
 		}
 
 		public int signUp(String name, String pwd, String email,
@@ -75,6 +75,14 @@ public class Server {
 		public int signIn(String email, String pwd) throws Exception {
 			DataBase db = new DataBase();
 			int success = db.signIn(email, pwd);
+			return success;
+		}
+
+		public int upload(String artistName, String songYear, String songName,
+				String songGenre, String file) throws Exception {
+			DataBase db = new DataBase();
+			int success = db.upload(artistName, songYear, songName, songGenre,
+					file);
 			return success;
 		}
 	}
