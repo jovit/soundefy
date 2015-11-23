@@ -56,4 +56,26 @@ public class Server {
 	public void closeConnection() throws IOException {
 		socket.close();
 	}
+	
+	public String getTabs(){
+		String tabs = "";
+		int indOfOperationListTabs = Operations.LIST_TABS.getCode();
+		byte [] pack = new byte[4];
+		PackManager.pack(indOfOperationListTabs, pack, 0);
+		try {
+			writer.write(pack);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte [] packReceived = new byte [10240];
+		try {
+			reader.read(packReceived);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tabs = new String(packReceived);
+		return tabs;
+	}
 }
