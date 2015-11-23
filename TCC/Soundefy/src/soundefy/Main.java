@@ -22,8 +22,7 @@ public class Main extends Application{
 		setupPrimaryStage(primaryStage);
 		
 		this.primaryStage.show();
-		openSoundefy();
-		//openLogin();
+		openLogin();
 	}
 	
 	private void setupPrimaryStage(Stage primaryStage){
