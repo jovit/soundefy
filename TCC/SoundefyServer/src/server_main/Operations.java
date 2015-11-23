@@ -15,7 +15,9 @@ public enum Operations {
 	UPLOAD_FAILED(11),
 	DOWNLOAD(12),
 	DOWNLOAD_FAILED(13),
-	TAB_NOT_FOUND(14);
+	TAB_NOT_FOUND(14),
+	LIST_TABS(15),
+	DOWNLOAD_TAB(16);
 
 	private int code;
 

@@ -13,13 +13,14 @@ public class Server {
 		private DataInputStream reader;
 		private DataOutputStream writer;
 		private Socket socket;
-		private BD bd;
-
+		private DataBase db;
+		
 		public ClientListener(Socket s) {
 			try {
 				this.socket = s;
 				this.reader = new DataInputStream(s.getInputStream());
 				this.writer = new DataOutputStream(s.getOutputStream());
+				this.db = new DataBase();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -50,6 +51,12 @@ public class Server {
 					int success = signIn(name, pwd);
 					PackManager.pack(success, pack, 0);
 					writer.write(pack);
+				} else if (code == Operations.LIST_TABS.getCode()){
+					String tabs = db.getTabs();
+					pack = tabs.getBytes();
+					writer.write(pack);
+				} else if (code == Operations.DOWNLOAD_TAB.getCode()){
+					;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -67,13 +74,11 @@ public class Server {
 
 		public int signUp(String name, String pwd, String email,
 				String birthDate) throws Exception {
-			DataBase db = new DataBase();
 			int success = db.signUp(name, pwd, email, birthDate);
 			return success;
 		}
 
 		public int signIn(String email, String pwd) throws Exception {
-			DataBase db = new DataBase();
 			int success = db.signIn(email, pwd);
 			return success;
 		}
