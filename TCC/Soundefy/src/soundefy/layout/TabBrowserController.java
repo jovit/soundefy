@@ -1,14 +1,13 @@
 package soundefy.layout;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import soundefy.net.Server;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import soundefy.net.Server;
 
 public class TabBrowserController {
 	@FXML
@@ -26,7 +25,9 @@ public class TabBrowserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<String> tabList = new ArrayList<>();
+		//ArrayList<String> tabListArray = new ArrayList<>();
+		//tabListArray.add("penes");
+		//tabList.setItems((ObservableList<String>) tabListArray);
 	}
 	
 	@FXML

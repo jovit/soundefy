@@ -13,7 +13,7 @@ public class Server {
 		private DataInputStream reader;
 		private DataOutputStream writer;
 		private DataBase db;
-		
+
 		public ClientListener(Socket s) {
 			try {
 				this.reader = new DataInputStream(s.getInputStream());
@@ -28,47 +28,53 @@ public class Server {
 		public void run() {
 			int code = -1;
 			try {
-				byte[] pack = new byte[10000];
+				byte[] pack = new byte[1024];
 				reader.read(pack);
 				String operation = new String(pack);
-				StringTokenizer tokenizer = new StringTokenizer(
-						operation.trim(), "/");
-				code = Integer.parseInt(tokenizer.nextToken());
+				if (operation != "") {
+					StringTokenizer tokenizer = new StringTokenizer(
+							operation.trim(), "/");
+					code = Integer.parseInt(tokenizer.nextToken());
 
-				if (code == Operations.SIGN_UP.getCode()) {
-					String name = tokenizer.nextToken();
-					String pwd = tokenizer.nextToken();
-					String email = tokenizer.nextToken();
-					String birthDate = tokenizer.nextToken();
-					int success = signUp(name, pwd, email, birthDate);
-					PackManager.pack(success, pack, 0);
-					writer.write(pack);
-				} else if (code == Operations.SIGN_IN.getCode()) {
-					String name = tokenizer.nextToken();
-					String pwd = tokenizer.nextToken();
-					int success = signIn(name, pwd);
-					PackManager.pack(success, pack, 0);
-					writer.write(pack);
-				} else if (code == Operations.UPLOAD.getCode()) {
-					String artistName = tokenizer.nextToken();
-					String songYear = tokenizer.nextToken();
-					String songName = tokenizer.nextToken();
-					String songGenre = tokenizer.nextToken();
-					String file = tokenizer.nextToken();
-					int success = upload(artistName, songYear, songName,
-							songGenre, file);
-					PackManager.pack(success, pack, 0);
-					writer.write(pack);
-				} else if (code == Operations.DOWNLOAD.getCode()) {
+					if (code == Operations.SIGN_UP.getCode()) {
+						String name = tokenizer.nextToken();
+						String pwd = tokenizer.nextToken();
+						String email = tokenizer.nextToken();
+						String birthDate = tokenizer.nextToken();
+						int success = signUp(name, pwd, email, birthDate);
+						PackManager.pack(success, pack, 0);
+						writer.write(pack);
+					} else if (code == Operations.SIGN_IN.getCode()) {
+						String name = tokenizer.nextToken();
+						String pwd = tokenizer.nextToken();
+						int success = signIn(name, pwd);
+						PackManager.pack(success, pack, 0);
+						writer.write(pack);
+					} else if (code == Operations.UPLOAD.getCode()) {
+						String artistName = tokenizer.nextToken();
+						String songYear = tokenizer.nextToken();
+						String songName = tokenizer.nextToken();
+						String songGenre = tokenizer.nextToken();
+						String file = tokenizer.nextToken();
+						int success = upload(artistName, songYear, songName,
+								songGenre, file);
+						PackManager.pack(success, pack, 0);
+						writer.write(pack);
+					} else if (code == Operations.DOWNLOAD.getCode()) {
 
-				} else if (code == Operations.LIST_TABS.getCode()){
-					String tabs = db.getTabs();
-					pack = tabs.getBytes();
-					writer.write(pack);
+					} else if (code == Operations.LIST_TABS.getCode()) {
+						String tabs = db.getTabs();
+						if(tabs.equals("")){
+							tabs = String.valueOf(Operations.NO_TABS.getCode());
+						}
+						pack = tabs.getBytes();
+						writer.write(pack);
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 		}
 
 		public int signUp(String name, String pwd, String email,

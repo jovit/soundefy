@@ -55,20 +55,20 @@ public class Server {
 
 	public void closeConnection() throws IOException {
 		socket.close();
+		writer.close();
+		reader.close();
 	}
 	
 	public String getTabs(){
 		String tabs = "";
-		int indOfOperationListTabs = Operations.LIST_TABS.getCode();
-		byte [] pack = new byte[4];
-		PackManager.pack(indOfOperationListTabs, pack, 0);
+		String operation = String.valueOf(Operations.LIST_TABS.getCode());
 		try {
-			writer.write(pack);
+			writer.write(operation.getBytes());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		byte [] packReceived = new byte [10240];
+		byte [] packReceived = new byte [1024];
 		try {
 			reader.read(packReceived);
 		} catch (IOException e) {
@@ -76,6 +76,12 @@ public class Server {
 			e.printStackTrace();
 		}
 		tabs = new String(packReceived);
+		tabs = tabs.trim();
+		
+		if(Integer.valueOf(tabs) == Operations.NO_TABS.getCode()){
+			return "";
+		}
+		
 		return tabs;
 	}
 }
