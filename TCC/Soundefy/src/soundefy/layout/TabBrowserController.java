@@ -78,7 +78,7 @@ public class TabBrowserController {
 		int index = tabList.getSelectionModel().selectedIndexProperty().get();
 		String tab = listOfTabs.get(index);
 		
-		int tabId = Integer.valueOf(listOfTabs.get(index));
+		int tabId = Integer.valueOf(tabIds.get(index));
 		
 		Server s = new Server();
 		
