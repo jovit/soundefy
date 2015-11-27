@@ -1,5 +1,8 @@
 package server_main;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -118,8 +121,23 @@ public class DataBase {
 		return false;
 	}
 	
-	public String downloadTab(String tabId){
-		
+	public byte[] downloadTab(String tabId){
+
+		byte [] tabData = new byte[1024];
+		try{
+			ResultSet resultTab = bd
+					.execConsulta("select sdymusictab_url from SDYMusicTab where sdymusictab_ID = " + tabId);
+			if (resultTab.first()){
+				String urlTab = resultTab.getString(1);
+				DataInputStream reader = new DataInputStream(new FileInputStream(new File(urlTab)));
+				reader.read(tabData);
+			} else {
+				
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return tabData;
 	}
 	
 	public String getTabs(){
