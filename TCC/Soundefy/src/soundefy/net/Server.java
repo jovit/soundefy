@@ -25,8 +25,8 @@ public class Server {
 
 	public boolean signUp(String name, String pwd, String email,
 			String birthDate) throws UnknownHostException, IOException {
-		String operation = Operations.SIGN_UP.getCode() + "/" + name + "/" + pwd
-				+ "/" + email + "/" + birthDate;
+		String operation = Operations.SIGN_UP.getCode() + "/" + name + "/"
+				+ pwd + "/" + email + "/" + birthDate;
 		writer.write(operation.getBytes());
 		byte[] pack = new byte[4];
 		reader.read(pack);
@@ -47,6 +47,23 @@ public class Server {
 		reader.read(pack);
 		int result = PackManager.unpack(pack, 0);
 		if (result == Operations.USER_EXISTS.getCode()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean upload(String artistName, String songYear, String songName,
+			String songGenre, String file) throws UnknownHostException,
+			IOException {
+		String operation = Operations.SIGN_IN.getCode() + "/" + artistName
+				+ "/" + songYear + "/" + songName + "/" + songGenre + "/"
+				+ file;
+		writer.write(operation.getBytes());
+		byte[] pack = new byte[4];
+		reader.read(pack);
+		int result = PackManager.unpack(pack, 0);
+		if (result == Operations.UPLOAD_SUCCESS.getCode()) {
 			return true;
 		} else {
 			return false;
