@@ -1,8 +1,10 @@
 package soundefy.layout;
 
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -85,7 +87,7 @@ public class TabBrowserController {
 		
 		Server s = new Server();
 		
-		String tabFile = s.download(tabId);
+		byte[] tabFile = s.download(tabId);
 		
 		try {
 			s.closeConnection();
@@ -95,12 +97,12 @@ public class TabBrowserController {
 		
 		File selectedFile = openFileChooserForSaving();
 		if(selectedFile != null){
-			PrintWriter writeFile;
+			DataOutputStream writeFile;
 			try {
-				writeFile = new PrintWriter(selectedFile);	
+				writeFile = new DataOutputStream(new FileOutputStream(selectedFile));	
 				writeFile.write(tabFile);
 				writeFile.close();
-			} catch (FileNotFoundException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

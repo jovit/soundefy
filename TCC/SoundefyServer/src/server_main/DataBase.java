@@ -156,7 +156,7 @@ public class DataBase {
 					.execConsulta("select sdymusictab_url from SDYMusicTab where sdymusictab_ID = " + tabId);
 			if (resultTab.first()){
 				String urlTab = resultTab.getString(1);
-				DataInputStream reader = new DataInputStream(new FileInputStream(new File(urlTab)));
+				DataInputStream reader = new DataInputStream(new FileInputStream(new File(urlTab+".sdy")));
 				reader.read(tabData);
 			} else {
 				

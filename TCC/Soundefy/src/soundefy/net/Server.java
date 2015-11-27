@@ -53,7 +53,7 @@ public class Server {
 		}
 	}
 	
-	public String download(int tabId){
+	public byte[] download(int tabId){
 		String operation = Operations.DOWNLOAD.getCode() + "/" + tabId;
 		
 		try {
@@ -63,10 +63,14 @@ public class Server {
 		}
 		
 		byte[] pack = new byte[1024];
-		//reader.read(pack);
-		//String result = PackManager.unpack(pack, 0);
+		try {
+			reader.read(pack);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		return "";
+		
+		return pack;
 	}
 
 	public boolean upload(String artistName, String songYear, String songName,

@@ -69,7 +69,9 @@ public class Server {
 					PackManager.pack(success, pack, 0);
 					writer.write(pack);
 				} else if (code == Operations.DOWNLOAD.getCode()) {
-
+					String tabId = tokenizer.nextToken();
+					byte[] tabData = db.downloadTab(tabId);
+					writer.write(tabData);
 				} else if (code == Operations.LIST_TABS.getCode()) {
 					String tabs = db.getTabs();
 					if(tabs.equals("")){
