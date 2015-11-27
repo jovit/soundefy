@@ -38,10 +38,10 @@ public class Server {
 		}
 	}
 
-	public boolean signIn(String email, String pwd)
+	public boolean signIn(String email, String password)
 			throws UnknownHostException, IOException {
 		String operation = Operations.SIGN_IN.getCode() + "/" + email + "/"
-				+ pwd;
+				+ password;
 		writer.write(operation.getBytes());
 		byte[] pack = new byte[4];
 		reader.read(pack);
@@ -53,7 +53,7 @@ public class Server {
 		}
 	}
 	
-	public String download(int tabId){
+	public byte[] download(int tabId){
 		String operation = Operations.DOWNLOAD.getCode() + "/" + tabId;
 		
 		try {
@@ -63,10 +63,14 @@ public class Server {
 		}
 		
 		byte[] pack = new byte[1024];
-		//reader.read(pack);
-		//String result = PackManager.unpack(pack, 0);
+		try {
+			reader.read(pack);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		return "";
+		
+		return pack;
 	}
 
 	public boolean upload(String artistName, String songYear, String songName,
@@ -76,6 +80,23 @@ public class Server {
 				+ "/" + songYear + "/" + songName + "/" + songGenre + "/"
 				+ file;
 		writer.write(operation.getBytes());
+		byte[] pack = new byte[4];
+		reader.read(pack);
+		int result = PackManager.unpack(pack, 0);
+		if (result == Operations.UPLOAD_SUCCESS.getCode()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean upload(String artistName, String songYear, String songName,
+			String songGenre, byte[] file) throws IOException, InterruptedException {
+		String operation = Operations.UPLOAD.getCode() + "/" + artistName + "/"
+				+ songYear + "/" + songName + "/" + songGenre;
+		writer.write(operation.getBytes());
+		Thread.sleep(500);
+		writer.write(file);
 		byte[] pack = new byte[4];
 		reader.read(pack);
 		int result = PackManager.unpack(pack, 0);

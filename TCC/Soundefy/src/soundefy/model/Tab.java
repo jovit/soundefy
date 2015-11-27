@@ -12,15 +12,15 @@ public class Tab {
 	public Tab() {
 		bars = new ArrayList<>();
 	}
-	
-	public int getNumberOfNotes(){
+
+	public int getNumberOfNotes() {
 		int numberOfNotes = 0;
-		if(bars != null){
-			for(Bar b:bars){
+		if (bars != null) {
+			for (Bar b : bars) {
 				numberOfNotes += b.getNotes().size();
-			}	
+			}
 		}
-		
+
 		return numberOfNotes;
 	}
 
@@ -99,6 +99,15 @@ public class Tab {
 		} else {
 			throw new Exception("Invalid file name!");
 		}
+	}
+
+	public byte[] readFileToUpload() throws Exception {
+		byte [] array = new byte[1024];
+		saveFile("temp.sdy");
+		DataInputStream in = new DataInputStream(new FileInputStream("temp.sdy"));
+		in.read(array);
+		in.close();
+		return array;
 	}
 
 	public static Tab readFile(String arqName) throws Exception {

@@ -53,10 +53,10 @@ public class LoginController {
 				String password = txtPassword.getText();
 
 				if (email.equals("")) {
-					JOptionPane.showMessageDialog(null, "E-Mail inv�lido!",
+					JOptionPane.showMessageDialog(null, "E-Mail invalido!",
 							"Login", JOptionPane.ERROR_MESSAGE);
 				} else if (password.equals("")) {
-					JOptionPane.showMessageDialog(null, "Senha inv�lida!",
+					JOptionPane.showMessageDialog(null, "Senha invalida!",
 							"Login", JOptionPane.ERROR_MESSAGE);
 				} else {
 					try {
@@ -65,7 +65,7 @@ public class LoginController {
 							openSoundefyMain();
 						} else {
 							JOptionPane.showMessageDialog(null,
-									"Usu�rio inexistente!", "Login",
+									"Usuario inexistente!", "Login",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} catch (IOException e) {
