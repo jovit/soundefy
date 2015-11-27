@@ -52,6 +52,10 @@ public class Server {
 			return false;
 		}
 	}
+	
+	public String download(int tabId){
+		return "";
+	}
 
 	public boolean upload(String artistName, String songYear, String songName,
 			String songGenre, String file) throws UnknownHostException,
