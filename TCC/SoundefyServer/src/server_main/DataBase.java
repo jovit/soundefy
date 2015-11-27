@@ -128,13 +128,14 @@ public class DataBase {
 					.execConsulta("select SDYMusicTab.sdymusictab_ID, SDYSong.sdysong_name from SDYMusicTab, SDYSong where "
 							+ "SDYMusicTab.sdymusictab_songID = SDYSong.sdysong_ID");
 			while (resultTab.next()){
-				int idMusicTab = resultTab.getInt(0);
-				String songName = resultTab.getString(1);
+				int idMusicTab = resultTab.getInt(1);
+				String songName = resultTab.getString(2);
 				tabs += "/" + idMusicTab + "/" + songName;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		tabs = tabs.substring(1);
 		return tabs;
 	}
 	

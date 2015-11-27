@@ -54,6 +54,18 @@ public class Server {
 	}
 	
 	public String download(int tabId){
+		String operation = Operations.DOWNLOAD.getCode() + "/" + tabId;
+		
+		try {
+			writer.write(operation.getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		byte[] pack = new byte[1024];
+		//reader.read(pack);
+		//String result = PackManager.unpack(pack, 0);
+		
 		return "";
 	}
 
@@ -99,9 +111,11 @@ public class Server {
 		tabs = new String(packReceived);
 		tabs = tabs.trim();
 		
-		if(Integer.valueOf(tabs) == Operations.NO_TABS.getCode()){
-			return "";
-		}
+		try{
+			if(Integer.valueOf(tabs) == Operations.NO_TABS.getCode()){
+				return "";
+			}
+		}catch(Exception e){}
 		
 		return tabs;
 	}

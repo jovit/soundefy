@@ -32,6 +32,8 @@ public class TabBrowserController {
 	
 	@FXML
 	private void initialize(){
+		tabIds = new ArrayList<String>();
+		
 		Server s = new Server();
 		String tabs = s.getTabs();
 		try {
@@ -90,6 +92,9 @@ public class TabBrowserController {
 		}
 		
 		File selectedFile = openFileChooserForSaving();
+		if(selectedFile != null){
+			
+		}
 	}
 	
 	
