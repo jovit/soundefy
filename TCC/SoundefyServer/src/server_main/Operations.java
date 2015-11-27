@@ -18,7 +18,8 @@ public enum Operations {
 	DOWNLOAD_FAILED(14),
 	TAB_NOT_FOUND(15),
 	LIST_TABS(16),
-	NO_TABS(17);
+	NO_TABS(17),
+	SEARCH_TAB(18);
 
 
 	private int code;

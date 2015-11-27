@@ -166,4 +166,22 @@ public class DataBase {
 			e.printStackTrace();
 		}
 	}
+
+	public String getTab(String tabToSearch) {
+		String tabs = "";
+		try {
+			ResultSet resultTab = bd
+					.execConsulta("select SDYMusicTab.sdymusictab_ID, SDYSong.sdysong_name from SDYMusicTab, SDYSong where "
+							+ "SDYMusicTab.sdymusictab_songID = SDYSong.sdysong_ID and SDYSong.sdysong_name LIKE '%" + tabToSearch + "%'");
+			while (resultTab.next()){
+				int idMusicTab = resultTab.getInt(1);
+				String songName = resultTab.getString(2);
+				tabs += "/" + idMusicTab + "/" + songName;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		tabs = tabs.substring(1);
+		return tabs;
+	}
 }

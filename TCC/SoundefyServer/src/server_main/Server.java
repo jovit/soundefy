@@ -71,6 +71,14 @@ public class Server {
 						}
 						pack = tabs.getBytes();
 						writer.write(pack);
+					} else if (code == Operations.SEARCH_TAB.getCode()) {
+						String tabToSearch = tokenizer.nextToken();
+						String tabs = db.getTab(tabToSearch);
+						if(tabs.equals("")){
+							tabs = String.valueOf(Operations.NO_TABS.getCode());
+						}
+						pack = tabs.getBytes();
+						writer.write(pack);
 					}
 				}
 			} catch (Exception e) {

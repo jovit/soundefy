@@ -73,6 +73,24 @@ public class TabBrowserController {
 	
 	@FXML
 	private void onSearchClick(){
+		Server s = new Server();
+		String strToSearch = searchText.getText();
+		String tabData = s.getTab(strToSearch);
+		StringTokenizer tokenizer = new StringTokenizer(tabData,"/");
+		
+		tabIds = new ArrayList<>();
+		listOfTabs = FXCollections.observableArrayList();
+		
+		tabIds.add(tokenizer.nextToken());
+		listOfTabs.add(tokenizer.nextToken());
+		tabList.setItems(listOfTabs);
+		
+		try {
+			s.closeConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		
 	}
 	

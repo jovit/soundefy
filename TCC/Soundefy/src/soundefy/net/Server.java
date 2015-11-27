@@ -119,4 +119,32 @@ public class Server {
 		
 		return tabs;
 	}
+	
+	public String getTab(String searchTab){
+		String tabs = "";
+		String operation = String.valueOf(Operations.SEARCH_TAB.getCode()) + "/" + searchTab;
+		try {
+			writer.write(operation.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		byte [] packReceived = new byte [1024];
+		try {
+			reader.read(packReceived);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tabs = new String(packReceived);
+		tabs = tabs.trim();
+		
+		try{
+			if(Integer.valueOf(tabs) == Operations.NO_TABS.getCode()){
+				return "";
+			}
+		}catch(Exception e){}
+		
+		return tabs;
+	}
 }
