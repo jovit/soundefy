@@ -1,5 +1,8 @@
 package server_main;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -130,10 +133,7 @@ public class DataBase {
 		try {
 			ResultSet result = bd
 					.execConsulta("select * from SDYUser where sdyuser_password='"
-							+ pwd + "' and sdyuser_email='" + email + "'"); // change
-																			// to
-																			// stored
-			// procedure
+							+ pwd + "' and sdyuser_email='" + email + "'"); 
 			if (result.first()) {
 				result.close();
 				return true;
@@ -147,20 +147,41 @@ public class DataBase {
 		return false;
 	}
 
-	public String getTabs() {
+	
+	public byte[] downloadTab(String tabId){
+
+		byte [] tabData = new byte[1024];
+		try{
+			ResultSet resultTab = bd
+					.execConsulta("select sdymusictab_url from SDYMusicTab where sdymusictab_ID = " + tabId);
+			if (resultTab.first()){
+				String urlTab = resultTab.getString(1);
+				DataInputStream reader = new DataInputStream(new FileInputStream(new File(urlTab)));
+				reader.read(tabData);
+			} else {
+				
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return tabData;
+	}
+	
+	public String getTabs(){
 		String tabs = "";
 		try {
 			ResultSet resultTab = bd
 					.execConsulta("select SDYMusicTab.sdymusictab_ID, SDYSong.sdysong_name from SDYMusicTab, SDYSong where "
 							+ "SDYMusicTab.sdymusictab_songID = SDYSong.sdysong_ID");
-			while (resultTab.next()) {
-				int idMusicTab = resultTab.getInt(0);
-				String songName = resultTab.getString(1);
+			while (resultTab.next()){
+				int idMusicTab = resultTab.getInt(1);
+				String songName = resultTab.getString(2);
 				tabs += "/" + idMusicTab + "/" + songName;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		tabs = tabs.substring(1);
 		return tabs;
 	}
 

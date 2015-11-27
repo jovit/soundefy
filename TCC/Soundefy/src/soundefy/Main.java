@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import soundefy.layout.LoginController;
 import soundefy.layout.SignUpController;
 import soundefy.layout.SoundefyController;
+import soundefy.layout.TabBrowserController;
 import soundefy.layout.TabEditorController;
 import soundefy.layout.TabUploaderController;
 import soundefy.model.TimeSignature;
@@ -57,6 +58,8 @@ public class Main extends Application{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabBrowser.fxml"));
 		AnchorPane pane = (AnchorPane) loader.load();
+		TabBrowserController controller = loader.getController();
+		controller.setPrimaryStage(this.primaryStage);
 		return pane;
 	}
 	

@@ -35,3 +35,27 @@ create table SDYMusicTab(
 
 select SDYMusicTab.sdymusictab_ID, SDYSong.sdysong_name from SDYMusicTab, SDYSong where 
 SDYMusicTab.sdymusictab_songID = SDYSong.sdysong_ID
+
+insert into SDYMusicGenre values ('Indie')
+insert into SDYMusicGenre values ('Rock')
+insert into SDYMusicGenre values ('Pop')
+insert into SDYMusicGenre values ('Samba')
+insert into SDYMusicGenre values ('Funk')
+insert into SDYMusicGenre values ('Metal')
+insert into SDYMusicGenre values ('Eletronica')
+insert into SDYMusicGenre values ('Instrumental')
+
+insert into SDYMusicArtist values ('Pink Floyd')
+insert into SDYMusicArtist values ('MC Dudu')
+
+insert into SDYSong values ('Shine on you crazy diamond', 1988, 1, 2)
+insert into SDYSong values ('Os pika do verão', 2015, 2, 5)
+
+delete from SDYSong where sdysong_ID = 2
+
+select * from SDYMusicGenre
+select * from SDYMusicArtist
+select * from SDYSong
+
+insert into SDYMusicTab values ('batatamc', 4)
+

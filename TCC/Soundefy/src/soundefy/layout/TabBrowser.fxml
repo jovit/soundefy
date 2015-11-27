@@ -10,6 +10,6 @@
       <ListView fx:id="tabList" layoutX="15.0" layoutY="72.0" prefHeight="303.0" prefWidth="421.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="72.0" />
       <TextField fx:id="searchText" layoutX="13.0" layoutY="19.0" maxHeight="32.0" maxWidth="221.0" promptText="Type the song name" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="216.0" />
       <Button layoutX="337.0" layoutY="19.0" mnemonicParsing="false" onAction="#onSearchClick" text="Search" AnchorPane.rightAnchor="14.0" />
-      <Button disable="true" layoutX="315.0" layoutY="397.0" mnemonicParsing="false" onAction="#onDownloadClick" text="Download" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" />
+      <Button fx:id="downloadButton" disable="true" layoutX="315.0" layoutY="397.0" mnemonicParsing="false" onAction="#onDownloadClick" text="Download" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="14.0" />
    </children>
 </AnchorPane>

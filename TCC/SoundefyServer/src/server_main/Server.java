@@ -35,7 +35,7 @@ public class Server {
 		public void run() {
 			int code = -1;
 			try {
-				byte[] pack = new byte[10000];
+				byte[] pack = new byte[1024];
 				reader.read(pack);
 				String operation = new String(pack);
 				StringTokenizer tokenizer = new StringTokenizer(
@@ -72,12 +72,16 @@ public class Server {
 
 				} else if (code == Operations.LIST_TABS.getCode()) {
 					String tabs = db.getTabs();
+					if(tabs.equals("")){
+						tabs = String.valueOf(Operations.NO_TABS.getCode());
+					}
 					pack = tabs.getBytes();
 					writer.write(pack);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 		}
 
 		private String saveLocalFile(byte[] file) throws IOException {
