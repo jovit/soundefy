@@ -120,8 +120,7 @@ public class TabUploaderController {
 							songGenre, file)) {
 						JOptionPane.showMessageDialog(null,
 								"Upload feito com sucesso!", "Upload",
-								JOptionPane.OK_OPTION);
-						openSoundefyMain();
+								JOptionPane.INFORMATION_MESSAGE);
 					} else {
 						JOptionPane.showMessageDialog(null,
 								"Ocorreu um erro ao fazer o upload!", "Upload",
