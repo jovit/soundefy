@@ -118,6 +118,10 @@ public class DataBase {
 		return false;
 	}
 	
+	public String downloadTab(String tabId){
+		
+	}
+	
 	public String getTabs(){
 		String tabs = "";
 		try {

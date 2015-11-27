@@ -61,7 +61,7 @@ public class Server {
 						PackManager.pack(success, pack, 0);
 						writer.write(pack);
 					} else if (code == Operations.DOWNLOAD.getCode()) {
-
+						
 					} else if (code == Operations.LIST_TABS.getCode()) {
 						String tabs = db.getTabs();
 						if(tabs.equals("")){
