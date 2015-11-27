@@ -12,6 +12,7 @@ import soundefy.layout.LoginController;
 import soundefy.layout.SignUpController;
 import soundefy.layout.SoundefyController;
 import soundefy.layout.TabEditorController;
+import soundefy.layout.TabUploaderController;
 import soundefy.model.TimeSignature;
 
 public class Main extends Application{
@@ -56,6 +57,16 @@ public class Main extends Application{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("layout/TabBrowser.fxml"));
 		AnchorPane pane = (AnchorPane) loader.load();
+		return pane;
+	}
+	
+	public AnchorPane openTabUploader() throws IOException{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("layout/TabUploader.fxml"));
+		AnchorPane pane = (AnchorPane) loader.load();
+		TabUploaderController controller = loader.getController();
+		controller.setMain(this);
+		controller.setPrimaryStage(this.primaryStage);
 		return pane;
 	}
 	

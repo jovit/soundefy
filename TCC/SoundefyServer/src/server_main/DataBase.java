@@ -39,16 +39,15 @@ public class DataBase {
 		}
 	}
 
-	private int getGenreID(String genre) {
+	private int getGenreID() {
 		try {
 			ResultSet result = bd
-					.execConsulta("select * from SDYMusicGenre where sdymusicgenre_name='"
-							+ genre + "'"); // change
+					.execConsulta("select max(sdymusicgenre_ID) from SDYMusicGenre"); // change
 											// to
 											// stored
 			// procedure
 			if (result.first()) {
-				int id = result.getInt(0);
+				int id = result.getInt(1);
 				result.close();
 				return id;
 			} else {
@@ -60,17 +59,41 @@ public class DataBase {
 		}
 		return -1;
 	}
-	
-	private int getArtistID(String artistName) {
+
+	private int getArtistID() {
 		try {
 			ResultSet result = bd
-					.execConsulta("select * from SDYMusicArtist where sdymusicartist_name='"
-							+ artistName + "'"); // change
-											// to
-											// stored
+					.execConsulta("select max(sdymusicartist_ID) from SDYMusicArtist"); // change
+			// to
+			// stored
 			// procedure
 			if (result.first()) {
-				int id = result.getInt(0);
+				int id = result.getInt(1);
+				result.close();
+				return id;
+			} else {
+				result.close();
+				return -1;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return -1;
+	}
+
+	private int getSongID(String songName, String songYear, int artistID,
+			int genreID) {
+		try {
+			ResultSet result = bd
+					.execConsulta("select * from SDYSong where sdysong_name = '"
+							+ songName
+							+ "' and sdysong_year = "
+							+ songYear
+							+ " and sdysong_artistID = "
+							+ artistID
+							+ " and sdysong_genreID = " + genreID);
+			if (result.first()) {
+				int id = result.getInt(1);
 				result.close();
 				return id;
 			} else {
@@ -84,16 +107,19 @@ public class DataBase {
 	}
 
 	public int upload(String artistName, String songYear, String songName,
-			String songGenre, String file) throws Exception {
+			String songGenre, String filePath) throws Exception {
 		try {
 			bd.execComando("insert into SDYMusicGenre values('" + songGenre
 					+ "')");
 			bd.execComando("insert into SDYMusicArtist values('" + artistName
 					+ "')");
-			int artistID = getArtistID(artistName);
-			int genreID = getGenreID(songGenre);
-			bd.execComando("insert into SDYSong values(''" + songName + "',"
+			int artistID = getArtistID();
+			int genreID = getGenreID();
+			bd.execComando("insert into SDYSong values('" + songName + "',"
 					+ songYear + "," + artistID + "," + genreID + ")");
+			int songID = getSongID(songName, songYear, artistID, genreID);
+			bd.execComando("insert into SDYMusicTab values('" + filePath
+					+ "'," + songID + ")");
 			return Operations.UPLOAD_SUCCESS.getCode();
 		} catch (SQLException e) {
 			return Operations.UPLOAD_FAILED.getCode();
@@ -120,14 +146,14 @@ public class DataBase {
 		}
 		return false;
 	}
-	
-	public String getTabs(){
+
+	public String getTabs() {
 		String tabs = "";
 		try {
 			ResultSet resultTab = bd
 					.execConsulta("select SDYMusicTab.sdymusictab_ID, SDYSong.sdysong_name from SDYMusicTab, SDYSong where "
 							+ "SDYMusicTab.sdymusictab_songID = SDYSong.sdysong_ID");
-			while (resultTab.next()){
+			while (resultTab.next()) {
 				int idMusicTab = resultTab.getInt(0);
 				String songName = resultTab.getString(1);
 				tabs += "/" + idMusicTab + "/" + songName;
@@ -137,8 +163,8 @@ public class DataBase {
 		}
 		return tabs;
 	}
-	
-	public void close(){
+
+	public void close() {
 		try {
 			bd.fecharConexao();
 		} catch (Exception e) {

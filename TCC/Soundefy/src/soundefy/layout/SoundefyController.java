@@ -22,7 +22,7 @@ public class SoundefyController {
 	@FXML
 	Label writeTabLabel;
 	
-	private AnchorPane tabEditor, tabBrowser;
+	private AnchorPane tabEditor, tabBrowser, tabUploader;
 	
 	private Main main;
 	
@@ -48,6 +48,7 @@ public class SoundefyController {
 		try {
 			tabEditor = main.openTab();
 			tabBrowser = main.openTabBrowser();
+			tabUploader = main.openTabUploader();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -82,6 +83,7 @@ public class SoundefyController {
 	
 	@FXML
 	private void onUploadTabsClick(){
+		setContentPane(tabUploader);
 		removeLabelStyles();
 		uploadTabsLabel.setStyle("-fx-font-weight: bold;");
 	}

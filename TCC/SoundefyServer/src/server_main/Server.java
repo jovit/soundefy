@@ -2,9 +2,16 @@ package server_main;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
 
 public class Server {
@@ -13,7 +20,7 @@ public class Server {
 		private DataInputStream reader;
 		private DataOutputStream writer;
 		private DataBase db;
-		
+
 		public ClientListener(Socket s) {
 			try {
 				this.reader = new DataInputStream(s.getInputStream());
@@ -54,14 +61,16 @@ public class Server {
 					String songYear = tokenizer.nextToken();
 					String songName = tokenizer.nextToken();
 					String songGenre = tokenizer.nextToken();
-					String file = tokenizer.nextToken();
+					byte[] file = new byte[1024];
+					reader.read(file);
+					String path = saveLocalFile(file);
 					int success = upload(artistName, songYear, songName,
-							songGenre, file);
+							songGenre, path);
 					PackManager.pack(success, pack, 0);
 					writer.write(pack);
 				} else if (code == Operations.DOWNLOAD.getCode()) {
 
-				} else if (code == Operations.LIST_TABS.getCode()){
+				} else if (code == Operations.LIST_TABS.getCode()) {
 					String tabs = db.getTabs();
 					pack = tabs.getBytes();
 					writer.write(pack);
@@ -69,6 +78,18 @@ public class Server {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+
+		private String saveLocalFile(byte[] file) throws IOException {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			Date date = new Date();
+			String path = dateFormat.format(date);
+			File f = new File(path + ".sdy");
+			f.createNewFile();
+			DataOutputStream out = new DataOutputStream(new FileOutputStream(f));
+			out.write(file);
+			out.close();
+			return path;
 		}
 
 		public int signUp(String name, String pwd, String email,
