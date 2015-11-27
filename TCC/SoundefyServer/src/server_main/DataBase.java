@@ -104,10 +104,7 @@ public class DataBase {
 		try {
 			ResultSet result = bd
 					.execConsulta("select * from SDYUser where sdyuser_password='"
-							+ pwd + "' and sdyuser_email='" + email + "'"); // change
-																			// to
-																			// stored
-			// procedure
+							+ pwd + "' and sdyuser_email='" + email + "'"); 
 			if (result.first()) {
 				result.close();
 				return true;
