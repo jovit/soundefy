@@ -1,7 +1,10 @@
 package soundefy.layout;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -87,13 +90,19 @@ public class TabBrowserController {
 		try {
 			s.closeConnection();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		File selectedFile = openFileChooserForSaving();
 		if(selectedFile != null){
-			
+			PrintWriter writeFile;
+			try {
+				writeFile = new PrintWriter(selectedFile);	
+				writeFile.write(tabFile);
+				writeFile.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
