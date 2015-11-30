@@ -79,7 +79,7 @@ public class TabRecognitionListener {
 						Nota readNote = PitchDetector.notas[pos];
 						Nota maisTocada = p.getNotaMaisTocada();
 						if(maisTocada != null){
-							if (readNote == maisTocada){
+							if (readNote == maisTocada || PitchDetector.notas[pos+1] == maisTocada || PitchDetector.notas[pos-1] == maisTocada ){
 								listener.hitNote();
 							} else {
 								listener.missNote();

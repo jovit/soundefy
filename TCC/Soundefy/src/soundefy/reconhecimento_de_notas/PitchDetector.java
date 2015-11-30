@@ -96,7 +96,7 @@ public class PitchDetector implements Runnable {
 			new Nota("A#7", 3520.00, 3951.07, 3729.31),
 			new Nota("B7", 3729.31, 4186.01, 3951.07), };
 
-	private final static int RATE = 8000;
+	private final static int RATE = 16000;
 	private final static int CHANNEL_MODE = 1;
 	private final static int ENCODING = 16;
 

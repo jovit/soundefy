@@ -181,7 +181,8 @@ public class DataBase {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		tabs = tabs.substring(1);
+		if(tabs.length() > 0)
+			tabs = tabs.substring(1);
 		return tabs;
 	}
 
